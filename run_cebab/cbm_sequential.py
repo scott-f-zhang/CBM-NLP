@@ -347,8 +347,8 @@ num_epochs=1
 print("train CtoY use trained XtoC!")
 # ModelCtoY_layer = ModelCtoY_function(n_class_attr = 0, n_attributes = num_each_concept_classes*num_concept_labels, num_classes = num_labels, expand_dim = 0)
 ModelCtoY_layer = ModelCtoY_function(n_attributes = num_each_concept_classes*num_concept_labels, num_classes = num_labels, expand_dim = 0)
-model = torch.load("./"+model_name+"_sequential.pth")
-ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_sequential.pth")
+model = torch.load("./"+model_name+"_sequential.pth", weights_only=False)
+ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_sequential.pth", weights_only=False)
 
 # Set up the optimizer and loss function
 optimizer = torch.optim.Adam(ModelCtoY_layer.parameters(), lr=1e-2)
@@ -460,7 +460,7 @@ for epoch in range(num_epochs):
 #step 3  Test
 num_epochs = 1
 print("Test!")
-ModelCtoY_layer = torch.load("./"+model_name+"_ModelCtoY_layer_sequential.pth") 
+ModelCtoY_layer = torch.load("./"+model_name+"_ModelCtoY_layer_sequential.pth", weights_only=False) 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 for epoch in range(num_epochs):
     with torch.no_grad():

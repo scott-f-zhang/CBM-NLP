@@ -384,8 +384,8 @@ for epoch in range(num_epochs):
 ####################### test
 num_epochs = 1
 print("Test!")
-model = torch.load("./"+model_name+"_joint.pth")
-ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoCtoY_layer_joint.pth") 
+model = torch.load("./"+model_name+"_joint.pth", weights_only=False)
+ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoCtoY_layer_joint.pth", weights_only=False) 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 for epoch in range(num_epochs):

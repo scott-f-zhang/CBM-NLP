@@ -353,9 +353,9 @@ num_epochs = 1
 print("train CtoY first, then treat predicted C of XtoC as input at val time!")
 #ModelCtoY_layer = ModelCtoY_function(n_class_attr = 0, n_attributes = num_each_concept_classes*num_concept_labels, num_classes = num_labels, expand_dim = 0)
 ModelCtoY_layer = ModelCtoY_function(n_attributes = num_each_concept_classes*num_concept_labels, num_classes = num_labels, expand_dim = 0)
-model = torch.load("./"+model_name+"_independent.pth")
-model = torch.load("./"+model_name+"_independent.pth")
-ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth") 
+model = torch.load("./"+model_name+"_independent.pth", weights_only=False)
+model = torch.load("./"+model_name+"_independent.pth", weights_only=False)
+ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth", weights_only=False) 
 
 # Set up the optimizer and loss function
 optimizer = torch.optim.Adam(ModelCtoY_layer.parameters(), lr=1e-3, weight_decay=1e-3)
@@ -466,9 +466,9 @@ for epoch in range(num_epochs):
 num_epochs = 1
 print("Test!")
 
-model = torch.load("./"+model_name+"_independent.pth")
-ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth") 
-ModelCtoY_layer = torch.load("./"+model_name+"_ModelCtoY_layer_independent.pth") 
+model = torch.load("./"+model_name+"_independent.pth", weights_only=False)
+ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth", weights_only=False) 
+ModelCtoY_layer = torch.load("./"+model_name+"_ModelCtoY_layer_independent.pth", weights_only=False) 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # classifier.to(device)
 

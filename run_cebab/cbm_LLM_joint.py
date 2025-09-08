@@ -63,24 +63,24 @@ elif data_type == "aug_cebab":
     train_split = "train_aug_cebab"
     test_split = "test_aug_cebab"
     CEBaB = {}
-    CEBaB[train_split] = pd.read_csv("../../dataset/cebab/train_cebab_new_concept_single.csv")
-    CEBaB[test_split] = pd.read_csv("../../dataset/cebab/test_cebab_new_concept_single.csv")
+    CEBaB[train_split] = pd.read_csv("../dataset/cebab/train_cebab_new_concept_single.csv")
+    CEBaB[test_split] = pd.read_csv("../dataset/cebab/test_cebab_new_concept_single.csv")
 elif data_type == "aug_yelp":
     num_concept_labels = 10
     train_split = "train_aug_yelp"
     test_split = "test_aug_yelp"
     CEBaB = {}
-    CEBaB[train_split] = pd.read_csv("../../dataset/cebab/train_yelp_new_concept_single.csv")
-    CEBaB[test_split] = pd.read_csv("../../dataset/cebab/test_yelp_new_concept_single.csv")
+    CEBaB[train_split] = pd.read_csv("../dataset/cebab/train_yelp_exclusive_new_concept_single.csv")
+    CEBaB[test_split] = pd.read_csv("../dataset/cebab/test_yelp_new_concept_single.csv")
 elif data_type == "aug_cebab_yelp":
     num_concept_labels = 10
 
     train_split = "train_aug_cebab_yelp"
     test_split = "test_aug_cebab_yelp"
-    train_split_cebab = pd.read_csv("../../dataset/cebab/train_cebab_new_concept_single.csv")
-    test_split_cebab = pd.read_csv("../../dataset/cebab/test_cebab_new_concept_single.csv")
-    train_split_yelp = pd.read_csv("../../dataset/cebab/train_yelp_new_concept_single.csv")
-    test_split_yelp = pd.read_csv("../../dataset/cebab/test_yelp_new_concept_single.csv")
+    train_split_cebab = pd.read_csv("../dataset/cebab/train_cebab_new_concept_single.csv")
+    test_split_cebab = pd.read_csv("../dataset/cebab/test_cebab_new_concept_single.csv")
+    train_split_yelp = pd.read_csv("../dataset/cebab/train_yelp_exclusive_new_concept_single.csv")
+    test_split_yelp = pd.read_csv("../dataset/cebab/test_yelp_new_concept_single.csv")
 
     CEBaB = {}
     CEBaB[train_split] = pd.concat([train_split_cebab, train_split_yelp], ignore_index=True)

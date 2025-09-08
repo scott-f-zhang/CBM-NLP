@@ -302,8 +302,8 @@ for epoch in range(num_epochs):
 ####################### test
 num_epochs = 1
 print("Test!")
-model = torch.load("./"+model_name+"_model_standard.pth")
-classifier = torch.load("./"+model_name+"_classifier_standard.pth") 
+model = torch.load("./"+model_name+"_model_standard.pth", weights_only=False)
+classifier = torch.load("./"+model_name+"_classifier_standard.pth", weights_only=False) 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 for epoch in range(num_epochs):

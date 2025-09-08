@@ -53,24 +53,24 @@ elif data_type == "aug_cebab":
     train_split = "train_aug_cebab"
     test_split = "test_aug_cebab"
     CEBaB = {}
-    CEBaB[train_split] = pd.read_csv("../../dataset/cebab/train_cebab_new_concept_single.csv")
-    CEBaB[test_split] = pd.read_csv("../../dataset/cebab/test_cebab_new_concept_single.csv")
+    CEBaB[train_split] = pd.read_csv("../dataset/cebab/train_cebab_new_concept_single.csv")
+    CEBaB[test_split] = pd.read_csv("../dataset/cebab/test_cebab_new_concept_single.csv")
 elif data_type == "aug_yelp":
     num_concept_labels = 10
     train_split = "train_aug_yelp"
     test_split = "test_aug_yelp"
     CEBaB = {}
-    CEBaB[train_split] = pd.read_csv("../../dataset/cebab/train_yelp_new_concept_single.csv")
-    CEBaB[test_split] = pd.read_csv("../../dataset/cebab/test_yelp_new_concept_single.csv")
+    CEBaB[train_split] = pd.read_csv("../dataset/cebab/train_yelp_new_concept_single.csv")
+    CEBaB[test_split] = pd.read_csv("../dataset/cebab/test_yelp_new_concept_single.csv")
 elif data_type == "aug_cebab_yelp":
     num_concept_labels = 10
 
     train_split = "train_aug_cebab_yelp"
     test_split = "test_aug_cebab_yelp"
-    train_split_cebab = pd.read_csv("../../dataset/cebab/train_cebab_new_concept_single.csv")
-    test_split_cebab = pd.read_csv("../../dataset/cebab/test_cebab_new_concept_single.csv")
-    train_split_yelp = pd.read_csv("../../dataset/cebab/train_yelp_new_concept_single.csv")
-    test_split_yelp = pd.read_csv("../../dataset/cebab/test_yelp_new_concept_single.csv")
+    train_split_cebab = pd.read_csv("../dataset/cebab/train_cebab_new_concept_single.csv")
+    test_split_cebab = pd.read_csv("../dataset/cebab/test_cebab_new_concept_single.csv")
+    train_split_yelp = pd.read_csv("../dataset/cebab/train_yelp_new_concept_single.csv")
+    test_split_yelp = pd.read_csv("../dataset/cebab/test_yelp_new_concept_single.csv")
 
     CEBaB = {}
     CEBaB[train_split] = pd.concat([train_split_cebab, train_split_yelp], ignore_index=True)
@@ -298,9 +298,9 @@ num_epochs = 50
 print("train CtoY first, then treat predicted C of XtoC as input at test time!")
 #ModelCtoY_layer = ModelCtoY_function(n_class_attr = 0, n_attributes = num_each_concept_classes*num_concept_labels, num_classes = num_labels, expand_dim = 0)
 ModelCtoY_layer = ModelCtoY_function(n_attributes = num_each_concept_classes*num_concept_labels, num_classes = num_labels, expand_dim = 0)
-model = torch.load("./"+model_name+"_independent.pth")
-model = torch.load("./"+model_name+"_independent.pth")
-ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth") 
+model = torch.load("./"+model_name+"_independent.pth", weights_only=False)
+model = torch.load("./"+model_name+"_independent.pth", weights_only=False)
+ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth", weights_only=False) 
 
 # Set up the optimizer and loss function
 optimizer = torch.optim.Adam(ModelCtoY_layer.parameters(), lr=1e-3, weight_decay=1e-3)

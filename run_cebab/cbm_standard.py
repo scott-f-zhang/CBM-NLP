@@ -23,7 +23,7 @@ model_name = 'bert-base-uncased' # 'bert-base-uncased' / 'roberta-base' / 'gpt2'
 max_len = 128
 batch_size = 8
 num_labels = 5 
-num_epochs = 1
+num_epochs = 20
 
 # Load the tokenizer and pretrained model
 if model_name == 'roberta-base':
@@ -224,7 +224,8 @@ else:
 
 
 # Set up the optimizer and loss function
-optimizer = torch.optim.Adam(list(model.parameters()) + list(classifier.parameters()), lr=1e-2)
+# optimizer = torch.optim.Adam(list(model.parameters()) + list(classifier.parameters()), lr=1e-2
+optimizer = torch.optim.Adam(list(model.parameters()) + list(classifier.parameters()), lr=2e-5)
 if model_name == 'lstm':
     scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
 loss_fn = torch.nn.CrossEntropyLoss()
@@ -295,8 +296,8 @@ for epoch in range(num_epochs):
 ####################### test
 num_epochs = 1
 print("Test!")
-model = torch.load("./"+model_name+"_model_standard.pth")
-classifier = torch.load("./"+model_name+"_classifier_standard.pth") 
+model = torch.load("./"+model_name+"_model_standard.pth", weights_only=False)
+classifier = torch.load("./"+model_name+"_classifier_standard.pth", weights_only=False) 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 for epoch in range(num_epochs):
