@@ -15,6 +15,7 @@ import pandas as pd
 import os 
 from .cbm_template_models import MLP, FC
 from .cbm_models import ModelXtoC_function, ModelCtoY_function
+from .rnn_utils import BiLSTMWithDotAttention
 
 def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=None):
     # Enable concept or not
@@ -47,31 +48,22 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
     elif model_name == 'lstm':
         fasttext_model = FastText.load_fasttext_format('./fasttext/cc.en.300.bin')
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-
-        class BiLSTMWithDotAttention(torch.nn.Module):
-            def __init__(self, vocab_size, embedding_dim, hidden_dim):
+        embeddings = fasttext_model.wv.vectors
+        class LSTMWrapper(torch.nn.Module):
+            def __init__(self, base_module, hidden_dim: int):
                 super().__init__()
-                self.embedding = torch.nn.Embedding(vocab_size, embedding_dim)
-                embeddings = fasttext_model.wv.vectors
-                self.embedding.weight = torch.nn.Parameter(torch.tensor(embeddings))
-                self.embedding.weight.requires_grad = False
-                self.lstm = torch.nn.LSTM(embedding_dim, hidden_dim, num_layers = 1, bidirectional=True, batch_first=True)
+                self.base = base_module
                 self.classifier = torch.nn.Sequential(
                     torch.nn.Linear(hidden_dim*2, hidden_dim),
                     torch.nn.ReLU(),
                     torch.nn.Dropout(0.2)
-            )
-
+                )
             def forward(self, input_ids, attention_mask):
-                input_lengths = attention_mask.sum(dim=1)
-                embedded = self.embedding(input_ids)
-                output, _ = self.lstm(embedded)
-                weights = F.softmax(torch.bmm(output, output.transpose(1, 2)), dim=2)
-                attention = torch.bmm(weights, output)
-                logits = self.classifier(attention.mean(1))
+                feats = self.base(input_ids, attention_mask)
+                logits = self.classifier(feats.mean(1))
                 return logits
-
-        model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128)
+        base = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128, pretrained_embeddings=embeddings)
+        model = LSTMWrapper(base, 128)
 
     # "pure_cebab"/"aug_cebab"/"aug_yelp"/"aug_cebab_yelp"
     data_type = "aug_cebab_yelp" if data_type is None else data_type
