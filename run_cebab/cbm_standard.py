@@ -36,7 +36,7 @@ class BiLSTMWithDotAttention(torch.nn.Module):
         attention = torch.bmm(weights, output)
         return attention
 
-def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None):
+def get_cbm_standard(mode=None, max_len=None, batch_size=None, model_name=None, num_epochs=None, data_type=None, optimizer_lr=None):
     # Enable concept or not
     mode = 'standard' if mode is None else mode
 
@@ -46,9 +46,9 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
     # 'bert-base-uncased' / 'roberta-base' / 'gpt2' / 'lstm'
 
     # Define the maximum sequence length, batch size, num_concepts_size,num_labels,num_epochs
-    max_len = 128
-    batch_size = 8
-    num_labels = 5 
+    max_len = 128 if max_len is None else max_len
+    batch_size = 8 if batch_size is None else batch_size
+    num_labels = 5
     num_epochs = 20 if num_epochs is None else num_epochs
 
     # Load the tokenizer and pretrained model
@@ -60,7 +60,7 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
         model = BertModel.from_pretrained(model_name)
     elif model_name == 'gpt2':
         tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-        tokenizer.pad_token = tokenizer.eos_token  
+        tokenizer.pad_token = tokenizer.eos_token
         model = GPT2Model.from_pretrained(model_name)
     elif model_name == 'lstm':
         fasttext_model = FastText.load_fasttext_format('./fasttext/cc.en.300.bin')
@@ -123,7 +123,7 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
             self.data = CEBaB[split]
             self.labels = self.data["review_majority"]
             self.text = self.data["description"]
-        
+
             self.food_aspect = self.data["food_aspect_majority"]
             self.ambiance_aspect = self.data["ambiance_aspect_majority"]
             self.service_aspect = self.data["service_aspect_majority"]
@@ -158,7 +158,7 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
             ambiance_concept = self.map_dict[self.ambiance_aspect[self.indices[index]]]
             service_concept = self.map_dict[self.service_aspect[self.indices[index]]]
             noise_concept = self.map_dict[self.noise_aspect[self.indices[index]]]
-            
+
             if data_type != "pure_cebab":
                 # noisy labels
                 #cleanliness price	location	menu variety	waiting time	waiting area	## parking	wi-fi	kids-friendly
@@ -171,7 +171,7 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
 
             if data_type != "pure_cebab":
                 concept_labels = [food_concept,ambiance_concept,service_concept,noise_concept,cleanliness_concept,price_concept,location_concept,menu_variety_concept,waiting_time_concept,waiting_area_concept]
-            else: 
+            else:
                 concept_labels = [food_concept,ambiance_concept,service_concept,noise_concept]
 
             encoding = tokenizer.encode_plus(
@@ -238,8 +238,8 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
 
 
     # Set up the optimizer and loss function
-    # optimizer = torch.optim.Adam(list(model.parameters()) + list(classifier.parameters()), lr=1e-2
-    optimizer = torch.optim.Adam(list(model.parameters()) + list(classifier.parameters()), lr=2e-5)
+    optimizer_lr = 1e-2 if optimizer_lr is None else optimizer_lr
+    optimizer = torch.optim.Adam(list(model.parameters()) + list(classifier.parameters()), lr=optimizer_lr)
     if model_name == 'lstm':
         scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
     loss_fn = torch.nn.CrossEntropyLoss()
@@ -252,7 +252,7 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
     for epoch in range(num_epochs):
         classifier.train()
         model.train()
-        
+
         for batch in tqdm(train_loader, desc="Training", unit="batch"):
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
@@ -261,14 +261,14 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
             optimizer.zero_grad()
             outputs = model(input_ids=input_ids, attention_mask=attention_mask)
             if model_name == 'lstm':
-                pooled_output = outputs.mean(1) 
+                pooled_output = outputs.mean(1)
             else:
-                pooled_output = outputs.last_hidden_state.mean(1)      
+                pooled_output = outputs.last_hidden_state.mean(1)
             logits = classifier(pooled_output)
             loss = loss_fn(logits, label)
             loss.backward()
             optimizer.step()
-        
+
         model.eval()
         classifier.eval()
         test_accuracy = 0.
@@ -283,15 +283,15 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
                 label = batch["label"].to(device)
                 outputs = model(input_ids=input_ids, attention_mask=attention_mask)
                 if model_name == 'lstm':
-                    pooled_output = outputs.mean(1) 
+                    pooled_output = outputs.mean(1)
                 else:
-                    pooled_output = outputs.last_hidden_state.mean(1)     
+                    pooled_output = outputs.last_hidden_state.mean(1)
                 logits = classifier(pooled_output)
                 predictions = torch.argmax(logits, axis=1)
                 val_accuracy += torch.sum(predictions == label).item()
                 predict_labels = np.append(predict_labels, predictions.cpu().numpy())
                 true_labels = np.append(true_labels, label.cpu().numpy())
-            
+
             val_accuracy /= len(val_dataset)
             num_true_labels = len(np.unique(true_labels))
             macro_f1_scores = []
@@ -311,7 +311,7 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
     num_epochs = 1
     print("Test!")
     model = torch.load("./"+model_name+"_model_standard.pth", weights_only=False)
-    classifier = torch.load("./"+model_name+"_classifier_standard.pth", weights_only=False) 
+    classifier = torch.load("./"+model_name+"_classifier_standard.pth", weights_only=False)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     scores = []
@@ -323,15 +323,15 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
                 label = batch["label"].to(device)
                 outputs = model(input_ids=input_ids, attention_mask=attention_mask)
                 if model_name == 'lstm':
-                    pooled_output = outputs.mean(1) 
+                    pooled_output = outputs.mean(1)
                 else:
-                    pooled_output = outputs.last_hidden_state.mean(1)     
+                    pooled_output = outputs.last_hidden_state.mean(1)
                 logits = classifier(pooled_output)
                 predictions = torch.argmax(logits, axis=1)
                 test_accuracy += torch.sum(predictions == label).item()
                 predict_labels = np.append(predict_labels, predictions.cpu().numpy())
                 true_labels = np.append(true_labels, label.cpu().numpy())
-            
+
             test_accuracy /= len(test_dataset)
             num_true_labels = len(np.unique(true_labels))
             macro_f1_scores = []
@@ -342,5 +342,5 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None
                 mean_macro_f1_score = np.mean(macro_f1_scores)
         print(f"Epoch {epoch + 1}: Test Acc = {test_accuracy*100} Test Macro F1 = {mean_macro_f1_score*100}")
         scores.append((test_accuracy, mean_macro_f1_score))
-    
+
     return scores

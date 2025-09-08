@@ -11,13 +11,13 @@ from datasets import load_dataset
 from tqdm import tqdm
 from sklearn.metrics import f1_score
 import numpy as np
-import pandas as pd 
-import os 
+import pandas as pd
+import os
 from .cbm_template_models import MLP, FC
 from .cbm_models import ModelXtoC_function, ModelCtoY_function
 from .rnn_utils import BiLSTMWithDotAttention
 
-def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=None):
+def get_cbm_independent(mode=None, max_len=None, batch_size=None, model_name=None, num_epochs=None, data_type=None, optimizer_lr=None):
     # Enable concept or not
     mode = 'independent' if mode is None else mode
 
@@ -27,10 +27,10 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
     model_name = 'bert-base-uncased' if model_name is None else model_name
 
     # Define the maximum sequence length and batch size
-    max_len = 128
-    batch_size = 8
+    max_len = 128 if max_len is None else max_len
+    batch_size = 8 if batch_size is None else batch_size
     is_aux_logits = False
-    num_labels = 5  #label的个数              
+    num_labels = 5  #label的个数
     num_each_concept_classes  = 3  #每个concept有几个类
     num_epochs = 1 if num_epochs is None else num_epochs
 
@@ -115,7 +115,7 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
             self.data = CEBaB[split]
             self.labels = self.data["review_majority"]
             self.text = self.data["description"]
-        
+
             self.food_aspect = self.data["food_aspect_majority"]
             self.ambiance_aspect = self.data["ambiance_aspect_majority"]
             self.service_aspect = self.data["service_aspect_majority"]
@@ -161,7 +161,7 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
 
             if data_type != "pure_cebab":
                 concept_labels = [food_concept,ambiance_concept,service_concept,noise_concept,cleanliness_concept,price_concept,location_concept,menu_variety_concept,waiting_time_concept,waiting_area_concept]
-            else: 
+            else:
                 concept_labels = [food_concept,ambiance_concept,service_concept,noise_concept]
 
             encoding = tokenizer.encode_plus(
@@ -215,14 +215,15 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
     test_loader = DataLoader(test_dataset, batch_size=batch_size)
     val_loader = DataLoader(val_dataset, batch_size=batch_size)
 
-    #Set ModelXtoC_layer 
+    #Set ModelXtoC_layer
     if model_name == 'lstm':
         ModelXtoC_layer = ModelXtoC_function(num_classes = num_each_concept_classes, n_attributes = num_concept_labels, bottleneck = True, expand_dim = 0,Lstm=True,aux_logits=is_aux_logits)
     else:
         ModelXtoC_layer = ModelXtoC_function(num_classes = num_each_concept_classes, n_attributes = num_concept_labels, bottleneck = True, expand_dim = 0,aux_logits=is_aux_logits)
     # Set up the optimizer and loss function
 
-    optimizer = torch.optim.Adam(list(model.parameters()) + list(ModelXtoC_layer.parameters()), lr=1e-5)
+    optimizer_lr = 1e-5 if optimizer_lr is None else optimizer_lr
+    optimizer = torch.optim.Adam(list(model.parameters()) + list(ModelXtoC_layer.parameters()), lr=optimizer_lr)
     if model_name == 'lstm':
         scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
     loss_fn = torch.nn.CrossEntropyLoss()
@@ -241,7 +242,7 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
         predicted_concepts_train_label = []
         ModelXtoC_layer.train()
         model.train()
-        
+
         for batch in tqdm(train_loader, desc="Training", unit="batch"):
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
@@ -256,17 +257,17 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
                 location_concept = batch["location_concept"].to(device)
                 menu_variety_concept = batch["menu_variety_concept"].to(device)
                 waiting_time_concept = batch["waiting_time_concept"].to(device)
-                waiting_area_concept = batch["waiting_area_concept"].to(device)                
+                waiting_area_concept = batch["waiting_area_concept"].to(device)
             concept_labels=batch["concept_labels"].to(device)
             concept_labels = torch.t(concept_labels)
-            concept_labels = concept_labels.contiguous().view(-1) 
+            concept_labels = concept_labels.contiguous().view(-1)
 
             optimizer.zero_grad()
             outputs = model(input_ids=input_ids, attention_mask=attention_mask)
             if model_name == 'lstm':
                 pooled_output = outputs
             else:
-                pooled_output = outputs.last_hidden_state.mean(1)  
+                pooled_output = outputs.last_hidden_state.mean(1)
             XtoC_output = ModelXtoC_layer(pooled_output)  #4个 8*4
             XtoC_logits = torch.nn.Sigmoid()(torch.cat(XtoC_output, dim=0)) # 32*4 00000000111111112222222233333333
             loss = loss_fn(XtoC_logits, concept_labels)
@@ -294,14 +295,14 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
                 ambiance_concept=batch["ambiance_concept"].to(device)
                 service_concept=batch["service_concept"].to(device)
                 noise_concept=batch["noise_concept"].to(device)
-                
+
                 if data_type != "pure_cebab":
                     cleanliness_concept = batch["cleanliness_concept"].to(device)
                     price_concept = batch["price_concept"].to(device)
                     location_concept = batch["location_concept"].to(device)
                     menu_variety_concept = batch["menu_variety_concept"].to(device)
                     waiting_time_concept = batch["waiting_time_concept"].to(device)
-                    waiting_area_concept = batch["waiting_area_concept"].to(device)                    
+                    waiting_area_concept = batch["waiting_area_concept"].to(device)
                 concept_labels=batch["concept_labels"].to(device)  #8*4
                 concept_labels = torch.t(concept_labels) #4*8
                 concept_labels = concept_labels.contiguous().view(-1) #4*8=32
@@ -309,8 +310,8 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
                 if model_name == 'lstm':
                     pooled_output = outputs
                 else:
-                    pooled_output = outputs.last_hidden_state.mean(1)  
-                logits = ModelXtoC_layer(pooled_output)     
+                    pooled_output = outputs.last_hidden_state.mean(1)
+                logits = ModelXtoC_layer(pooled_output)
                 logits = torch.cat(logits, dim=0)
                 predictions = torch.argmax(logits, axis=1)
                 val_accuracy += torch.sum(predictions == concept_labels).item()
@@ -321,7 +322,7 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
                 labelY.append(label)
             val_accuracy /= len(val_dataset)
             num_true_labels = len(np.unique(true_labels))
-            
+
             macro_f1_scores = []
             for label in range(num_true_labels):
                 label_pred = np.array(predict_labels) == label
@@ -336,14 +337,14 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
             best_labels = labelY
             torch.save(model, "./"+model_name+"_independent.pth")
             torch.save(ModelXtoC_layer, "./"+model_name+"_ModelXtoC_layer_independent.pth")
-                    
+
     #step 2  CtoY
     num_epochs = 1
     print("train CtoY first, then treat predicted C of XtoC as input at val time!")
     #ModelCtoY_layer = ModelCtoY_function(n_class_attr = 0, n_attributes = num_each_concept_classes*num_concept_labels, num_classes = num_labels, expand_dim = 0)
     ModelCtoY_layer = ModelCtoY_function(n_attributes = num_each_concept_classes*num_concept_labels, num_classes = num_labels, expand_dim = 0)
     model = torch.load("./"+model_name+"_independent.pth", weights_only=False)
-    ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth", weights_only=False) 
+    ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth", weights_only=False)
 
     # Set up the optimizer and loss function
     optimizer = torch.optim.Adam(ModelCtoY_layer.parameters(), lr=5e-3)
@@ -356,7 +357,7 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
 
     for epoch in range(num_epochs):
         ModelCtoY_layer.train()
-        
+
         for batch in tqdm(train_loader, desc="Training", unit="batch"):
             input_ids = batch["input_ids"].to(device)
             label = batch["label"].to(device)
@@ -370,18 +371,18 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
                 location_concept = batch["location_concept"].to(device)
                 menu_variety_concept = batch["menu_variety_concept"].to(device)
                 waiting_time_concept = batch["waiting_time_concept"].to(device)
-                waiting_area_concept = batch["waiting_area_concept"].to(device)                
+                waiting_area_concept = batch["waiting_area_concept"].to(device)
             concept_labels=batch["concept_labels"].to(device)
             concept_labels = F.one_hot(concept_labels)
             concept_labels = concept_labels.reshape(-1,num_each_concept_classes*num_concept_labels)
             concept_labels = concept_labels.to(torch.float32)
             optimizer.zero_grad()
-            CtoY_logits = ModelCtoY_layer(concept_labels)  #[batch_size,concept_size]     
-            CtoY_logits = torch.nn.Sigmoid()(CtoY_logits)        
+            CtoY_logits = ModelCtoY_layer(concept_labels)  #[batch_size,concept_size]
+            CtoY_logits = torch.nn.Sigmoid()(CtoY_logits)
             loss = loss_fn(CtoY_logits, label)
             loss.backward()
             optimizer.step()
-        
+
         ModelCtoY_layer.eval()
         val_accuracy = 0.
         predict_labels = np.array([])
@@ -397,14 +398,14 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
                 ambiance_concept=batch["ambiance_concept"].to(device)
                 service_concept=batch["service_concept"].to(device)
                 noise_concept=batch["noise_concept"].to(device)
-                
+
                 if data_type != "pure_cebab":
                     cleanliness_concept = batch["cleanliness_concept"].to(device)
                     price_concept = batch["price_concept"].to(device)
                     location_concept = batch["location_concept"].to(device)
                     menu_variety_concept = batch["menu_variety_concept"].to(device)
                     waiting_time_concept = batch["waiting_time_concept"].to(device)
-                    waiting_area_concept = batch["waiting_area_concept"].to(device)                    
+                    waiting_area_concept = batch["waiting_area_concept"].to(device)
                 concept_labels=batch["concept_labels"].to(device)  #8*4
 
                 # 用训练好的 x->c model 得预测 concept labels
@@ -412,13 +413,13 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
                 if model_name == 'lstm':
                     pooled_output = outputs
                 else:
-                    pooled_output = outputs.last_hidden_state.mean(1)  
+                    pooled_output = outputs.last_hidden_state.mean(1)
                 logits = ModelXtoC_layer(pooled_output)     #4个8*3
 
                 logits = torch.stack(logits, dim=0)  #[4,8,3]
                 logits=torch.transpose(logits, 0, 1) #[8,4,3]
 
-                # predictions_concept_labels = logits.reshape(-1,num_each_concept_classes*num_concept_labels)  #logits: this line / one-hot:the following four lines 
+                # predictions_concept_labels = logits.reshape(-1,num_each_concept_classes*num_concept_labels)  #logits: this line / one-hot:the following four lines
                 predictions_concept_labels = torch.argmax(logits, axis=-1) #[8,4]
                 predictions_concept_labels = predictions_concept_labels.reshape(-1,num_concept_labels)  # reshape 二维向量[batch_size*num_concept_labels]
                 predictions_concept_labels = F.one_hot(predictions_concept_labels)
@@ -434,7 +435,7 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
 
             val_accuracy /= len(val_dataset)
             num_true_labels = len(np.unique(true_labels))
-            
+
             macro_f1_scores = []
             for label in range(num_true_labels):
                 label_pred = np.array(predict_labels) == label
@@ -452,8 +453,8 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
     num_epochs = 1
     print("Test!")
     model = torch.load("./"+model_name+"_independent.pth", weights_only=False)
-    ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth", weights_only=False) 
-    ModelCtoY_layer = torch.load("./"+model_name+"_ModelCtoY_layer_independent.pth", weights_only=False) 
+    ModelXtoC_layer = torch.load("./"+model_name+"_ModelXtoC_layer_independent.pth", weights_only=False)
+    ModelCtoY_layer = torch.load("./"+model_name+"_ModelCtoY_layer_independent.pth", weights_only=False)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     scores = []
@@ -467,14 +468,14 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
                 ambiance_concept=batch["ambiance_concept"].to(device)
                 service_concept=batch["service_concept"].to(device)
                 noise_concept=batch["noise_concept"].to(device)
-                
+
                 if data_type != "pure_cebab":
                     cleanliness_concept = batch["cleanliness_concept"].to(device)
                     price_concept = batch["price_concept"].to(device)
                     location_concept = batch["location_concept"].to(device)
                     menu_variety_concept = batch["menu_variety_concept"].to(device)
                     waiting_time_concept = batch["waiting_time_concept"].to(device)
-                    waiting_area_concept = batch["waiting_area_concept"].to(device)                    
+                    waiting_area_concept = batch["waiting_area_concept"].to(device)
                 concept_labels=batch["concept_labels"].to(device)  #8*4
 
                 # 用训练好的 x->c model 得预测 concept labels
@@ -482,13 +483,13 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
                 if model_name == 'lstm':
                     pooled_output = outputs
                 else:
-                    pooled_output = outputs.last_hidden_state.mean(1)  
+                    pooled_output = outputs.last_hidden_state.mean(1)
                 logits = ModelXtoC_layer(pooled_output)     #4个8*3
 
                 logits = torch.stack(logits, dim=0)  #[4,8,3]
                 logits=torch.transpose(logits, 0, 1) #[8,4,3]
 
-                # predictions_concept_labels = logits.reshape(-1,num_each_concept_classes*num_concept_labels)  #logits: this line / one-hot:the following four lines 
+                # predictions_concept_labels = logits.reshape(-1,num_each_concept_classes*num_concept_labels)  #logits: this line / one-hot:the following four lines
                 predictions_concept_labels = torch.argmax(logits, axis=-1) #[8,4]
                 predictions_concept_labels = predictions_concept_labels.reshape(-1,num_concept_labels)  # reshape 二维向量[batch_size*num_concept_labels]
                 predictions_concept_labels = F.one_hot(predictions_concept_labels)
@@ -504,7 +505,7 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
 
             test_accuracy /= len(test_dataset)
             num_true_labels = len(np.unique(true_labels))
-            
+
             macro_f1_scores = []
             for label in range(num_true_labels):
                 label_pred = np.array(predict_labels) == label
@@ -514,5 +515,5 @@ def get_cbm_independent(mode=None, model_name=None, num_epochs=None, data_type=N
 
         print(f"Epoch {epoch + 1}: Test Acc = {test_accuracy*100} Test Macro F1 = {mean_macro_f1_score*100}")
         scores.append((test_accuracy, mean_macro_f1_score))
-    
+
     return scores

@@ -13,7 +13,7 @@ import os
 from .cbm_template_models import MLP, FC
 from .cbm_models import ModelXtoC_function, ModelCtoY_function
 
-def get_cbm_LLM_sequential(mode=None, model_name=None, num_epochs=None, data_type=None):
+def get_cbm_LLM_sequential(mode=None, max_len=None, batch_size=None, model_name=None, num_epochs=None, data_type=None, optimizer_lr=None):
     # Enable concept or not
     mode = 'sequential' if mode is None else mode
 
@@ -33,13 +33,13 @@ def get_cbm_LLM_sequential(mode=None, model_name=None, num_epochs=None, data_typ
         model = GPT2Model.from_pretrained(model_name)
         tokenizer = GPT2Tokenizer.from_pretrained(model_name)
         tokenizer.pad_token = tokenizer.eos_token
-    
+
 
     # Define the maximum sequence length and batch size
-    max_len = 128
-    batch_size = 8
+    max_len = 128 if max_len is None else max_len
+    batch_size = 8 if batch_size is None else batch_size
     is_aux_logits = False
-    num_labels = 5  #label的个数              
+    num_labels = 5  #label的个数
     num_each_concept_classes  = 3  #每个concept有几个类
     num_epochs = 20 if num_epochs is None else num_epochs
 
@@ -189,7 +189,8 @@ def get_cbm_LLM_sequential(mode=None, model_name=None, num_epochs=None, data_typ
 
     # Set up the optimizer and loss function
     # optimizer = torch.optim.AdamW(classifier.parameters(), lr=2e-5)
-    optimizer = torch.optim.Adam(list(model.parameters()) + list(ModelXtoC_layer.parameters()), lr=1e-5)
+    optimizer_lr = 1e-5 if optimizer_lr is None else optimizer_lr
+    optimizer = torch.optim.Adam(list(model.parameters()) + list(ModelXtoC_layer.parameters()), lr=optimizer_lr)
     loss_fn = torch.nn.CrossEntropyLoss()
 
     # Train the model
@@ -340,14 +341,14 @@ def get_cbm_LLM_sequential(mode=None, model_name=None, num_epochs=None, data_typ
             XtoC_logits = torch.stack(XtoC_output, dim=0)#[4,8,3]
             XtoC_logits=torch.transpose(XtoC_logits, 0, 1)#[8,4,3]
 
-            # predictions_concept_labels = XtoC_logits.reshape(-1,num_each_concept_classes*num_concept_labels)  #logits: this line / one-hot:the following four lines 
+            # predictions_concept_labels = XtoC_logits.reshape(-1,num_each_concept_classes*num_concept_labels)  #logits: this line / one-hot:the following four lines
             predictions_concept_labels = torch.argmax(XtoC_logits, axis=-1) #[8,4]
             predictions_concept_labels = predictions_concept_labels.reshape(-1,num_concept_labels)
             predictions_concept_labels = F.one_hot(predictions_concept_labels)
             predictions_concept_labels = predictions_concept_labels.reshape(-1,num_each_concept_classes*num_concept_labels)
 
             predictions_concept_labels = predictions_concept_labels.to(torch.float32)
-            CtoY_logits = ModelCtoY_layer(predictions_concept_labels)  #[batch_size,concept_size]  
+            CtoY_logits = ModelCtoY_layer(predictions_concept_labels)  #[batch_size,concept_size]
 
             loss = loss_fn(CtoY_logits, label)
             # print(loss.item())
@@ -404,5 +405,5 @@ def get_cbm_LLM_sequential(mode=None, model_name=None, num_epochs=None, data_typ
         print(f"Epoch {epoch + 1}: Test Acc = {test_accuracy*100} Test Macro F1 = {mean_macro_f1_score*100}")
 
         scores.append((test_accuracy, mean_macro_f1_score))
-    
+
     return scores

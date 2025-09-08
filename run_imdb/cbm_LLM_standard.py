@@ -25,15 +25,15 @@ elif model_name == 'bert-base-uncased':
     model = BertModel.from_pretrained(model_name)
 elif model_name == 'gpt2':
     tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-    tokenizer.pad_token = tokenizer.eos_token  
+    tokenizer.pad_token = tokenizer.eos_token
     model = GPT2Model.from_pretrained(model_name)
-   
+
 
 
 # Define the maximum sequence length, batch size, num_concepts_size,num_labels,num_epochs
 max_len = 128
 batch_size = 8
-num_labels = 2 
+num_labels = 2
 num_epochs = 20
 
 data_type = "manual_imdb" # "manual_imdb"/"aug_manual_imdb"/"gen_imdb"/"aug_gen_imdb"
@@ -80,7 +80,7 @@ class MyDataset(Dataset):
         self.data = CEBaB[split]
         self.labels = self.data["sentiment"]
         self.text = self.data["review"]
-       
+
         self.acting_aspect = self.data["acting"]
         self.storyline_aspect = self.data["storyline"]
         self.emotional_aspect = self.data["emotional arousal"]
@@ -111,13 +111,13 @@ class MyDataset(Dataset):
         label = label_dict[self.labels[self.indices[index]]]
 
         # gold labels
-        #acting	 storyline	emotional arousal	cinematography	
+        #acting	 storyline	emotional arousal	cinematography
 
         acting_concept = self.map_dict[self.acting_aspect[self.indices[index]].strip()]
         storyline_concept = self.map_dict[self.storyline_aspect[self.indices[index]].strip()]
         emotional_concept = self.map_dict[self.emotional_aspect[self.indices[index]].strip()]
         cinematography_concept = self.map_dict[self.cinematography_aspect[self.indices[index]].strip()]
-        
+
         if data_type != "manual_imdb":
             # noisy labels
             #soundtrack	directing	background setting	editing
@@ -129,7 +129,7 @@ class MyDataset(Dataset):
 
         if data_type != "manual_imdb":
             concept_labels = [acting_concept,storyline_concept,emotional_concept,cinematography_concept,soundtrack_concept,directing_concept,background_concept,editing_concept]
-        else: 
+        else:
             concept_labels = [acting_concept,storyline_concept,emotional_concept,cinematography_concept]
 
         encoding = tokenizer.encode_plus(
@@ -192,7 +192,8 @@ classifier = torch.nn.Sequential(
 
 
 # Set up the optimizer and loss function
-optimizer = torch.optim.Adam(list(model.parameters()) + list(classifier.parameters()), lr=1e-5)
+optimizer_lr = 1e-5 if optimizer_lr is None else optimizer_lr
+optimizer = torch.optim.Adam(list(model.parameters()) + list(classifier.parameters()), lr=optimizer_lr)
 loss_fn = torch.nn.CrossEntropyLoss()
 
 # Train the model
@@ -203,7 +204,7 @@ model.to(device)
 for epoch in range(num_epochs):
     classifier.train()
     model.train()
-    
+
     for batch in tqdm(train_loader, desc="Training", unit="batch"):
         input_ids = batch["input_ids"].to(device)
         attention_mask = batch["attention_mask"].to(device)
@@ -211,12 +212,12 @@ for epoch in range(num_epochs):
 
         optimizer.zero_grad()
         outputs = model(input_ids=input_ids, attention_mask=attention_mask)
-        pooled_output = outputs.last_hidden_state.mean(1)      
+        pooled_output = outputs.last_hidden_state.mean(1)
         logits = classifier(pooled_output)
         loss = loss_fn(logits, label)
         loss.backward()
         optimizer.step()
-    
+
     model.eval()
     classifier.eval()
     test_accuracy = 0.
@@ -234,7 +235,7 @@ for epoch in range(num_epochs):
             test_accuracy += torch.sum(predictions == label).item()
             predict_labels = np.append(predict_labels, predictions.cpu().numpy())
             true_labels = np.append(true_labels, label.cpu().numpy())
-        
+
         test_accuracy /= len(test_dataset)
         num_true_labels = len(np.unique(true_labels))
         macro_f1_scores = []

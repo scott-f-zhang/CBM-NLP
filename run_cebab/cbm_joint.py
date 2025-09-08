@@ -11,12 +11,12 @@ from tqdm import tqdm
 from sklearn.metrics import f1_score
 import numpy as np
 import pandas as pd
-import os 
+import os
 from .cbm_template_models import MLP, FC
 from .cbm_models import ModelXtoC_function, ModelCtoY_function,ModelXtoCtoY_function
 from .rnn_utils import BiLSTMWithDotAttention
 
-def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
+def get_cbm_joint(mode=None, max_len=None, batch_size=None, model_name=None, num_epochs=None, data_type=None, optimizer_lr=None):
     # Enable concept or not
     mode = 'joint' if mode is None else mode
 
@@ -26,8 +26,8 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
     # 'bert-base-uncased' / 'roberta-base' / 'gpt2' / 'lstm'
 
     # Define the maximum sequence length and batch size
-    max_len = 128
-    batch_size = 8
+    max_len = 128 if max_len is None else max_len
+    batch_size = 8 if batch_size is None else batch_size
     lambda_XtoC = 0.5  # lambda > 0
     is_aux_logits = False
     num_labels = 5  #label的个数
@@ -55,7 +55,7 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
         tokenizer = GPT2Tokenizer.from_pretrained(model_name)
         tokenizer.pad_token = tokenizer.eos_token
         # Initialize the classification model
-        # model = GPT2Classifier(model)   
+        # model = GPT2Classifier(model)
     elif model_name == 'lstm':
         fasttext_model = FastText.load_fasttext_format('./fasttext/cc.en.300.bin')
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
@@ -113,7 +113,7 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
             self.data = CEBaB[split]
             self.labels = self.data["review_majority"]
             self.text = self.data["description"]
-        
+
             self.food_aspect = self.data["food_aspect_majority"]
             self.ambiance_aspect = self.data["ambiance_aspect_majority"]
             self.service_aspect = self.data["service_aspect_majority"]
@@ -148,7 +148,7 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
             ambiance_concept = self.map_dict[self.ambiance_aspect[self.indices[index]]]
             service_concept = self.map_dict[self.service_aspect[self.indices[index]]]
             noise_concept = self.map_dict[self.noise_aspect[self.indices[index]]]
-            
+
             if data_type != "pure_cebab":
                 # noisy labels
                 #cleanliness price	location	menu variety	waiting time	waiting area	## parking	wi-fi	kids-friendly
@@ -161,7 +161,7 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
 
             if data_type != "pure_cebab":
                 concept_labels = [food_concept,ambiance_concept,service_concept,noise_concept,cleanliness_concept,price_concept,location_concept,menu_variety_concept,waiting_time_concept,waiting_area_concept]
-            else: 
+            else:
                 concept_labels = [food_concept,ambiance_concept,service_concept,noise_concept]
 
             encoding = tokenizer.encode_plus(
@@ -222,7 +222,8 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
 
     # Set up the optimizer and loss function
     # optimizer = torch.optim.AdamW(classifier.parameters(), lr=2e-5)
-    optimizer = torch.optim.Adam(list(model.parameters()) + list(ModelXtoCtoY_layer.parameters()), lr=1e-5)
+    optimizer_lr = 1e-5 if optimizer_lr is None else optimizer_lr
+    optimizer = torch.optim.Adam(list(model.parameters()) + list(ModelXtoCtoY_layer.parameters()), lr=optimizer_lr)
     if model_name == 'lstm':
         scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
     loss_fn = torch.nn.CrossEntropyLoss()
@@ -238,7 +239,7 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
         predicted_concepts_train_label = []
         ModelXtoCtoY_layer.train()
         model.train()
-        
+
         for batch in tqdm(train_loader, desc="Training", unit="batch"):
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
@@ -254,10 +255,10 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
                 location_concept = batch["location_concept"].to(device)
                 menu_variety_concept = batch["menu_variety_concept"].to(device)
                 waiting_time_concept = batch["waiting_time_concept"].to(device)
-                waiting_area_concept = batch["waiting_area_concept"].to(device)                
+                waiting_area_concept = batch["waiting_area_concept"].to(device)
             concept_labels=batch["concept_labels"].to(device)
             concept_labels = torch.t(concept_labels)
-            concept_labels = concept_labels.contiguous().view(-1) 
+            concept_labels = concept_labels.contiguous().view(-1)
 
 
             optimizer.zero_grad()
@@ -265,9 +266,9 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
             if model_name == 'lstm':
                 pooled_output = outputs
             else:
-                pooled_output = outputs.last_hidden_state.mean(1)  
-            outputs  = ModelXtoCtoY_layer(pooled_output)  
-            XtoC_output = outputs [1:] 
+                pooled_output = outputs.last_hidden_state.mean(1)
+            outputs  = ModelXtoCtoY_layer(pooled_output)
+            XtoC_output = outputs [1:]
             XtoY_output = outputs [0:1]
             # XtoC_loss
             XtoC_logits = torch.nn.Sigmoid()(torch.cat(XtoC_output, dim=0)) # 32*4 00000000111111112222222233333333
@@ -306,7 +307,7 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
                     location_concept = batch["location_concept"].to(device)
                     menu_variety_concept = batch["menu_variety_concept"].to(device)
                     waiting_time_concept = batch["waiting_time_concept"].to(device)
-                    waiting_area_concept = batch["waiting_area_concept"].to(device)        
+                    waiting_area_concept = batch["waiting_area_concept"].to(device)
                 concept_labels=batch["concept_labels"].to(device)
                 concept_labels = torch.t(concept_labels)
                 concept_labels = concept_labels.contiguous().view(-1)
@@ -316,10 +317,10 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
                 if model_name == 'lstm':
                     pooled_output = outputs
                 else:
-                    pooled_output = outputs.last_hidden_state.mean(1)  
-                outputs = ModelXtoCtoY_layer(pooled_output)  
-                XtoC_output = outputs [1:] 
-                XtoY_output = outputs [0:1]         
+                    pooled_output = outputs.last_hidden_state.mean(1)
+                outputs = ModelXtoCtoY_layer(pooled_output)
+                XtoC_output = outputs [1:]
+                XtoY_output = outputs [0:1]
                 predictions = torch.argmax(XtoY_output[0], axis=1)
                 val_accuracy += torch.sum(predictions == label).item()
                 predict_labels = np.append(predict_labels, predictions.cpu().numpy())
@@ -331,13 +332,13 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
                 concept_predict_labels = np.append(concept_predict_labels, concept_predictions.cpu().numpy())
                 concept_true_labels = np.append(concept_true_labels, concept_labels.cpu().numpy())
                 concept_predictions = concept_predictions.reshape(-1,num_concept_labels)  # reshape 二维向量[batch_size*num_concept_labels]
-            
+
             val_accuracy /= len(val_dataset)
             num_labels = len(np.unique(true_labels))
 
             concept_val_accuracy /= len(val_dataset)
             concept_num_true_labels = len(np.unique(concept_true_labels))
-            
+
             macro_f1_scores = []
             for label in range(num_labels):
                 label_pred = np.array(predict_labels) == label
@@ -384,7 +385,7 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
                     location_concept = batch["location_concept"].to(device)
                     menu_variety_concept = batch["menu_variety_concept"].to(device)
                     waiting_time_concept = batch["waiting_time_concept"].to(device)
-                    waiting_area_concept = batch["waiting_area_concept"].to(device)        
+                    waiting_area_concept = batch["waiting_area_concept"].to(device)
                 concept_labels=batch["concept_labels"].to(device)
                 concept_labels = torch.t(concept_labels)
                 concept_labels = concept_labels.contiguous().view(-1)
@@ -393,10 +394,10 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
                 if model_name == 'lstm':
                     pooled_output = outputs
                 else:
-                    pooled_output = outputs.last_hidden_state.mean(1)  
-                outputs = ModelXtoCtoY_layer(pooled_output)  
-                XtoC_output = outputs [1:] 
-                XtoY_output = outputs [0:1]         
+                    pooled_output = outputs.last_hidden_state.mean(1)
+                outputs = ModelXtoCtoY_layer(pooled_output)
+                XtoC_output = outputs [1:]
+                XtoY_output = outputs [0:1]
                 predictions = torch.argmax(XtoY_output[0], axis=1)
                 test_accuracy += torch.sum(predictions == label).item()
                 predict_labels = np.append(predict_labels, predictions.cpu().numpy())
@@ -408,13 +409,13 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
                 concept_predict_labels = np.append(concept_predict_labels, concept_predictions.cpu().numpy())
                 concept_true_labels = np.append(concept_true_labels, concept_labels.cpu().numpy())
                 concept_predictions = concept_predictions.reshape(-1,num_concept_labels)  # reshape 二维向量[batch_size*num_concept_labels]
-            
+
             test_accuracy /= len(test_dataset)
             num_labels = len(np.unique(true_labels))
 
             concept_test_accuracy /= len(test_dataset)
             concept_num_true_labels = len(np.unique(concept_true_labels))
-            
+
             macro_f1_scores = []
             for label in range(num_labels):
                 label_pred = np.array(predict_labels) == label
@@ -433,5 +434,5 @@ def get_cbm_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
         print(f"Epoch {epoch + 1}: Test Acc = {test_accuracy*100} Test Macro F1 = {mean_macro_f1_score*100}")
 
         scores.append((test_accuracy, mean_macro_f1_score))
-    
+
     return scores
