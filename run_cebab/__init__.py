@@ -6,3 +6,4 @@ from .cbm_LLM_independent import get_cbm_LLM_independent
 from .cbm_LLM_joint import get_cbm_LLM_joint
 from .cbm_LLM_sequential import get_cbm_LLM_sequential
 from .cbm_LLM_standard import get_cbm_LLM_standard
+from .cbm_LLM_mix_joint import get_cbm_LLM_mix_joint
