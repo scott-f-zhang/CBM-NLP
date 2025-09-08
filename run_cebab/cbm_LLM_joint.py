@@ -13,7 +13,7 @@ from .cbm_template_models import MLP, FC
 from .cbm_models import ModelXtoC_function, ModelCtoY_function,ModelXtoCtoY_function
 
 # Enable concept or not
-def get_cbm_LLM_joint(mode=None, model_name=None, num_epochs=None):
+def get_cbm_LLM_joint(mode=None, model_name=None, num_epochs=None, data_type=None):
     mode = 'joint' if mode is None else mode
 
     # Define the paths to the dataset and pretrained model
@@ -53,7 +53,7 @@ def get_cbm_LLM_joint(mode=None, model_name=None, num_epochs=None):
     num_epochs = 10 if num_epochs is None else num_epochs
     num_each_concept_classes = 3  #每个concept有几个类
 
-    data_type = "aug_cebab" # "pure_cebab"/"aug_cebab"/"aug_yelp"/"aug_cebab_yelp"
+    data_type = "aug_cebab" if data_type is None else data_type
     # Load data
     if data_type == "pure_cebab":
         num_concept_labels = 4

@@ -15,7 +15,7 @@ import os
 from .cbm_template_models import MLP, FC
 from .cbm_models import ModelXtoC_function, ModelCtoY_function
 
-def get_cbm_sequential(mode=None, model_name=None, num_epochs=None):
+def get_cbm_sequential(mode=None, model_name=None, num_epochs=None, data_type=None):
     # Enable concept or not
     mode = 'independent' if mode is None else mode
 
@@ -73,7 +73,7 @@ def get_cbm_sequential(mode=None, model_name=None, num_epochs=None):
         model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128)
     
 
-    data_type = "aug_cebab" # "pure_cebab"/"aug_cebab"/"aug_yelp"/"aug_cebab_yelp"
+    data_type = "aug_cebab" if data_type is None else data_type # "pure_cebab"/"aug_cebab"/"aug_yelp"/"aug_cebab_yelp"
     # Load data
 
     if data_type == "pure_cebab":

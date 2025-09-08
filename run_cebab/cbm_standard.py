@@ -12,7 +12,7 @@ from sklearn.metrics import f1_score
 import numpy as np
 import pandas as pd
 
-def get_cbm_standard(mode=None, model_name=None, num_epochs=None):
+def get_cbm_standard(mode=None, model_name=None, num_epochs=None, data_type=None):
     # Enable concept or not
     mode = 'standard' if mode is None else mode
 
@@ -62,7 +62,7 @@ def get_cbm_standard(mode=None, model_name=None, num_epochs=None):
 
         model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128, num_labels)
 
-    data_type = "pure_cebab" # "pure_cebab"/"aug_cebab"/"aug_yelp"/"aug_cebab_yelp"
+    data_type = "pure_cebab" if data_type is None else data_type # "pure_cebab"/"aug_cebab"/"aug_yelp"/"aug_cebab_yelp"
     # Load data
     if data_type == "pure_cebab":
         num_concept_labels = 4
