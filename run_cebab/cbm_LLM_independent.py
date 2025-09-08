@@ -10,8 +10,8 @@ from sklearn.metrics import f1_score
 import numpy as np
 import pandas as pd 
 import os 
-from cbm_template_models import MLP, FC
-from cbm_models import ModelXtoC_function, ModelCtoY_function
+from .cbm_template_models import MLP, FC
+from .cbm_models import ModelXtoC_function, ModelCtoY_function
 from torch.optim.lr_scheduler import StepLR
 
 def get_cbm_LLM_independent(mode=None, model_name=None, num_epochs=None):

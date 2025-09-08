@@ -12,8 +12,8 @@ from sklearn.metrics import f1_score
 import numpy as np
 import pandas as pd
 import os
-from cbm_template_models import MLP, FC
-from cbm_models import ModelXtoC_function, ModelCtoY_function
+from .cbm_template_models import MLP, FC
+from .cbm_models import ModelXtoC_function, ModelCtoY_function
 
 def get_cbm_sequential(mode=None, model_name=None, num_epochs=None):
     # Enable concept or not

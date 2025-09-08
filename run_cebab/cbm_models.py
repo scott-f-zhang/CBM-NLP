@@ -5,7 +5,7 @@ from torch.nn import Parameter
 import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
 
-from cbm_template_models import MLP,FC,ModelXtoC,End2EndModel
+from .cbm_template_models import MLP,FC,ModelXtoC,End2EndModel
 
 
 # Independent & Sequential Model

@@ -9,8 +9,8 @@ from sklearn.metrics import f1_score
 import numpy as np
 import pandas as pd
 import os 
-from cbm_template_models import MLP, FC
-from cbm_models import ModelXtoC_function, ModelCtoY_function,ModelXtoCtoY_function
+from .cbm_template_models import MLP, FC
+from .cbm_models import ModelXtoC_function, ModelCtoY_function,ModelXtoCtoY_function
 import torch.nn.functional as F
 
 def get_cbm_LLM_mix_joint(mode=None, model_name=None, num_epochs=None):
