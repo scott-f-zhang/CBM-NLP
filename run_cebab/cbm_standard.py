@@ -13,22 +13,22 @@ import numpy as np
 import pandas as pd
 
 class BiLSTMWithDotAttention(torch.nn.Module):
-        def __init__(self, vocab_size, embedding_dim, hidden_dim, num_classes, fasttext_model):
-            super().__init__()
-            self.hidden_dim = hidden_dim
-            self.embedding = torch.nn.Embedding(vocab_size, embedding_dim)
-            embeddings = fasttext_model.wv.vectors
-            self.embedding.weight = torch.nn.Parameter(torch.tensor(embeddings))
-            self.embedding.weight.requires_grad = False
-            self.lstm = torch.nn.LSTM(embedding_dim, hidden_dim, num_layers = 1, bidirectional=True, batch_first=True)
+    def __init__(self, vocab_size, embedding_dim, hidden_dim, num_classes, fasttext_model):
+        super().__init__()
+        self.hidden_dim = hidden_dim
+        self.embedding = torch.nn.Embedding(vocab_size, embedding_dim)
+        embeddings = fasttext_model.wv.vectors
+        self.embedding.weight = torch.nn.Parameter(torch.tensor(embeddings))
+        self.embedding.weight.requires_grad = False
+        self.lstm = torch.nn.LSTM(embedding_dim, hidden_dim, num_layers = 1, bidirectional=True, batch_first=True)
 
-        def forward(self, input_ids, attention_mask):
-            input_lengths = attention_mask.sum(dim=1)
-            embedded = self.embedding(input_ids)
-            output, _ = self.lstm(embedded)
-            weights = F.softmax(torch.bmm(output, output.transpose(1, 2)), dim=2)
-            attention = torch.bmm(weights, output)
-            return attention
+    def forward(self, input_ids, attention_mask):
+        input_lengths = attention_mask.sum(dim=1)
+        embedded = self.embedding(input_ids)
+        output, _ = self.lstm(embedded)
+        weights = F.softmax(torch.bmm(output, output.transpose(1, 2)), dim=2)
+        attention = torch.bmm(weights, output)
+        return attention
 
 def get_cbm_standard(mode=None, max_len=None, batch_size=None, model_name=None, num_epochs=None, data_type=None, optimizer_lr=None):
     # Enable concept or not
@@ -57,7 +57,7 @@ def get_cbm_standard(mode=None, max_len=None, batch_size=None, model_name=None, 
         tokenizer.pad_token = tokenizer.eos_token
         model = GPT2Model.from_pretrained(model_name)
     elif model_name == 'lstm':
-        fasttext_model = FastText.load_fasttext_format('./fasttext/cc.en.300.bin')
+        fasttext_model = FastText.load_fasttext_format('/scratch/fzhan113/fasttext/cc.en.300.bin')
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
         model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128, num_labels, fasttext_model)
 
