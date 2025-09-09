@@ -1,0 +1,12 @@
+*.pth
+.DS_Store
+paper.md
+paper.pdf
+__pycache__
+__pycache__/*
+run_cebab/fasttext
+run_cebab/fasttext/*
+.ipynb_checkpoints
+.ipynb_checkpoints/*
+**/.ipynb_checkpoints
+**/.ipynb_checkpoints/*
