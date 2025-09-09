@@ -13,8 +13,7 @@ import numpy as np
 import pandas as pd
 import os
 from .cbm_template_models import MLP, FC
-from .cbm_models import ModelXtoC_function, ModelCtoY_function,ModelXtoCtoY_function
-from .rnn_utils import BiLSTMWithDotAttention
+from .cbm_models import ModelXtoC_function, ModelCtoY_function, ModelXtoCtoY_function
 
 def get_cbm_joint(mode=None, max_len=None, batch_size=None, model_name=None, num_epochs=None, data_type=None, optimizer_lr=None):
     # Enable concept or not
@@ -59,9 +58,31 @@ def get_cbm_joint(mode=None, max_len=None, batch_size=None, model_name=None, num
     elif model_name == 'lstm':
         fasttext_model = FastText.load_fasttext_format('./fasttext/cc.en.300.bin')
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-        embeddings = fasttext_model.wv.vectors
-        # For joint we only need representation; head is defined later (ModelXtoCtoY_layer)
-        model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128, pretrained_embeddings=embeddings)
+
+        class BiLSTMWithDotAttention(torch.nn.Module):
+            def __init__(self, vocab_size, embedding_dim, hidden_dim):
+                super().__init__()
+                self.embedding = torch.nn.Embedding(vocab_size, embedding_dim)
+                embeddings = fasttext_model.wv.vectors
+                self.embedding.weight = torch.nn.Parameter(torch.tensor(embeddings))
+                self.embedding.weight.requires_grad = False
+                self.lstm = torch.nn.LSTM(embedding_dim, hidden_dim, num_layers = 1, bidirectional=True, batch_first=True)
+                self.classifier = torch.nn.Sequential(
+                    torch.nn.Linear(hidden_dim*2, hidden_dim),
+                    torch.nn.ReLU(),
+                    torch.nn.Dropout(0.2)
+            )
+
+            def forward(self, input_ids, attention_mask):
+                input_lengths = attention_mask.sum(dim=1)
+                embedded = self.embedding(input_ids)
+                output, _ = self.lstm(embedded)
+                weights = F.softmax(torch.bmm(output, output.transpose(1, 2)), dim=2)
+                attention = torch.bmm(weights, output)
+                logits = self.classifier(attention.mean(1))
+                return logits
+
+        model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128)
 
     # "pure_cebab"/"aug_cebab"/"aug_yelp"/"aug_cebab_yelp"
     data_type = "aug_cebab" if data_type is None else data_type
