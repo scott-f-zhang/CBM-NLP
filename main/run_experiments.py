@@ -36,9 +36,9 @@ def get_tuple_2f_fmt(tp):
 
 def build_arg_parser():
     p = argparse.ArgumentParser(description="Run CBM experiments (modular)")
-    p.add_argument("--num_epochs", type=int, default=1, help="Number of training epochs per run")
-    p.add_argument("--max_len", type=int, default=64, help="Max sequence length")
-    p.add_argument("--batch_size", type=int, default=2, help="Batch size")
+    p.add_argument("--num_epochs", type=int, default=20, help="Number of training epochs per run")
+    p.add_argument("--max_len", type=int, default=512, help="Max sequence length")
+    p.add_argument("--batch_size", type=int, default=8, help="Batch size")
     # Save CSV inside main folder by default
     p.add_argument("--output", type=str, default=os.path.join(MAIN_DIR, "result.csv"), help="Output CSV path")
     p.add_argument("--data_types", type=str, nargs="*", default=["pure_cebab", "aug_cebab"], help="Data types to run")
