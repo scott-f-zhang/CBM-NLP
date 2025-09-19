@@ -6,6 +6,7 @@ import pandas as pd
 
 # Ensure project root on sys.path so we can import the main package
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
@@ -38,7 +39,8 @@ def build_arg_parser():
     p.add_argument("--num_epochs", type=int, default=1, help="Number of training epochs per run")
     p.add_argument("--max_len", type=int, default=64, help="Max sequence length")
     p.add_argument("--batch_size", type=int, default=2, help="Batch size")
-    p.add_argument("--output", type=str, default=os.path.join(ROOT_DIR, "result.csv"), help="Output CSV path")
+    # Save CSV inside main folder by default
+    p.add_argument("--output", type=str, default=os.path.join(MAIN_DIR, "result.csv"), help="Output CSV path")
     p.add_argument("--data_types", type=str, nargs="*", default=["pure_cebab", "aug_cebab"], help="Data types to run")
     p.add_argument("--models", type=str, nargs="*", default=["bert-base-uncased", "roberta-base", "gpt2", "lstm"], help="Models to run")
     return p
