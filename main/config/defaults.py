@@ -10,7 +10,13 @@ class RunConfig:
     batch_size: int = 8
     num_epochs: int = 1
     optimizer_lr: float = 1e-5
-    data_type: str = "pure_cebab"  # default for standard; joint/mix may override
+    # 'cebab' | 'imdb'
+    dataset: str = "cebab"
+
+    # unified variant:
+    # cebab: 'pure'|'aug'|'aug_yelp'|'aug_both'
+    # imdb: 'manual'|'aug_manual'|'gen'|'aug_gen'
+    variant: str = "pure"
 
 
 def make_run_config(
@@ -19,13 +25,21 @@ def make_run_config(
     batch_size: Optional[int] = None,
     model_name: Optional[str] = None,
     num_epochs: Optional[int] = None,
-    data_type: Optional[str] = None,
     optimizer_lr: Optional[float] = None,
-    default_data_type: Optional[str] = None,
+    dataset: Optional[str] = None,
+    variant: Optional[str] = None,
+    default_dataset: Optional[str] = None,
+    default_variant: Optional[str] = None,
 ) -> RunConfig:
     cfg = RunConfig()
-    if default_data_type is not None:
-        cfg.data_type = default_data_type
+    if default_dataset is not None:
+        cfg.dataset = default_dataset
+    if default_variant is not None:
+        cfg.variant = default_variant
+    if dataset is not None:
+        cfg.dataset = dataset
+    if variant is not None:
+        cfg.variant = variant
     if mode is not None:
         cfg.mode = mode
     if max_len is not None:
@@ -36,8 +50,6 @@ def make_run_config(
         cfg.model_name = model_name
     if num_epochs is not None:
         cfg.num_epochs = num_epochs
-    if data_type is not None:
-        cfg.data_type = data_type
     if optimizer_lr is not None:
         cfg.optimizer_lr = optimizer_lr
     return cfg

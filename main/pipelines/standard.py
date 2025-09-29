@@ -1,11 +1,12 @@
-import os
+from typing import Optional
 import torch
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import StepLR
 
 from ..config.defaults import make_run_config
 from ..models.loaders import load_model_and_tokenizer
-from ..data.cebab import load_cebab_splits, CEBaBDataset
+from ..data.cebab import CEBaBDataset
+from ..data.imdb import IMDBDataset
 from ..training.loops import train_one_epoch, evaluate, test_loop
 
 
@@ -15,30 +16,41 @@ def get_cbm_standard(
     batch_size=None,
     model_name=None,
     num_epochs=None,
-    data_type=None,
     optimizer_lr=None,
-    fasttext_path: str | None = None,
+    dataset: Optional[str] = None,
+    variant: Optional[str] = None,
+    fasttext_path: Optional[str] = None,
 ):
     cfg = make_run_config(
         mode=mode, max_len=max_len, batch_size=batch_size, model_name=model_name,
-        num_epochs=num_epochs, data_type=data_type, optimizer_lr=optimizer_lr,
-        default_data_type='pure_cebab',
+        num_epochs=num_epochs, optimizer_lr=optimizer_lr,
+        dataset=dataset, variant=variant,
+        default_dataset='cebab', default_variant='pure',
     )
     cfg.mode = 'standard' if cfg.mode is None else cfg.mode
 
     model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name, fasttext_path=fasttext_path)
 
-    splits = load_cebab_splits(cfg.data_type)
-    train_ds = CEBaBDataset(splits["train"], tokenizer, cfg.max_len, cfg.data_type)
-    val_ds = CEBaBDataset(splits["val"], tokenizer, cfg.max_len, cfg.data_type)
-    test_ds = CEBaBDataset(splits["test"], tokenizer, cfg.max_len, cfg.data_type)
+    # Dataset selection: cebab or imdb
+    if cfg.dataset == 'imdb':
+        train_ds = IMDBDataset("train", tokenizer, cfg.max_len, variant=cfg.variant)
+        val_ds = IMDBDataset("val", tokenizer, cfg.max_len, variant=cfg.variant)
+        test_ds = IMDBDataset("test", tokenizer, cfg.max_len, variant=cfg.variant)
+        num_labels = 2
+        num_concept_labels = 8 if getattr(train_ds, "extra", None) is not None else 4
+    else:
+        # cebab
+        train_ds = CEBaBDataset("train", tokenizer, cfg.max_len, variant=cfg.variant, expand_concepts=None)
+        val_ds = CEBaBDataset("val", tokenizer, cfg.max_len, variant=cfg.variant, expand_concepts=None)
+        test_ds = CEBaBDataset("test", tokenizer, cfg.max_len, variant=cfg.variant, expand_concepts=None)
+        num_labels = 5
+        num_concept_labels = 10 if getattr(train_ds, "extra", None) is not None else 4
 
     train_loader = DataLoader(train_ds, batch_size=cfg.batch_size, shuffle=True)
     val_loader = DataLoader(val_ds, batch_size=cfg.batch_size)
     test_loader = DataLoader(test_ds, batch_size=cfg.batch_size)
 
-    num_labels = 5
-    num_concept_labels = 10 if cfg.data_type != 'pure_cebab' else 4
+    # num_labels and num_concept_labels set above per dataset
     if cfg.model_name == 'lstm':
         head = torch.nn.Sequential(
             torch.nn.Linear(hidden_size, hidden_size // 2),
@@ -59,7 +71,7 @@ def get_cbm_standard(
 
     optimizer = torch.optim.Adam(list(model.parameters()) + list(head.parameters()), lr=(cfg.optimizer_lr if cfg.optimizer_lr is not None else (1e-2 if cfg.model_name == 'lstm' else 1e-5)))
     if scheduler_needed:
-        scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
+        _scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
     criterion = torch.nn.CrossEntropyLoss()
 
     best_acc = 0.0
