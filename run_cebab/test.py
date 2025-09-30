@@ -77,20 +77,21 @@ LR_MAPPING = {
 def get_learning_rate(model_name: str) -> Optional[float]:
     return LR_MAPPING.get(model_name)
 
-# Map the function display names to callables + a fixed data_type argument
-# so that each mirrors the default semantics of the original implementations.
+# Map the function display names to callables. We'll iterate data_type variants
+# to produce D (pure_cebab) and D^ (aug_cebab) for each function where relevant.
 PLM_FUNCS: Dict[str, Dict[str, Any]] = {
     'PLMs': {
         'callable': get_cbm_standard,
-        'data_type': 'pure_cebab',  # original default inside cbm_standard
+        'variants': [('pure_cebab', 'D'), ('aug_cebab', 'D^')],
     },
     'CBE-PLMs': {
         'callable': get_cbm_joint,
-        'data_type': 'aug_cebab',   # original default in cbm_joint is aug_cebab
+        'variants': [('pure_cebab', 'D'), ('aug_cebab', 'D^')],
     },
     'CBE-PLMs-CM': {
         'callable': get_cbm_LLM_mix_joint,
-        'data_type': 'aug_cebab_yelp',  # default in mix joint
+        'variants': [('pure_cebab', 'D'), ('aug_cebab', 'D^')],
+        'prefer': 'aug_cebab_yelp',
     },
 }
 
@@ -98,50 +99,67 @@ PLM_FUNCS: Dict[str, Dict[str, Any]] = {
 def run_experiments_for_function(func_name: str, func_info: Dict[str, Any]):
     rows = []
     func: Callable = func_info['callable']
-    data_type = func_info['data_type']
+    variants = func_info.get('variants', [('pure_cebab', 'D')])
+    prefer = func_info.get('prefer')
 
-    print(f"Running {func_name} (data_type={data_type})...")
-    # Single logical dataset label reused for all
+    print(f"Running {func_name}...")
     dataset_label = DATASET_LABEL
     for model_name in MODELS:
         lr = get_learning_rate(model_name)
         print(f"\tModel: {model_name}  lr={lr}")
-        try:
-            score = func(
-                model_name=model_name,
-                num_epochs=NUM_EPOCHS,
-                max_len=MAX_LEN,
-                batch_size=BATCH_SIZE,
-                optimizer_lr=lr,
-                data_type=data_type,
-            )
-        except Exception as e:
-            print(f"\tWarning: {func_name}/{model_name} failed: {e}")
-            # Fallback: if mix-joint with aug_cebab_yelp is missing Yelp train CSV,
-            # retry with aug_cebab which uses only the available CEBaB augmentation files.
-            if func_name == 'CBE-PLMs-CM' and data_type == 'aug_cebab_yelp':
-                try:
-                    alt_data_type = 'aug_cebab'
-                    print(f"\tRetrying {func_name}/{model_name} with data_type={alt_data_type}...")
-                    score = func(
-                        model_name=model_name,
-                        num_epochs=NUM_EPOCHS,
-                        max_len=MAX_LEN,
-                        batch_size=BATCH_SIZE,
-                        optimizer_lr=lr,
-                        data_type=alt_data_type,
-                    )
-                except Exception as e2:
-                    print(f"\tRetry failed: {func_name}/{model_name}: {e2}")
+        for data_type, data_label in [(prefer, 'D^')] if prefer else []:
+            if data_type is None:
+                continue
+            try:
+                score = func(
+                    model_name=model_name,
+                    num_epochs=NUM_EPOCHS,
+                    max_len=MAX_LEN,
+                    batch_size=BATCH_SIZE,
+                    optimizer_lr=lr,
+                    data_type=data_type,
+                )
+                rows.append({'dataset': dataset_label, 'data_type': data_label, 'function': func_name, 'model': model_name, 'score': score})
+            except Exception as e:
+                print(f"\tWarning: {func_name}/{model_name} preferred data_type={data_type} failed: {e}")
+
+        for data_type, data_label in variants:
+            try:
+                score = func(
+                    model_name=model_name,
+                    num_epochs=NUM_EPOCHS,
+                    max_len=MAX_LEN,
+                    batch_size=BATCH_SIZE,
+                    optimizer_lr=lr,
+                    data_type=data_type,
+                )
+            except Exception as e:
+                print(f"\tWarning: {func_name}/{model_name} data_type={data_type} failed: {e}")
+                if func_name == 'CBE-PLMs-CM' and data_type == 'aug_cebab_yelp':
+                    try:
+                        alt_data_type = 'aug_cebab'
+                        print(f"\tRetrying {func_name}/{model_name} with data_type={alt_data_type}...")
+                        score = func(
+                            model_name=model_name,
+                            num_epochs=NUM_EPOCHS,
+                            max_len=MAX_LEN,
+                            batch_size=BATCH_SIZE,
+                            optimizer_lr=lr,
+                            data_type=alt_data_type,
+                        )
+                        data_type = alt_data_type
+                    except Exception as e2:
+                        print(f"\tRetry failed: {func_name}/{model_name}: {e2}")
+                        score = []
+                else:
                     score = []
-            else:
-                score = []
-        rows.append({
-            'dataset': dataset_label,
-            'function': func_name,
-            'model': model_name,
-            'score': score,
-        })
+            rows.append({
+                'dataset': dataset_label,
+                'data_type': data_label,
+                'function': func_name,
+                'model': model_name,
+                'score': score,
+            })
     return rows
 
 
@@ -157,10 +175,9 @@ def build_pivot_table(df: pd.DataFrame):
     df['score_avg'] = df.score.apply(get_average_scores)
     df['score_fmted'] = df.score_avg.apply(get_tuple_2f_fmt)
 
-    # Pivot like the main script: index (function, model) columns dataset
-    dfp = df.pivot(index=['function', 'model'], columns=['dataset'], values='score_fmted')
+    # Pivot by data_type (D vs D^) like the notebook for CEBaB
+    dfp = df.pivot(index=['function', 'model'], columns=['data_type'], values='score_fmted')
 
-    # Consistent ordering for readability
     func_order = ["PLMs", "CBE-PLMs", "CBE-PLMs-CM"]
     model_order = ["LSTM", "GPT2", "BERT", "RoBERTa"]
     mapping = {
@@ -172,7 +189,6 @@ def build_pivot_table(df: pd.DataFrame):
     dfp = dfp.reset_index()
     dfp['model'] = dfp['model'].map(mapping)
     dfp = dfp.set_index(['function', 'model'])
-    # Reindex with all combinations (some may be missing if failures occurred)
     dfp = dfp.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
     return df, dfp
 
