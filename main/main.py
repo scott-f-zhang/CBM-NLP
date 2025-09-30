@@ -78,6 +78,7 @@ def get_learning_rate(model_name: str) -> Optional[float]:
 def run_experiments_for_function(func_name: str, func):
     """Run one pipeline family (e.g., PLMs) across datasets and models.
 
+    For CEBaB, run both variants corresponding to D (pure) and D^ (aug_cebab).
     Returns a list of dict rows compatible with pandas.DataFrame.
     """
     rows = []
@@ -85,28 +86,45 @@ def run_experiments_for_function(func_name: str, func):
 
     for dataset in DATASETS:
         print(f"\tRunning dataset: {dataset}...")
+
+        # Determine which variants to run and the data_type label
+        if dataset == 'cebab':
+            variant_plan = [
+                ('pure', 'D'),      # original CEBaB
+                ('aug', 'D^'),      # aug_cebab
+            ]
+        else:
+            # IMDB unchanged; single variant tied to its defaults per pipeline
+            variant_plan = [(None, dataset)]  # label with dataset name to avoid clash
+
         for model_name in MODELS:
             lr = get_learning_rate(model_name)
             print(f"\t\tRunning {model_name}... with learning rate: {lr}")
-            try:
-                score = func(
-                    model_name=model_name,
-                    num_epochs=BASE_RUN.num_epochs,
-                    dataset=dataset,
-                    max_len=BASE_RUN.max_len,
-                    batch_size=BASE_RUN.batch_size,
-                    optimizer_lr=lr,
-                )
-            except Exception as e:
-                print(f"\t\tWarning: {func_name}/{dataset}/{model_name} failed: {e}")
-                score = []
 
-            rows.append({
-                'dataset': dataset,
-                'function': func_name,
-                'model': model_name,
-                'score': score,
-            })
+            for variant, data_type in variant_plan:
+                try:
+                    kwargs = dict(
+                        model_name=model_name,
+                        num_epochs=BASE_RUN.num_epochs,
+                        dataset=dataset,
+                        max_len=BASE_RUN.max_len,
+                        batch_size=BASE_RUN.batch_size,
+                        optimizer_lr=lr,
+                    )
+                    if variant is not None:
+                        kwargs['variant'] = variant
+                    score = func(**kwargs)
+                except Exception as e:
+                    print(f"\t\tWarning: {func_name}/{dataset}/{model_name}/variant={variant} failed: {e}")
+                    score = []
+
+                rows.append({
+                    'dataset': dataset,
+                    'data_type': data_type,
+                    'function': func_name,
+                    'model': model_name,
+                    'score': score,
+                })
 
     return rows
 
@@ -128,16 +146,16 @@ def run_all_experiments() -> pd.DataFrame:
 
 
 def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
-    """Create a pivot table (function x model) with dataset columns.
+    """Create pivot tables and formatted output.
 
-    Also appends formatted score strings to the long-form DataFrame.
-    Returns the pair (df_with_scores, pivot_df).
+    - For CEBaB, pivot by data_type -> columns D and D^.
+    - For IMDB, keep a simple dataset column.
+    Returns the pair (df_with_scores, pivot_df_cebab, pivot_df_imdb).
     """
     df = df.copy()
     df['score_avg'] = df.score.apply(get_average_scores)
     df['score_fmted'] = df.score_avg.apply(get_tuple_2f_fmt)
 
-    dfp = df.pivot(index=['function', 'model'], columns=['dataset'], values='score_fmted')
     func_order = ["PLMs", "CBE-PLMs", "CBE-PLMs-CM"]
     model_order = ["LSTM", "GPT2", "BERT", "RoBERTa"]
     mapping = {
@@ -147,21 +165,44 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
         'roberta-base': 'RoBERTa',
     }
 
-    dfp = dfp.reset_index()
-    dfp['model'] = dfp['model'].map(mapping)
-    dfp = dfp.set_index(['function', 'model'])
-    dfp = dfp.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
-    return df, dfp
+    # CEBaB: expects data_type in {D, D^}
+    df_cebab = df[df['dataset'] == 'cebab'].copy()
+    if 'data_type' in df_cebab.columns:
+        df_cebab_p = df_cebab.pivot(index=['function', 'model'], columns=['data_type'], values='score_fmted')
+    else:
+        # Backward-compatible: if not present, treat everything as D
+        df_cebab['data_type'] = 'D'
+        df_cebab_p = df_cebab.pivot(index=['function', 'model'], columns=['data_type'], values='score_fmted')
+
+    df_cebab_p = df_cebab_p.reset_index()
+    df_cebab_p['model'] = df_cebab_p['model'].map(mapping)
+    df_cebab_p = df_cebab_p.set_index(['function', 'model'])
+    df_cebab_p = df_cebab_p.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
+
+    # IMDB: pivot remains by dataset (single column 'imdb')
+    df_imdb = df[df['dataset'] == 'imdb'].copy()
+    if not df_imdb.empty:
+        df_imdb_p = df_imdb.pivot(index=['function', 'model'], columns=['dataset'], values='score_fmted')
+        df_imdb_p = df_imdb_p.reset_index()
+        df_imdb_p['model'] = df_imdb_p['model'].map(mapping)
+        df_imdb_p = df_imdb_p.set_index(['function', 'model'])
+        df_imdb_p = df_imdb_p.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
+    else:
+        df_imdb_p = pd.DataFrame(index=pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
+
+    return df, df_cebab_p, df_imdb_p
 
 
 def main():
-    """Entrypoint: run experiments, materialize CSV, and print summary pivot."""
+    """Entrypoint: run experiments, save CSV, and print CEBaB D/D^ and IMDB pivots."""
     df = run_all_experiments()
-    df, dfp = build_pivot_table(df)
+    df, dfp_cebab, dfp_imdb = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)
 
-    print("\nPivot summary (score_avg as XX.XX/YY.YY):")
-    print(dfp)
+    print("\nCEBaB Pivot (D vs D^, score_avg as XX.XX/YY.YY):")
+    print(dfp_cebab)
+    print("\nIMDB Pivot (score_avg as XX.XX/YY.YY):")
+    print(dfp_imdb)
     print(f"\nSaved results to: {OUTPUT_CSV}")
 
 
