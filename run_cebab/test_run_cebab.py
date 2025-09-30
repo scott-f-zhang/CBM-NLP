@@ -111,6 +111,10 @@ def run_experiments_for_function(func_name: str, func_info: Dict[str, Any]):
     for model_name in MODELS:
         lr = get_learning_rate(model_name)
         print(f"\tModel: {model_name}  lr={lr}")
+        # Skip LSTM for CBE-PLMs-CM to align with main and pipeline support
+        if func_name == 'CBE-PLMs-CM' and model_name == 'lstm':
+            print("\tSkipping LSTM for CBE-PLMs-CM (not supported)")
+            continue
         for data_type, data_label in [(prefer, 'D^')] if prefer else []:
             # An optional preferred type to try first (e.g., aug_cebab_yelp) for mix-joint
             if data_type is None:

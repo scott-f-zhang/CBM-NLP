@@ -75,11 +75,16 @@ def run_experiments_for_function(func_name: str, func):
                 ('aug', 'D^'),
             ]
         else:
-            variant_plan = [(None, dataset)]
+            # For IMDB, explicitly use 'manual' to avoid invalid defaults
+            variant_plan = [('manual', dataset)]
         for model_name in MODELS:
             lr = get_learning_rate(model_name)
             print(f"\t\tRunning {model_name}... with learning rate: {lr}")
             for variant, data_type in variant_plan:
+                # Skip LSTM for CBE-PLMs-CM (not supported in mix-joint)
+                if func_name == 'CBE-PLMs-CM' and model_name == 'lstm':
+                    print(f"\t\tSkipping LSTM for {func_name} (not supported)")
+                    continue
                 try:
                     kwargs = dict(
                         model_name=model_name,

@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
@@ -9,32 +10,38 @@ class IMDBDataset(Dataset):
         if expand_concepts is None:
             expand_concepts = (variant != "manual")
 
+        # Resolve repo root and dataset directory for stable paths
+        SELF_DIR = os.path.dirname(os.path.abspath(__file__))
+        MAIN_DIR = os.path.dirname(SELF_DIR)
+        ROOT_DIR = os.path.dirname(MAIN_DIR)
+        IMDB_DIR = os.path.join(ROOT_DIR, "dataset", "imdb")
+
         if variant == "manual":
             frames = {
-                "train": pd.read_csv("../dataset/imdb/IMDB-train-manual.csv"),
-                "val": pd.read_csv("../dataset/imdb/IMDB-dev-manual.csv"),
-                "test": pd.read_csv("../dataset/imdb/IMDB-test-manual.csv"),
+                "train": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-train-manual.csv")),
+                "val": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-dev-manual.csv")),
+                "test": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-test-manual.csv")),
             }
         elif variant == "gen":
             frames = {
-                "train": pd.read_csv("../dataset/imdb/IMDB-train-generated.csv"),
-                "val": pd.read_csv("../dataset/imdb/IMDB-dev-generated.csv"),
-                "test": pd.read_csv("../dataset/imdb/IMDB-test-generated.csv"),
+                "train": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-train-generated.csv")),
+                "val": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-dev-generated.csv")),
+                "test": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-test-generated.csv")),
             }
         elif variant == "aug_manual":
             # Currently mirrors manual files but enables extra noisy concepts
             frames = {
-                "train": pd.read_csv("../dataset/imdb/IMDB-train-manual.csv"),
-                "val": pd.read_csv("../dataset/imdb/IMDB-dev-manual.csv"),
-                "test": pd.read_csv("../dataset/imdb/IMDB-test-manual.csv"),
+                "train": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-train-manual.csv")),
+                "val": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-dev-manual.csv")),
+                "test": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-test-manual.csv")),
             }
         elif variant == "aug_gen":
-            train_manual = pd.read_csv("../dataset/imdb/IMDB-train-manual.csv")
-            val_manual = pd.read_csv("../dataset/imdb/IMDB-dev-manual.csv")
-            test_manual = pd.read_csv("../dataset/imdb/IMDB-test-manual.csv")
-            train_gen = pd.read_csv("../dataset/imdb/IMDB-train-generated.csv")
-            val_gen = pd.read_csv("../dataset/imdb/IMDB-dev-generated.csv")
-            test_gen = pd.read_csv("../dataset/imdb/IMDB-test-generated.csv")
+            train_manual = pd.read_csv(os.path.join(IMDB_DIR, "IMDB-train-manual.csv"))
+            val_manual = pd.read_csv(os.path.join(IMDB_DIR, "IMDB-dev-manual.csv"))
+            test_manual = pd.read_csv(os.path.join(IMDB_DIR, "IMDB-test-manual.csv"))
+            train_gen = pd.read_csv(os.path.join(IMDB_DIR, "IMDB-train-generated.csv"))
+            val_gen = pd.read_csv(os.path.join(IMDB_DIR, "IMDB-dev-generated.csv"))
+            test_gen = pd.read_csv(os.path.join(IMDB_DIR, "IMDB-test-generated.csv"))
             frames = {
                 "train": pd.concat([train_manual, train_gen], ignore_index=True),
                 "val": pd.concat([val_manual, val_gen], ignore_index=True),

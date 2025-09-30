@@ -1,4 +1,5 @@
 from typing import Dict, Optional
+import os
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
@@ -17,6 +18,12 @@ class CEBaBDataset(Dataset):
         self.variant = variant
         self.expand_concepts = expand_concepts
 
+        # Resolve repo root and dataset directory to avoid CWD-dependent relative paths
+        SELF_DIR = os.path.dirname(os.path.abspath(__file__))
+        MAIN_DIR = os.path.dirname(SELF_DIR)
+        ROOT_DIR = os.path.dirname(MAIN_DIR)
+        CEBAB_DIR = os.path.join(ROOT_DIR, "dataset", "cebab")
+
         if variant == "pure":
             ds = load_dataset("CEBaB/CEBaB")
             split_map = {"train": "train_exclusive", "val": "validation", "test": "test"}
@@ -25,23 +32,23 @@ class CEBaBDataset(Dataset):
         elif variant in ("aug", "aug_yelp", "aug_both"):
             if variant == "aug":
                 frames = {
-                    "train": pd.read_csv("../dataset/cebab/train_cebab_new_concept_single.csv"),
-                    "val": pd.read_csv("../dataset/cebab/dev_cebab_new_concept_single.csv"),
-                    "test": pd.read_csv("../dataset/cebab/test_cebab_new_concept_single.csv"),
+                    "train": pd.read_csv(os.path.join(CEBAB_DIR, "train_cebab_new_concept_single.csv")),
+                    "val": pd.read_csv(os.path.join(CEBAB_DIR, "dev_cebab_new_concept_single.csv")),
+                    "test": pd.read_csv(os.path.join(CEBAB_DIR, "test_cebab_new_concept_single.csv")),
                 }
             elif variant == "aug_yelp":
                 frames = {
-                    "train": pd.read_csv("../dataset/cebab/train_yelp_exclusive_new_concept_single.csv"),
-                    "val": pd.read_csv("../dataset/cebab/dev_yelp_new_concept_single.csv"),
-                    "test": pd.read_csv("../dataset/cebab/test_yelp_new_concept_single.csv"),
+                    "train": pd.read_csv(os.path.join(CEBAB_DIR, "train_yelp_exclusive_new_concept_single.csv")),
+                    "val": pd.read_csv(os.path.join(CEBAB_DIR, "dev_yelp_new_concept_single.csv")),
+                    "test": pd.read_csv(os.path.join(CEBAB_DIR, "test_yelp_new_concept_single.csv")),
                 }
             else:  # aug_both
-                train_cebab = pd.read_csv("../dataset/cebab/train_cebab_new_concept_single.csv")
-                val_cebab = pd.read_csv("../dataset/cebab/dev_cebab_new_concept_single.csv")
-                test_cebab = pd.read_csv("../dataset/cebab/test_cebab_new_concept_single.csv")
-                train_yelp = pd.read_csv("../dataset/cebab/train_yelp_exclusive_new_concept_single.csv")
-                val_yelp = pd.read_csv("../dataset/cebab/dev_yelp_new_concept_single.csv")
-                test_yelp = pd.read_csv("../dataset/cebab/test_yelp_new_concept_single.csv")
+                train_cebab = pd.read_csv(os.path.join(CEBAB_DIR, "train_cebab_new_concept_single.csv"))
+                val_cebab = pd.read_csv(os.path.join(CEBAB_DIR, "dev_cebab_new_concept_single.csv"))
+                test_cebab = pd.read_csv(os.path.join(CEBAB_DIR, "test_cebab_new_concept_single.csv"))
+                train_yelp = pd.read_csv(os.path.join(CEBAB_DIR, "train_yelp_exclusive_new_concept_single.csv"))
+                val_yelp = pd.read_csv(os.path.join(CEBAB_DIR, "dev_yelp_new_concept_single.csv"))
+                test_yelp = pd.read_csv(os.path.join(CEBAB_DIR, "test_yelp_new_concept_single.csv"))
                 frames = {
                     "train": pd.concat([train_cebab, train_yelp], ignore_index=True),
                     "val": pd.concat([val_cebab, val_yelp], ignore_index=True),

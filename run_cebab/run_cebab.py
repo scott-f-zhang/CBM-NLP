@@ -52,7 +52,7 @@ def get_tuple_2f_fmt(tp: Tuple[float, float]) -> str:
     return f"{f1:.2f}/{f2:.2f}"
 
 # Unified quick-run settings (align with main/test_main.py choices)
-NUM_EPOCHS = 1
+NUM_EPOCHS = 20
 MAX_LEN = 512
 BATCH_SIZE = 8
 
@@ -107,6 +107,10 @@ def run_experiments_for_function(func_name: str, func_info: Dict[str, Any]):
     for model_name in MODELS:
         lr = get_learning_rate(model_name)
         print(f"\tModel: {model_name}  lr={lr}")
+        # Skip LSTM for CBE-PLMs-CM to match main's behavior and pipeline support
+        if func_name == 'CBE-PLMs-CM' and model_name == 'lstm':
+            print("\tSkipping LSTM for CBE-PLMs-CM (not supported)")
+            continue
         for data_type, data_label in [(prefer, 'D^')] if prefer else []:
             if data_type is None:
                 continue
