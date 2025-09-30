@@ -76,7 +76,7 @@ def get_cbm_LLM_mix_joint(mode=None, max_len=None, batch_size=None, model_name=N
         train_split = "train_aug_yelp"
         test_split = "test_aug_yelp"
         CEBaB = {}
-        CEBaB[train_split] = pd.read_csv("../dataset/cebab/train_yelp_new_concept_single.csv")
+        CEBaB[train_split] = pd.read_csv("../dataset/cebab/train_yelp_exclusive_new_concept_single.csv")
         CEBaB[test_split] = pd.read_csv("../dataset/cebab/test_yelp_new_concept_single.csv")
     elif data_type == "aug_cebab_yelp":
         num_concept_labels = 10
@@ -85,7 +85,7 @@ def get_cbm_LLM_mix_joint(mode=None, max_len=None, batch_size=None, model_name=N
         test_split = "test_aug_cebab_yelp"
         train_split_cebab = pd.read_csv("../dataset/cebab/train_cebab_new_concept_single.csv")
         test_split_cebab = pd.read_csv("../dataset/cebab/test_cebab_new_concept_single.csv")
-        train_split_yelp = pd.read_csv("../dataset/cebab/train_yelp_new_concept_single.csv")
+        train_split_yelp = pd.read_csv("../dataset/cebab/train_yelp_exclusive_new_concept_single.csv")
         test_split_yelp = pd.read_csv("../dataset/cebab/test_yelp_new_concept_single.csv")
 
         CEBaB = {}
