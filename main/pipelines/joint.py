@@ -96,6 +96,11 @@ def get_cbm_joint(
             f"Val concept Macro F1 = {metrics['concept_macro_f1']*100}"
         )
         print(f"Epoch {epoch + 1}: Val Acc = {metrics['val_acc']*100} Val Macro F1 = {metrics['val_macro_f1']*100}")
+        # Always save on the first epoch to ensure a checkpoint exists
+        if epoch == 0 and best_acc == 0.0:
+            best_acc = metrics['val_acc']
+            torch.save(model, f"./{cfg.model_name}_joint.pth")
+            torch.save(head, f"./{cfg.model_name}_ModelXtoCtoY_layer_joint.pth")
         if metrics['val_acc'] > best_acc:
             best_acc = metrics['val_acc']
             torch.save(model, f"./{cfg.model_name}_joint.pth")

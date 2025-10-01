@@ -79,6 +79,11 @@ def get_cbm_standard(
         train_one_epoch(model, head, train_loader, device, criterion, optimizer, cfg.model_name == 'lstm')
         val_acc, val_f1 = evaluate(model, head, val_loader, device, cfg.model_name == 'lstm')
         print(f"Epoch {epoch + 1}: Val Acc = {val_acc*100} Val Macro F1 = {val_f1*100}")
+        # Always save on the first epoch to ensure a checkpoint exists
+        if epoch == 0 and best_acc == 0.0:
+            best_acc = val_acc
+            torch.save(head, f"./{cfg.model_name}_classifier_standard.pth")
+            torch.save(model, f"./{cfg.model_name}_model_standard.pth")
         if val_acc > best_acc:
             best_acc = val_acc
             torch.save(head, f"./{cfg.model_name}_classifier_standard.pth")
