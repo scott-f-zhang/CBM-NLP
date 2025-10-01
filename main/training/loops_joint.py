@@ -22,7 +22,7 @@ def train_epoch_joint(model, head, data_loader: DataLoader, device, loss_fn, lam
         optimizer.zero_grad()
         outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         if is_lstm:
-            pooled_output = outputs.mean(1)
+            pooled_output = outputs
         else:
             pooled_output = outputs.last_hidden_state.mean(1)
         outputs2 = head(pooled_output)
@@ -54,7 +54,7 @@ def eval_epoch_joint(model, head, data_loader: DataLoader, device, is_lstm: bool
 
             outputs = model(input_ids=input_ids, attention_mask=attention_mask)
             if is_lstm:
-                pooled_output = outputs.mean(1)
+                pooled_output = outputs
             else:
                 pooled_output = outputs.last_hidden_state.mean(1)
             outputs2 = head(pooled_output)
@@ -111,7 +111,7 @@ def test_epoch_joint(model, head, data_loader: DataLoader, device, is_lstm: bool
 
             outputs = model(input_ids=input_ids, attention_mask=attention_mask)
             if is_lstm:
-                pooled_output = outputs.mean(1)
+                pooled_output = outputs
             else:
                 pooled_output = outputs.last_hidden_state.mean(1)
             outputs2 = head(pooled_output)
