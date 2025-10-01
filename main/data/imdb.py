@@ -17,14 +17,16 @@ class IMDBDataset(Dataset):
         IMDB_DIR = os.path.join(ROOT_DIR, "dataset", "imdb")
 
         def _read_with_fallback(preferred: str, alternatives):
-            path = os.path.join(IMDB_DIR, preferred)
-            if os.path.exists(path):
-                return pd.read_csv(path)
-            for alt in alternatives:
-                alt_path = os.path.join(IMDB_DIR, alt)
-                if os.path.exists(alt_path):
-                    print(f"[IMDBDataset] Warning: '{preferred}' not found, using '{alt}' instead")
-                    return pd.read_csv(alt_path)
+            # Candidate search locations: imdb/ and imdb/New/
+            search_dirs = [IMDB_DIR, os.path.join(IMDB_DIR, "New")]
+            candidates = [preferred] + alternatives
+            for d in search_dirs:
+                for fname in candidates:
+                    p = os.path.join(d, fname)
+                    if os.path.exists(p):
+                        if d != IMDB_DIR or fname != preferred:
+                            print(f"[IMDBDataset] Warning: '{preferred}' not found under {IMDB_DIR}, using '{p}' instead")
+                        return pd.read_csv(p)
             print(f"[IMDBDataset] Warning: none of { [preferred]+alternatives } found under {IMDB_DIR}. This split will be empty.")
             return pd.DataFrame(columns=[
                 'review','sentiment','acting','storyline','emotional arousal','cinematography',
