@@ -41,9 +41,9 @@ class IMDBDataset(Dataset):
             }
         elif variant == "gen":
             frames = {
-                "train": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-train-generated.csv")),
-                "val": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-dev-generated.csv")),
-                "test": pd.read_csv(os.path.join(IMDB_DIR, "IMDB-test-generated.csv")),
+                "train": _read_with_fallback("IMDB-train-generated.csv", ["IMDB-train-generated.csv", "IMDB-train-manual.csv"]),
+                "val": _read_with_fallback("IMDB-dev-generated.csv", ["IMDB-dev-generated.csv", "IMDB-dev-manual.csv"]),
+                "test": _read_with_fallback("IMDB-test-generated.csv", ["IMDB-test-generated.csv", "IMDB-test-manual.csv"]),
             }
         elif variant == "aug_manual":
             # Currently mirrors manual files but enables extra noisy concepts

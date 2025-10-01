@@ -75,8 +75,8 @@ def run_experiments_for_function(func_name: str, func):
                 ('aug', 'D^'),
             ]
         else:
-            # For IMDB, map manual->D and generated->D^
-            variant_plan = [('manual', 'D'), ('generated', 'D^')]
+            # For IMDB, map manual->D and gen->D^
+            variant_plan = [('manual', 'D'), ('gen', 'D^')]
         for model_name in MODELS:
             lr = get_learning_rate(model_name)
             print(f"\t\tRunning {model_name}... with learning rate: {lr}")
