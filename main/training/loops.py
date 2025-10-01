@@ -25,7 +25,8 @@ def train_one_epoch(
         optimizer.zero_grad()
         outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         if is_lstm:
-            pooled = outputs.mean(1)
+            # LSTM encoder already returns a fixed-size representation
+            pooled = outputs
         else:
             pooled = outputs.last_hidden_state.mean(1)
         logits = head(pooled)
@@ -52,7 +53,7 @@ def evaluate(
             labels = batch["label"].to(device)
             outputs = model(input_ids=input_ids, attention_mask=attention_mask)
             if is_lstm:
-                pooled = outputs.mean(1)
+                pooled = outputs
             else:
                 pooled = outputs.last_hidden_state.mean(1)
             logits = head(pooled)
