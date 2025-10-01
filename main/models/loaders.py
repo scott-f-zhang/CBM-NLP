@@ -21,12 +21,20 @@ class BiLSTMWithDotAttention(torch.nn.Module):
             # If no pretrained embeddings available, allow the embedding to learn
             self.embedding.weight.requires_grad = True
         self.lstm = torch.nn.LSTM(embedding_dim, hidden_dim, num_layers=1, bidirectional=True, batch_first=True)
+        # Match run_cebab: project pooled bi-LSTM (2*hidden_dim) to hidden_dim
+        self.classifier = torch.nn.Sequential(
+            torch.nn.Linear(hidden_dim * 2, hidden_dim),
+            torch.nn.ReLU(),
+            torch.nn.Dropout(0.2),
+        )
 
     def forward(self, input_ids, attention_mask):
         output, _ = self.lstm(self.embedding(input_ids))
         weights = torch.softmax(torch.bmm(output, output.transpose(1, 2)), dim=2)
         attention = torch.bmm(weights, output)
-        return attention
+        # Return a hidden_dim-sized representation like original run_cebab
+        logits = self.classifier(attention.mean(1))
+        return logits
 
 
 def _load_fasttext_embeddings(fasttext_path: Optional[str], tokenizer) -> Optional[torch.Tensor]:
@@ -71,6 +79,7 @@ def load_model_and_tokenizer(model_name: str, fasttext_path: Optional[str] = Non
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
         embeddings_weight = _load_fasttext_embeddings(fasttext_path, tokenizer)
         model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128, embeddings_weight)
-        hidden_size = model.hidden_dim * 2
+        # Expose hidden size as 128 to match the projected representation
+        hidden_size = model.hidden_dim
         return model, tokenizer, hidden_size
     raise ValueError(f"Unsupported model_name: {model_name}")
