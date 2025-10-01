@@ -18,7 +18,8 @@ class BiLSTMWithDotAttention(torch.nn.Module):
             self.embedding.weight = torch.nn.Parameter(embeddings_weight)
             self.embedding.weight.requires_grad = False
         else:
-            self.embedding.weight.requires_grad = False
+            # If no pretrained embeddings available, allow the embedding to learn
+            self.embedding.weight.requires_grad = True
         self.lstm = torch.nn.LSTM(embedding_dim, hidden_dim, num_layers=1, bidirectional=True, batch_first=True)
 
     def forward(self, input_ids, attention_mask):
