@@ -75,8 +75,8 @@ def run_experiments_for_function(func_name: str, func):
                 ('aug', 'D^'),
             ]
         else:
-            # For IMDB, explicitly use 'manual' to avoid invalid defaults
-            variant_plan = [('manual', dataset)]
+            # For IMDB, explicitly use 'manual' and map to D for column alignment
+            variant_plan = [('manual', 'D')]
         for model_name in MODELS:
             lr = get_learning_rate(model_name)
             print(f"\t\tRunning {model_name}... with learning rate: {lr}")
@@ -154,54 +154,52 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
         'roberta-base': 'RoBERTa',
     }
 
-    df_cebab = df[df['dataset'] == 'cebab'].copy()
-    if 'data_type' in df_cebab.columns:
-        df_cebab_p = df_cebab.pivot(index=['function', 'model'], columns=['data_type'], values='score_fmted')
-    else:
-        df_cebab['data_type'] = 'D'
-        df_cebab_p = df_cebab.pivot(index=['function', 'model'], columns=['data_type'], values='score_fmted')
-    df_cebab_p = df_cebab_p.reset_index()
-    df_cebab_p['model'] = df_cebab_p['model'].map(mapping)
-    df_cebab_p = df_cebab_p.set_index(['function', 'model'])
-    df_cebab_p = df_cebab_p.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
+    # Build unified multi-index columns: (dataset, D/D^, metric)
+    task_df = df.copy()
+    task_df['score_avg'] = task_df['score'].apply(get_average_scores)
+    task_df['fmt'] = task_df['score_avg'].apply(get_tuple_2f_fmt)
+    task_df['metric'] = 'task'
 
-    df_imdb = df[df['dataset'] == 'imdb'].copy()
-    if not df_imdb.empty:
-        df_imdb_p = df_imdb.pivot(index=['function', 'model'], columns=['dataset'], values='score_fmted')
-        df_imdb_p = df_imdb_p.reset_index()
-        df_imdb_p['model'] = df_imdb_p['model'].map(mapping)
-        df_imdb_p = df_imdb_p.set_index(['function', 'model'])
-        df_imdb_p = df_imdb_p.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
+    concept_df = df.copy()
+    if 'concept_score' in concept_df.columns:
+        concept_df['score_avg'] = concept_df['concept_score'].apply(get_average_scores)
+        concept_df['fmt'] = concept_df['score_avg'].apply(get_tuple_2f_fmt)
+        concept_df['metric'] = 'concept'
     else:
-        df_imdb_p = pd.DataFrame(index=pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
+        concept_df = concept_df.iloc[0:0]
 
-    df_concept = df_cebab.copy()
-    df_concept = df_concept[df_concept['function'].isin(["CBE-PLMs", "CBE-PLMs-CM"])].copy()
-    if 'concept_score' in df_concept.columns:
-        df_concept['concept_avg'] = df_concept['concept_score'].apply(get_average_scores)
-        df_concept['concept_fmted'] = df_concept['concept_avg'].apply(get_tuple_2f_fmt)
-        concept_pivot = df_concept.pivot(index=['function', 'model'], columns=['data_type'], values='concept_fmted')
-        concept_pivot = concept_pivot.reset_index()
-        concept_pivot['model'] = concept_pivot['model'].map(mapping)
-        concept_pivot = concept_pivot.set_index(['function', 'model'])
-        concept_pivot = concept_pivot.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
-    else:
-        concept_pivot = pd.DataFrame(index=pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
+    merged = pd.concat([
+        task_df[['function','model','dataset','data_type','metric','fmt']],
+        concept_df[['function','model','dataset','data_type','metric','fmt']]
+    ], ignore_index=True)
 
-    return df, df_cebab_p, df_imdb_p, concept_pivot
+    merged['model'] = merged['model'].map(mapping)
+
+    wide = merged.pivot_table(index=['function','model'],
+                              columns=['dataset','data_type','metric'],
+                              values='fmt', aggfunc='first')
+    wide = wide.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function","model"]))
+
+    desired_cols = []
+    for ds in ['cebab','imdb']:
+        for dt in ['D','D^']:
+            for m in ['task','concept']:
+                desired_cols.append((ds, dt, m))
+    for col in desired_cols:
+        if col not in wide.columns:
+            wide[col] = pd.NA
+    wide = wide[desired_cols]
+
+    return df, wide
 
 
 def main():
     df = run_all_experiments()
-    df, dfp_cebab, dfp_imdb, dfp_concept = build_pivot_table(df)
+    df, dfp = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)
 
-    print("\nCEBaB Pivot (D vs D^, score_avg as XX.XX/YY.YY):")
-    print(dfp_cebab)
-    print("\nIMDB Pivot (score_avg as XX.XX/YY.YY):")
-    print(dfp_imdb)
-    print("\nCEBaB Concept Pivot (only CBE-PLMs and CM D^):")
-    print(dfp_concept)
+    print("\nUnified Pivot (dataset, D/D^, task/concept):")
+    print(dfp)
     print(f"\nSaved results to: {OUTPUT_CSV}")
 
 
