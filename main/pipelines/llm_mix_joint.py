@@ -36,6 +36,11 @@ def get_cbm_LLM_mix_joint(
     if cfg.model_name not in ['bert-base-uncased', 'roberta-base', 'gpt2']:
         return [(0, 0)]
 
+    # Only run for D^ style variants on CEBaB; skip pure D
+    if cfg.dataset == 'cebab' and cfg.variant in ['pure']:
+        print("[CBE-PLMs-CM] Skipping pure (D) for CM as per paper design")
+        return {'task': [], 'concept': []}
+
     num_labels = 5
     num_each_concept_classes = 3
 
@@ -71,6 +76,7 @@ def get_cbm_LLM_mix_joint(
     loss_fn = MixupLoss()
 
     scores = []
+    concept_scores = []
     for epoch in range(cfg.num_epochs):
         head.train()
         model.train()
@@ -103,11 +109,15 @@ def get_cbm_LLM_mix_joint(
         head.eval()
         predict_labels = np.array([])
         true_labels = np.array([])
+        concept_predict_labels = np.array([])
+        concept_true_labels = np.array([])
         with torch.no_grad():
             for batch in tqdm(test_loader, desc="Test", unit="batch"):
                 input_ids = batch["input_ids"].to(device)
                 attention_mask = batch["attention_mask"].to(device)
                 label = batch["label"].to(device)
+                concept_labels = batch["concept_labels"].to(device)
+                concept_labels = torch.t(concept_labels).contiguous().view(-1)
                 outputs = model(input_ids=input_ids, attention_mask=attention_mask)
                 pooled = outputs.last_hidden_state.mean(1)
                 outputs2 = head(pooled)
@@ -115,6 +125,12 @@ def get_cbm_LLM_mix_joint(
                 predictions = torch.argmax(XtoY_output[0], axis=1)
                 predict_labels = np.append(predict_labels, predictions.cpu().numpy())
                 true_labels = np.append(true_labels, label.cpu().numpy())
+                # concept predictions
+                XtoC_output = outputs2[1:]
+                XtoC_logits = torch.cat(XtoC_output, dim=0)
+                concept_predictions = torch.argmax(XtoC_logits, axis=1)
+                concept_predict_labels = np.append(concept_predict_labels, concept_predictions.cpu().numpy())
+                concept_true_labels = np.append(concept_true_labels, concept_labels.cpu().numpy())
         acc = float((predict_labels == true_labels).sum()) / float(len(true_labels)) if len(true_labels) else 0.0
         if len(true_labels):
             labels_unique = np.unique(true_labels)
@@ -126,5 +142,16 @@ def get_cbm_LLM_mix_joint(
             macro_f1 = 0.0
         print(f"Epoch {epoch + 1}: Test Acc = {acc*100} Test Macro F1 = {macro_f1*100}")
         scores.append((acc, macro_f1))
+        # concept metrics
+        c_acc = float((concept_predict_labels == concept_true_labels).sum()) / float(len(concept_true_labels)) if len(concept_true_labels) else 0.0
+        if len(concept_true_labels):
+            c_unique = np.unique(concept_true_labels)
+            c_macro = []
+            for c in c_unique:
+                c_macro.append(f1_score(concept_true_labels == c, concept_predict_labels == c, average='macro'))
+            c_f1 = float(np.mean(c_macro))
+        else:
+            c_f1 = 0.0
+        concept_scores.append((c_acc, c_f1))
 
-    return scores
+    return {'task': scores, 'concept': concept_scores}

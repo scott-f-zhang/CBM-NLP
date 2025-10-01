@@ -111,6 +111,9 @@ def get_cbm_joint(
     model.to(device)
     head.to(device)
 
-    test_acc, test_macro_f1 = test_epoch_joint(model, head, test_loader, device, cfg.model_name == 'lstm')
+    test_acc, test_macro_f1, concept_acc, concept_macro_f1 = test_epoch_joint(model, head, test_loader, device, cfg.model_name == 'lstm')
     print(f"Epoch 1: Test Acc = {test_acc*100} Test Macro F1 = {test_macro_f1*100}")
-    return [(test_acc, test_macro_f1)]
+    return {
+        'task': [(test_acc, test_macro_f1)],
+        'concept': [(concept_acc, concept_macro_f1)],
+    }

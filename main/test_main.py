@@ -85,6 +85,9 @@ def run_experiments_for_function(func_name: str, func):
                 if func_name == 'CBE-PLMs-CM' and model_name == 'lstm':
                     print(f"\t\tSkipping LSTM for {func_name} (not supported)")
                     continue
+                if func_name == 'CBE-PLMs-CM' and dataset == 'cebab' and variant == 'pure':
+                    print("\t\tSkipping pure (D) for CBE-PLMs-CM per paper")
+                    continue
                 try:
                     kwargs = dict(
                         model_name=model_name,
@@ -96,16 +99,30 @@ def run_experiments_for_function(func_name: str, func):
                     )
                     if variant is not None:
                         kwargs['variant'] = variant
-                    score = func(**kwargs)
+                    result = func(**kwargs)
                 except Exception as e:
                     print(f"\t\tWarning: {func_name}/{dataset}/{model_name}/variant={variant} failed: {e}")
-                    score = []
+                    result = []
+                if func_name == 'PLMs':
+                    task_scores = result if isinstance(result, list) else []
+                    concept_scores = []
+                elif func_name == 'CBE-PLMs':
+                    task_scores = result.get('task', []) if isinstance(result, dict) else []
+                    concept_scores = result.get('concept', []) if isinstance(result, dict) else []
+                else:
+                    if isinstance(result, dict):
+                        task_scores = result.get('task', [])
+                        concept_scores = result.get('concept', [])
+                    else:
+                        task_scores = []
+                        concept_scores = []
                 rows.append({
                     'dataset': dataset,
                     'data_type': data_type,
                     'function': func_name,
                     'model': model_name,
-                    'score': score,
+                    'score': task_scores,
+                    'concept_score': concept_scores,
                 })
     return rows
 
@@ -158,18 +175,33 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
     else:
         df_imdb_p = pd.DataFrame(index=pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
 
-    return df, df_cebab_p, df_imdb_p
+    df_concept = df_cebab.copy()
+    df_concept = df_concept[df_concept['function'].isin(["CBE-PLMs", "CBE-PLMs-CM"])].copy()
+    if 'concept_score' in df_concept.columns:
+        df_concept['concept_avg'] = df_concept['concept_score'].apply(get_average_scores)
+        df_concept['concept_fmted'] = df_concept['concept_avg'].apply(get_tuple_2f_fmt)
+        concept_pivot = df_concept.pivot(index=['function', 'model'], columns=['data_type'], values='concept_fmted')
+        concept_pivot = concept_pivot.reset_index()
+        concept_pivot['model'] = concept_pivot['model'].map(mapping)
+        concept_pivot = concept_pivot.set_index(['function', 'model'])
+        concept_pivot = concept_pivot.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
+    else:
+        concept_pivot = pd.DataFrame(index=pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
+
+    return df, df_cebab_p, df_imdb_p, concept_pivot
 
 
 def main():
     df = run_all_experiments()
-    df, dfp_cebab, dfp_imdb = build_pivot_table(df)
+    df, dfp_cebab, dfp_imdb, dfp_concept = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)
 
     print("\nCEBaB Pivot (D vs D^, score_avg as XX.XX/YY.YY):")
     print(dfp_cebab)
     print("\nIMDB Pivot (score_avg as XX.XX/YY.YY):")
     print(dfp_imdb)
+    print("\nCEBaB Concept Pivot (only CBE-PLMs and CM D^):")
+    print(dfp_concept)
     print(f"\nSaved results to: {OUTPUT_CSV}")
 
 
