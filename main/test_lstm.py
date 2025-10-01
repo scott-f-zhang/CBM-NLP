@@ -7,6 +7,8 @@ but filters to the LSTM backbone and excludes CBE-PLMs-CM (not supported for LST
 import os
 import sys
 import pandas as pd
+import traceback
+import torch
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -56,6 +58,7 @@ def get_learning_rate(model_name: str) -> Optional[float]:
 def run_experiments_for_function(func_name: str, func):
     rows = []
     print(f"Running {func_name} (LSTM only)...")
+    print(f"\tCWD={os.getcwd()}  MAIN_DIR={MAIN_DIR}  ROOT_DIR={ROOT_DIR}")
     for dataset in DATASETS:
         print(f"\tRunning dataset: {dataset}...")
         # cebab: D (pure) and D^ (aug); imdb: manual
@@ -69,6 +72,13 @@ def run_experiments_for_function(func_name: str, func):
             print(f"\t\tRunning {model_name}... lr={lr}")
             for variant, data_type in variant_plan:
                 try:
+                    print(f"\t\tVariant={variant}  data_type={data_type}  lr={lr}")
+                    # Quick filesystem diagnostics for checkpoints
+                    std_model = os.path.join(MAIN_DIR, f"{model_name}_model_standard.pth")
+                    std_head = os.path.join(MAIN_DIR, f"{model_name}_classifier_standard.pth")
+                    jt_model = os.path.join(MAIN_DIR, f"{model_name}_joint.pth")
+                    jt_head = os.path.join(MAIN_DIR, f"{model_name}_ModelXtoCtoY_layer_joint.pth")
+                    print(f"\t\tExisting checkpoints before run: std_model={os.path.exists(std_model)} std_head={os.path.exists(std_head)} jt_model={os.path.exists(jt_model)} jt_head={os.path.exists(jt_head)}")
                     score = func(
                         model_name=model_name,
                         num_epochs=BASE_RUN.num_epochs,
@@ -78,8 +88,11 @@ def run_experiments_for_function(func_name: str, func):
                         optimizer_lr=lr,
                         variant=variant,
                     )
+                    print(f"\t\tReturned score len={len(score)} sample={score[:1] if score else score}")
+                    print(f"\t\tExisting checkpoints after run: std_model={os.path.exists(std_model)} std_head={os.path.exists(std_head)} jt_model={os.path.exists(jt_model)} jt_head={os.path.exists(jt_head)}")
                 except Exception as e:
                     print(f"\t\tWarning: {func_name}/{dataset}/{model_name}/variant={variant} failed: {e}")
+                    print(traceback.format_exc())
                     score = []
                 rows.append({
                     'dataset': dataset,
@@ -132,6 +145,23 @@ def build_pivot_table(df: pd.DataFrame):
 
 
 def main():
+    # Print quick env diagnostics
+    print(f"torch.cuda.is_available={torch.cuda.is_available()}")
+    # Dataset paths diagnostics
+    cebab_dir = os.path.join(ROOT_DIR, 'dataset', 'cebab')
+    imdb_dir = os.path.join(ROOT_DIR, 'dataset', 'imdb')
+    print(f"CEBaB dir={cebab_dir} exists={os.path.isdir(cebab_dir)}")
+    print(f"IMDB dir={imdb_dir} exists={os.path.isdir(imdb_dir)}")
+    for p in [
+        os.path.join(cebab_dir, 'train_cebab_new_concept_single.csv'),
+        os.path.join(cebab_dir, 'dev_cebab_new_concept_single.csv'),
+        os.path.join(cebab_dir, 'test_cebab_new_concept_single.csv'),
+        os.path.join(imdb_dir, 'IMDB-train-manual.csv'),
+        os.path.join(imdb_dir, 'IMDB-dev-manual.csv'),
+        os.path.join(imdb_dir, 'IMDB-test-manual.csv'),
+    ]:
+        print(f"path={p} exists={os.path.exists(p)}")
+
     df = run_all_experiments()
     df, dfp_cebab, dfp_imdb = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)
