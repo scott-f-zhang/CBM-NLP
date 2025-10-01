@@ -102,10 +102,7 @@ def run_experiments_for_function(func_name: str, func):
             print(f"\t\tRunning {model_name}... with learning rate: {lr}")
 
             for variant, data_type in variant_plan:
-                # Skip LSTM for CBE-PLMs-CM (not supported in mix-joint)
-                if func_name == 'CBE-PLMs-CM' and model_name == 'lstm':
-                    print(f"\t\tSkipping LSTM for {func_name} (not supported)")
-                    continue
+                # CBE-PLMs-CM supports LSTM, just not on D variants
                 # CM skips D on both datasets (cebab pure, imdb manual)
                 if func_name == 'CBE-PLMs-CM':
                     if (dataset == 'cebab' and variant == 'pure') or (dataset == 'imdb' and variant == 'manual'):

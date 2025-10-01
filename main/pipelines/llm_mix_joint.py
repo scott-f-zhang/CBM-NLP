@@ -33,8 +33,15 @@ def get_cbm_LLM_mix_joint(
     )
     cfg.mode = 'joint' if cfg.mode is None else cfg.mode
 
-    if cfg.model_name not in ['bert-base-uncased', 'roberta-base', 'gpt2']:
-        return [(0, 0)]
+    # CBE-PLMs-CM supports all models including LSTM
+    # Add LSTM support similar to run_imdb/cbm_mix_joint.py
+    if cfg.model_name == 'lstm':
+        # Use the same LSTM model as in main/models/loaders.py
+        from ..models.loaders import load_model_and_tokenizer
+        model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name)
+    else:
+        # Load transformer models
+        model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name)
 
     # Skip D variants on both datasets (cebab pure, imdb manual)
     if (cfg.dataset == 'cebab' and cfg.variant in ['pure']) or (cfg.dataset == 'imdb' and cfg.variant in ['manual']):
@@ -43,8 +50,6 @@ def get_cbm_LLM_mix_joint(
 
     num_labels = 5
     num_each_concept_classes = 3
-
-    model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name)
 
     if cfg.dataset == 'imdb':
         train_ds = IMDBDataset("train", tokenizer, cfg.max_len, variant=cfg.variant)
@@ -62,10 +67,12 @@ def get_cbm_LLM_mix_joint(
 
     # num_concept_labels already set above per dataset
 
+    # Set Lstm=True for LSTM models, following run_imdb/cbm_mix_joint.py
     head = ModelXtoCtoY_function(
         concept_classes=num_each_concept_classes, label_classes=num_labels, n_attributes=num_concept_labels,
         bottleneck=True, expand_dim=0, n_class_attr=num_each_concept_classes,
         use_relu=False, use_sigmoid=False, aux_logits=False,
+        Lstm=(cfg.model_name == 'lstm'),
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -73,6 +80,12 @@ def get_cbm_LLM_mix_joint(
     head.to(device)
 
     optimizer = torch.optim.Adam(list(model.parameters()) + list(head.parameters()), lr=(cfg.optimizer_lr if cfg.optimizer_lr is not None else 1e-5))
+    # Add scheduler for LSTM following run_imdb/cbm_mix_joint.py
+    if cfg.model_name == 'lstm':
+        from torch.optim.lr_scheduler import StepLR
+        scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
+    else:
+        scheduler = None
     loss_fn = MixupLoss()
 
     scores = []
@@ -88,7 +101,13 @@ def get_cbm_LLM_mix_joint(
 
             optimizer.zero_grad()
             outputs = model(input_ids=input_ids, attention_mask=attention_mask)
-            pooled = outputs.last_hidden_state.mean(1)
+            # Handle different model types
+            if hasattr(outputs, 'last_hidden_state'):
+                # Transformer models (BERT, RoBERTa, GPT2)
+                pooled = outputs.last_hidden_state.mean(1)
+            else:
+                # LSTM model returns logits directly
+                pooled = outputs
 
             all_h, c_a, c_b, y_a, y_b, lam = mixup_hidden_concept(pooled, concept_labels, label, alpha=0.4, device=device)
             c_a = torch.t(c_a).contiguous().view(-1)
@@ -104,6 +123,10 @@ def get_cbm_LLM_mix_joint(
             loss = 0.5 * XtoC_loss + XtoY_loss
             loss.backward()
             optimizer.step()
+        
+        # Step scheduler for LSTM
+        if scheduler is not None:
+            scheduler.step()
 
         model.eval()
         head.eval()
@@ -119,7 +142,13 @@ def get_cbm_LLM_mix_joint(
                 concept_labels = batch["concept_labels"].to(device)
                 concept_labels = torch.t(concept_labels).contiguous().view(-1)
                 outputs = model(input_ids=input_ids, attention_mask=attention_mask)
-                pooled = outputs.last_hidden_state.mean(1)
+                # Handle different model types
+                if hasattr(outputs, 'last_hidden_state'):
+                    # Transformer models (BERT, RoBERTa, GPT2)
+                    pooled = outputs.last_hidden_state.mean(1)
+                else:
+                    # LSTM model returns logits directly
+                    pooled = outputs
                 outputs2 = head(pooled)
                 XtoY_output = outputs2[0:1]
                 predictions = torch.argmax(XtoY_output[0], axis=1)
