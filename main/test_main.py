@@ -75,8 +75,8 @@ def run_experiments_for_function(func_name: str, func):
                 ('aug', 'D^'),
             ]
         else:
-            # For IMDB, explicitly use 'manual' and map to D for column alignment
-            variant_plan = [('manual', 'D')]
+            # For IMDB, map manual->D and generated->D^
+            variant_plan = [('manual', 'D'), ('generated', 'D^')]
         for model_name in MODELS:
             lr = get_learning_rate(model_name)
             print(f"\t\tRunning {model_name}... with learning rate: {lr}")
@@ -85,9 +85,11 @@ def run_experiments_for_function(func_name: str, func):
                 if func_name == 'CBE-PLMs-CM' and model_name == 'lstm':
                     print(f"\t\tSkipping LSTM for {func_name} (not supported)")
                     continue
-                if func_name == 'CBE-PLMs-CM' and dataset == 'cebab' and variant == 'pure':
-                    print("\t\tSkipping pure (D) for CBE-PLMs-CM per paper")
-                    continue
+                # CM skips D on both datasets (cebab pure, imdb manual)
+                if func_name == 'CBE-PLMs-CM':
+                    if (dataset == 'cebab' and variant == 'pure') or (dataset == 'imdb' and variant == 'manual'):
+                        print("\t\tSkipping D for CBE-PLMs-CM per paper")
+                        continue
                 try:
                     kwargs = dict(
                         model_name=model_name,

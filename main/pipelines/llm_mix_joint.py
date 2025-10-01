@@ -36,9 +36,9 @@ def get_cbm_LLM_mix_joint(
     if cfg.model_name not in ['bert-base-uncased', 'roberta-base', 'gpt2']:
         return [(0, 0)]
 
-    # Only run for D^ style variants on CEBaB; skip pure D
-    if cfg.dataset == 'cebab' and cfg.variant in ['pure']:
-        print("[CBE-PLMs-CM] Skipping pure (D) for CM as per paper design")
+    # Skip D variants on both datasets (cebab pure, imdb manual)
+    if (cfg.dataset == 'cebab' and cfg.variant in ['pure']) or (cfg.dataset == 'imdb' and cfg.variant in ['manual']):
+        print("[CBE-PLMs-CM] Skipping D for CM as per paper design")
         return {'task': [], 'concept': []}
 
     num_labels = 5
