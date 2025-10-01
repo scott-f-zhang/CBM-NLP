@@ -186,6 +186,9 @@ def build_pivot_table(df: pd.DataFrame):
     df['score_avg'] = df.score.apply(get_average_scores)
     df['score_fmted'] = df.score_avg.apply(get_tuple_2f_fmt)
 
+    # Remove duplicates by keeping the last occurrence (latest run) for each (function, model, data_type)
+    df = df.drop_duplicates(subset=['function', 'model', 'data_type'], keep='last')
+
     # Pivot by data_type (D vs D^) like the notebook for CEBaB
     dfp = df.pivot(index=['function', 'model'], columns=['data_type'], values='score_fmted')
 
