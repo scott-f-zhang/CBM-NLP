@@ -128,7 +128,10 @@ def build_pivot_table(df: pd.DataFrame):
     df_cebab = df[df['dataset'] == 'cebab'].copy()
     if not df_cebab.empty:
         dfp_c = df_cebab.pivot(index=['function', 'model'], columns=['data_type'], values='score_fmted')
-        dfp_c = dfp_c.reset_index().set_index(['function', 'model'])
+        # Normalize model display names to match reindex order
+        dfp_c = dfp_c.reset_index()
+        dfp_c['model'] = dfp_c['model'].map({'lstm': 'LSTM'}).fillna(dfp_c['model'])
+        dfp_c = dfp_c.set_index(['function', 'model'])
         dfp_c = dfp_c.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
     else:
         dfp_c = pd.DataFrame(index=pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
@@ -136,7 +139,9 @@ def build_pivot_table(df: pd.DataFrame):
     df_imdb = df[df['dataset'] == 'imdb'].copy()
     if not df_imdb.empty:
         dfp_i = df_imdb.pivot(index=['function', 'model'], columns=['dataset'], values='score_fmted')
-        dfp_i = dfp_i.reset_index().set_index(['function', 'model'])
+        dfp_i = dfp_i.reset_index()
+        dfp_i['model'] = dfp_i['model'].map({'lstm': 'LSTM'}).fillna(dfp_i['model'])
+        dfp_i = dfp_i.set_index(['function', 'model'])
         dfp_i = dfp_i.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
     else:
         dfp_i = pd.DataFrame(index=pd.MultiIndex.from_product([func_order, model_order], names=["function", "model"]))
