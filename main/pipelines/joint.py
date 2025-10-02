@@ -74,7 +74,8 @@ def get_cbm_joint(
     model.to(device)
     head.to(device)
 
-    optimizer = torch.optim.Adam(list(model.parameters()) + list(head.parameters()), lr=(cfg.optimizer_lr if cfg.optimizer_lr is not None else 1e-5))
+    default_lr = 1e-2 if cfg.model_name == 'lstm' else 1e-5
+    optimizer = torch.optim.Adam(list(model.parameters()) + list(head.parameters()), lr=(cfg.optimizer_lr if cfg.optimizer_lr is not None else default_lr))
     if cfg.model_name == 'lstm':
         scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
     criterion = torch.nn.CrossEntropyLoss()

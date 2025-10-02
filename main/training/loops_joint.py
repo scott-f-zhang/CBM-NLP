@@ -28,7 +28,8 @@ def train_epoch_joint(model, head, data_loader: DataLoader, device, loss_fn, lam
         outputs2 = head(pooled_output)
         XtoC_output = outputs2[1:]
         XtoY_output = outputs2[0:1]
-        XtoC_logits = torch.nn.Sigmoid()(torch.cat(XtoC_output, dim=0))
+        # For multi-class concept prediction, feed raw logits to CrossEntropyLoss
+        XtoC_logits = torch.cat(XtoC_output, dim=0)
         XtoC_loss = ce(XtoC_logits, concept_labels)
         XtoY_loss = ce(XtoY_output[0], label)
         loss = XtoC_loss * lambda_XtoC + XtoY_loss
