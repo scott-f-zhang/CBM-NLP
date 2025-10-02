@@ -63,8 +63,11 @@ DEFAULT_FASTTEXT_BIN = "/scratch/fzhan113/fasttext/cc.en.300.bin"
 
 def resolve_fasttext_path(explicit_path: Optional[str]) -> Optional[str]:
     if explicit_path:
+        print(f"Using explicit FastText binary path: {explicit_path}")
         return explicit_path
     env_path = os.environ.get("FASTTEXT_BIN")
     if env_path:
+        print(f"Using env FASTTEXT_BIN: {env_path}")
         return env_path
+    print(f"Using default FastText binary path: {DEFAULT_FASTTEXT_BIN}")
     return DEFAULT_FASTTEXT_BIN
