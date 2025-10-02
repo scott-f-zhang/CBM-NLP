@@ -34,14 +34,8 @@ def get_cbm_LLM_mix_joint(
     cfg.mode = 'joint' if cfg.mode is None else cfg.mode
 
     # CBE-PLMs-CM supports all models including LSTM
-    # Add LSTM support similar to run_imdb/cbm_mix_joint.py
-    if cfg.model_name == 'lstm':
-        # Use the same LSTM model as in main/models/loaders.py
-        from ..models.loaders import load_model_and_tokenizer
-        model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name)
-    else:
-        # Load transformer models
-        model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name)
+    # Load model and tokenizer for all model types
+    model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name)
 
     # Skip D variants on both datasets (cebab pure, imdb manual)
     if (cfg.dataset == 'cebab' and cfg.variant in ['pure']) or (cfg.dataset == 'imdb' and cfg.variant in ['manual']):
