@@ -35,7 +35,7 @@ def get_cbm_LLM_mix_joint(
 
     # CBE-PLMs-CM supports all models including LSTM
     # Load model and tokenizer for all model types
-    model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name)
+    model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name, fasttext_path=fasttext_path)
 
     # Skip D variants on both datasets (cebab pure, imdb manual)
     if (cfg.dataset == 'cebab' and cfg.variant in ['pure']) or (cfg.dataset == 'imdb' and cfg.variant in ['manual']):
@@ -73,7 +73,9 @@ def get_cbm_LLM_mix_joint(
     model.to(device)
     head.to(device)
 
-    optimizer = torch.optim.Adam(list(model.parameters()) + list(head.parameters()), lr=(cfg.optimizer_lr if cfg.optimizer_lr is not None else 1e-5))
+    # Set a higher default LR for LSTM to match standard/joint training behavior
+    default_lr = 1e-2 if cfg.model_name == 'lstm' else 1e-5
+    optimizer = torch.optim.Adam(list(model.parameters()) + list(head.parameters()), lr=(cfg.optimizer_lr if cfg.optimizer_lr is not None else default_lr))
     # Add scheduler for LSTM following run_imdb/cbm_mix_joint.py
     if cfg.model_name == 'lstm':
         from torch.optim.lr_scheduler import StepLR
