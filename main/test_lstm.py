@@ -45,7 +45,7 @@ def get_tuple_2f_fmt(tp):
 
 BASE_RUN = RunConfig(
     num_epochs=20,
-    max_len=512,
+    max_len=128,
     batch_size=8,
 )
 
@@ -70,7 +70,7 @@ def _variant_plan_for_dataset(dataset: str, variants_filter: str):
     return plans
 
 
-def run_experiments_for_function(func_name: str, func, datasets_sel, variants_filter: str, metrics_filter: str):
+def run_experiments_for_function(func_name: str, func, datasets_sel, variants_filter: str, metrics_filter: str, fasttext_path: Optional[str]):
     rows = []
     print(f"Running {func_name} (LSTM only)...")
     print(f"\tCWD={os.getcwd()}  MAIN_DIR={MAIN_DIR}  ROOT_DIR={ROOT_DIR}")
@@ -98,6 +98,7 @@ def run_experiments_for_function(func_name: str, func, datasets_sel, variants_fi
                         batch_size=BASE_RUN.batch_size,
                         optimizer_lr=lr,
                         variant=variant,
+                        fasttext_path=fasttext_path,
                     )
                     # score is list[(acc,f1)] for PLMs, dict for joint; filter by metrics
                     if isinstance(score, dict):
@@ -124,7 +125,7 @@ def run_experiments_for_function(func_name: str, func, datasets_sel, variants_fi
     return rows
 
 
-def run_all_experiments(datasets_sel, variants_filter: str, metrics_filter: str) -> pd.DataFrame:
+def run_all_experiments(datasets_sel, variants_filter: str, metrics_filter: str, fasttext_path: Optional[str]) -> pd.DataFrame:
     funcs = {
         'PLMs': get_cbm_standard,
         'CBE-PLMs': get_cbm_joint,
@@ -132,7 +133,7 @@ def run_all_experiments(datasets_sel, variants_filter: str, metrics_filter: str)
     }
     all_rows = []
     for name, fn in funcs.items():
-        all_rows.extend(run_experiments_for_function(name, fn, datasets_sel, variants_filter, metrics_filter))
+        all_rows.extend(run_experiments_for_function(name, fn, datasets_sel, variants_filter, metrics_filter, fasttext_path))
     return pd.DataFrame(all_rows)
 
 
@@ -174,11 +175,17 @@ def main():
     parser.add_argument("--datasets", default="all", choices=["cebab", "imdb", "all"], help="Datasets to run")
     parser.add_argument("--variants", default="all", choices=["D", "D^", "all"], help="Data variants to run")
     parser.add_argument("--metrics", default="all", choices=["task", "concept", "all"], help="Which metrics to evaluate/report")
+    parser.add_argument("--max_len", type=int, default=None, help="Override max sequence length (default 128)")
+    parser.add_argument("--fasttext", type=str, default=None, help="Path to FastText cc.en.300.bin; or set FASTTEXT_BIN env var")
     args = parser.parse_args()
 
     datasets_sel = DATASETS if args.datasets == "all" else [args.datasets]
     variants_filter = args.variants
     metrics_filter = args.metrics
+    if args.max_len is not None:
+        global BASE_RUN
+        BASE_RUN = RunConfig(num_epochs=BASE_RUN.num_epochs, max_len=args.max_len, batch_size=BASE_RUN.batch_size)
+    fasttext_path = args.fasttext or os.environ.get("FASTTEXT_BIN")
     # Print quick env diagnostics
     print(f"torch.cuda.is_available={torch.cuda.is_available()}")
     # Dataset paths diagnostics
@@ -196,7 +203,7 @@ def main():
     ]:
         print(f"path={p} exists={os.path.exists(p)}")
 
-    df = run_all_experiments(datasets_sel, variants_filter, metrics_filter)
+    df = run_all_experiments(datasets_sel, variants_filter, metrics_filter, fasttext_path)
     df, dfp_cebab, dfp_imdb = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)
     print("\nCEBaB (LSTM) D vs D^:")
