@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Quick LSTM-only sanity test for PLMs and CBE-PLMs.
+"""LSTM-only test runner for PLMs and CBE-PLMs with flexible switches.
 
-Runs 1 epoch per setting and prints a compact pivot. This mirrors main/test_main.py
-but filters to the LSTM backbone and excludes CBE-PLMs-CM (not supported for LSTM).
+Features:
+- 1 epoch quick runs
+- filters: dataset(s) [cebab/imdb/all], variant(s) [D/D^/all], metrics [task/concept/all]
+- excludes CBE-PLMs-CM for LSTM per paper
 """
 import os
 import sys
 import pandas as pd
 import traceback
 import torch
+import argparse
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -41,7 +44,7 @@ def get_tuple_2f_fmt(tp):
 
 
 BASE_RUN = RunConfig(
-    num_epochs=1,
+    num_epochs=20,
     max_len=512,
     batch_size=8,
 )
@@ -55,17 +58,25 @@ def get_learning_rate(model_name: str) -> Optional[float]:
     return {"lstm": 1e-2}.get(model_name)
 
 
-def run_experiments_for_function(func_name: str, func):
+def _variant_plan_for_dataset(dataset: str, variants_filter: str):
+    # Map D/D^ to internal variant strings per dataset
+    mapping_cebab = {"D": ("pure", "D"), "D^": ("aug", "D^")}
+    mapping_imdb = {"D": ("manual", "D"), "D^": ("gen", "D^")}
+    plans = []
+    if variants_filter in ("all", "D"):
+        plans.append(mapping_cebab["D"] if dataset == "cebab" else mapping_imdb["D"])
+    if variants_filter in ("all", "D^"):
+        plans.append(mapping_cebab["D^"] if dataset == "cebab" else mapping_imdb["D^"])
+    return plans
+
+
+def run_experiments_for_function(func_name: str, func, datasets_sel, variants_filter: str, metrics_filter: str):
     rows = []
     print(f"Running {func_name} (LSTM only)...")
     print(f"\tCWD={os.getcwd()}  MAIN_DIR={MAIN_DIR}  ROOT_DIR={ROOT_DIR}")
-    for dataset in DATASETS:
+    for dataset in datasets_sel:
         print(f"\tRunning dataset: {dataset}...")
-        # cebab: D (pure) and D^ (aug); imdb: manual
-        if dataset == 'cebab':
-            variant_plan = [('pure', 'D'), ('aug', 'D^')]
-        else:
-            variant_plan = [('manual', dataset)]
+        variant_plan = _variant_plan_for_dataset(dataset, variants_filter)
 
         for model_name in MODELS:
             lr = get_learning_rate(model_name)
@@ -88,23 +99,32 @@ def run_experiments_for_function(func_name: str, func):
                         optimizer_lr=lr,
                         variant=variant,
                     )
-                    print(f"\t\tReturned score len={len(score)} sample={score[:1] if score else score}")
+                    # score is list[(acc,f1)] for PLMs, dict for joint; filter by metrics
+                    if isinstance(score, dict):
+                        task_scores = score.get('task', []) if metrics_filter in ("task", "all") else []
+                        concept_scores = score.get('concept', []) if metrics_filter in ("concept", "all") else []
+                        score_out = {k: v for k, v in (("task", task_scores), ("concept", concept_scores)) if v}
+                    else:
+                        # PLMs returns task-only list
+                        score_out = score if metrics_filter in ("task", "all") else []
+                    print(f"\t\tReturned score type={'dict' if isinstance(score_out, dict) else 'list'}")
                     print(f"\t\tExisting checkpoints after run: std_model={os.path.exists(std_model)} std_head={os.path.exists(std_head)} jt_model={os.path.exists(jt_model)} jt_head={os.path.exists(jt_head)}")
                 except Exception as e:
                     print(f"\t\tWarning: {func_name}/{dataset}/{model_name}/variant={variant} failed: {e}")
                     print(traceback.format_exc())
-                    score = []
+                    score_out = []
                 rows.append({
                     'dataset': dataset,
                     'data_type': data_type,
                     'function': func_name,
                     'model': model_name,
-                    'score': score,
+                    'score': score_out if not isinstance(score_out, dict) else score_out.get('task', []),
+                    'concept_score': [] if not isinstance(score_out, dict) else score_out.get('concept', []),
                 })
     return rows
 
 
-def run_all_experiments() -> pd.DataFrame:
+def run_all_experiments(datasets_sel, variants_filter: str, metrics_filter: str) -> pd.DataFrame:
     funcs = {
         'PLMs': get_cbm_standard,
         'CBE-PLMs': get_cbm_joint,
@@ -112,7 +132,7 @@ def run_all_experiments() -> pd.DataFrame:
     }
     all_rows = []
     for name, fn in funcs.items():
-        all_rows.extend(run_experiments_for_function(name, fn))
+        all_rows.extend(run_experiments_for_function(name, fn, datasets_sel, variants_filter, metrics_filter))
     return pd.DataFrame(all_rows)
 
 
@@ -150,6 +170,15 @@ def build_pivot_table(df: pd.DataFrame):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="LSTM test with dataset/variant/metric filters")
+    parser.add_argument("--datasets", default="all", choices=["cebab", "imdb", "all"], help="Datasets to run")
+    parser.add_argument("--variants", default="all", choices=["D", "D^", "all"], help="Data variants to run")
+    parser.add_argument("--metrics", default="all", choices=["task", "concept", "all"], help="Which metrics to evaluate/report")
+    args = parser.parse_args()
+
+    datasets_sel = DATASETS if args.datasets == "all" else [args.datasets]
+    variants_filter = args.variants
+    metrics_filter = args.metrics
     # Print quick env diagnostics
     print(f"torch.cuda.is_available={torch.cuda.is_available()}")
     # Dataset paths diagnostics
@@ -167,7 +196,7 @@ def main():
     ]:
         print(f"path={p} exists={os.path.exists(p)}")
 
-    df = run_all_experiments()
+    df = run_all_experiments(datasets_sel, variants_filter, metrics_filter)
     df, dfp_cebab, dfp_imdb = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)
     print("\nCEBaB (LSTM) D vs D^:")
