@@ -43,14 +43,14 @@ def get_tuple_2f_fmt(tp):
     return f"{f1:.2f}/{f2:.2f}"
 
 
-BASE_RUN = RunConfig(num_epochs=1, max_len=512, batch_size=8)
+BASE_RUN = RunConfig(num_epochs=20, max_len=128, batch_size=8)
 DATASETS = ["cebab", "imdb"]
 MODEL_NAME = "gpt2"
 OUTPUT_CSV = os.path.join(MAIN_DIR, "result_gpt2_test.csv")
 
 
 def get_learning_rate(model_name: str) -> Optional[float]:
-    return {"gpt2": 1e-4}.get(model_name)
+    return {"gpt2": 1e-5}.get(model_name)
 
 
 def _variant_plan_for_dataset(dataset: str, variants_filter: str):
