@@ -2,6 +2,7 @@ import os
 import torch
 from transformers import RobertaTokenizer, RobertaModel, BertModel, BertTokenizer, GPT2Model, GPT2Tokenizer
 from typing import Tuple, Optional
+from main.config.defaults import resolve_fasttext_path
 
 try:
     from gensim.models import FastText
@@ -38,9 +39,7 @@ class BiLSTMWithDotAttention(torch.nn.Module):
 
 
 def _load_fasttext_embeddings(fasttext_path: Optional[str], tokenizer) -> Optional[torch.Tensor]:
-    if fasttext_path is None:
-        # allow env override
-        fasttext_path = os.environ.get("FASTTEXT_BIN")
+    fasttext_path = resolve_fasttext_path(fasttext_path)
     if not fasttext_path:
         return None
     if FastText is None:

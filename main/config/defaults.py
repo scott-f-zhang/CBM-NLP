@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
+import os
 
 
 @dataclass
@@ -53,3 +54,17 @@ def make_run_config(
     if optimizer_lr is not None:
         cfg.optimizer_lr = optimizer_lr
     return cfg
+
+
+# Single source of truth for FastText binary path.
+# Order of resolution: explicit arg > env FASTTEXT_BIN > project default.
+DEFAULT_FASTTEXT_BIN = "/scratch/fzhan113/fasttext/cc.en.300.bin"
+
+
+def resolve_fasttext_path(explicit_path: Optional[str]) -> Optional[str]:
+    if explicit_path:
+        return explicit_path
+    env_path = os.environ.get("FASTTEXT_BIN")
+    if env_path:
+        return env_path
+    return DEFAULT_FASTTEXT_BIN
