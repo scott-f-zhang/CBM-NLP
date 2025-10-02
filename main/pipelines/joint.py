@@ -107,6 +107,10 @@ def get_cbm_joint(
             torch.save(model, f"./{cfg.model_name}_joint.pth")
             torch.save(head, f"./{cfg.model_name}_ModelXtoCtoY_layer_joint.pth")
 
+        # Step LR scheduler for LSTM after each epoch
+        if cfg.model_name == 'lstm':
+            scheduler.step()
+
     model = torch.load(f"./{cfg.model_name}_joint.pth", weights_only=False)
     head = torch.load(f"./{cfg.model_name}_ModelXtoCtoY_layer_joint.pth", weights_only=False)
     model.to(device)
