@@ -9,6 +9,7 @@ from ..config.defaults import make_run_config
 from ..models.loaders import load_model_and_tokenizer
 from ..data.cebab import CEBaBDataset
 from ..data.imdb import IMDBDataset
+from ..data.essay import EssayDataset
 from ..training.mixup import mixup_hidden_concept, MixupLoss
 
 from run_cebab.cbm_models import ModelXtoCtoY_function
@@ -37,8 +38,8 @@ def get_cbm_LLM_mix_joint(
     # Load model and tokenizer for all model types
     model, tokenizer, hidden_size = load_model_and_tokenizer(cfg.model_name, fasttext_path=fasttext_path)
 
-    # Skip D variants on both datasets (cebab pure, imdb manual)
-    if (cfg.dataset == 'cebab' and cfg.variant in ['pure']) or (cfg.dataset == 'imdb' and cfg.variant in ['manual']):
+    # Skip D variants on datasets for CM per paper design (use D^ only)
+    if (cfg.dataset == 'cebab' and cfg.variant in ['pure']) or (cfg.dataset == 'imdb' and cfg.variant in ['manual']) or (cfg.dataset == 'essay' and cfg.variant in ['manual']):
         print("[CBE-PLMs-CM] Skipping D for CM as per paper design")
         return {'task': [], 'concept': []}
 
@@ -50,6 +51,12 @@ def get_cbm_LLM_mix_joint(
         test_ds = IMDBDataset("test", tokenizer, cfg.max_len, variant=cfg.variant)
         num_labels = 2
         num_concept_labels = 8 if getattr(train_ds, "extra", None) is not None else 4
+    elif cfg.dataset == 'essay':
+        # EssayDataset prepared with 8 concept columns, binary task
+        train_ds = EssayDataset("train", tokenizer, cfg.max_len, variant=(cfg.variant if cfg.variant in ("manual","generated") else "generated"))
+        test_ds = EssayDataset("test", tokenizer, cfg.max_len, variant=(cfg.variant if cfg.variant in ("manual","generated") else "generated"))
+        num_labels = 2
+        num_concept_labels = 8
     else:
         train_ds = CEBaBDataset("train", tokenizer, cfg.max_len, variant=cfg.variant)
         test_ds = CEBaBDataset("test", tokenizer, cfg.max_len, variant=cfg.variant)
