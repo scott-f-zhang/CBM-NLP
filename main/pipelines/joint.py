@@ -7,6 +7,7 @@ from ..config.defaults import make_run_config
 from ..models.loaders import load_model_and_tokenizer
 from ..data.cebab import CEBaBDataset
 from ..data.imdb import IMDBDataset
+from ..data.essay import EssayDataset
 from ..training.loops_joint import train_epoch_joint, eval_epoch_joint, test_epoch_joint
 
 from run_cebab.cbm_models import ModelXtoCtoY_function
@@ -44,6 +45,12 @@ def get_cbm_joint(
         test_ds = IMDBDataset("test", tokenizer, cfg.max_len, variant=cfg.variant)
         num_labels = 2
         num_concept_labels = 8 if getattr(train_ds, "extra", None) is not None else 4
+    elif cfg.dataset == 'essay':
+        train_ds = EssayDataset("train", tokenizer, cfg.max_len, variant=(cfg.variant if cfg.variant in ("manual","generated") else "manual"))
+        val_ds = EssayDataset("val", tokenizer, cfg.max_len, variant=(cfg.variant if cfg.variant in ("manual","generated") else "manual"))
+        test_ds = EssayDataset("test", tokenizer, cfg.max_len, variant=(cfg.variant if cfg.variant in ("manual","generated") else "manual"))
+        num_labels = 2
+        num_concept_labels = 8
     else:
         train_ds = CEBaBDataset("train", tokenizer, cfg.max_len, variant=cfg.variant)
         val_ds = CEBaBDataset("val", tokenizer, cfg.max_len, variant=cfg.variant)
