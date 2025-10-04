@@ -13,13 +13,13 @@ To demonstrate that **CBE-PLMs outperform PLMs**, all hyperparameters must be **
 | **Max Length** | 512 | Standard for transformer models |
 | **Early Stopping** | Patience=5 | Prevents overfitting |
 
-### **Learning Rates (Unified)**
+### **Learning Rates (Dataset-Optimized)**
 | Model | Learning Rate | Source |
 |-------|---------------|--------|
-| **BERT** | 1e-5 | run_cebab/main consistency |
-| **RoBERTa** | 1e-5 | run_cebab/main consistency |
-| **GPT2** | 1e-4 | run_cebab/main consistency |
-| **LSTM** | 1e-2 | run_cebab/main consistency |
+| **BERT** | 2e-5 | Essay dataset LR finder (Joint optimal) |
+| **RoBERTa** | 2e-5 | Essay dataset LR finder (Joint optimal) |
+| **GPT2** | 5e-5 | Essay dataset LR finder (Joint optimal) |
+| **LSTM** | 5e-4 | Essay dataset LR finder (Joint optimal) |
 
 ### **Model Architecture**
 | Component | Setting | Justification |
@@ -68,12 +68,12 @@ BASE_RUN = RunConfig(
     batch_size=8,       # Consistent across experiments
 )
 
-# Unified learning rates
+# Dataset-optimized learning rates (from LR finder)
 LEARNING_RATES = {
-    'bert-base-uncased': 1e-5,
-    'roberta-base': 1e-5,
-    'gpt2': 1e-4,
-    'lstm': 1e-2,
+    'bert-base-uncased': 2e-5,  # Joint optimal from LR finder
+    'roberta-base': 2e-5,       # Joint optimal from LR finder
+    'gpt2': 5e-5,               # Joint optimal from LR finder
+    'lstm': 5e-4,               # Joint optimal from LR finder
 }
 ```
 

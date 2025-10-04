@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Run essay dataset experiments WITH early stopping and print a pivot identical to main.py style.
+"""Essay experiments without early stopping for fair comparison.
 
-This script mirrors main/main.py but targets only the essay dataset and prints a
-unified pivot with (dataset='essay', D/D^, task/concept) columns.
-
-NOTE: This script uses early stopping (patience=5 epochs). For fair comparison
-without early stopping, use test_essay_no_early_stopping.py instead.
+This script runs experiments with fixed 20 epochs (no early stopping) to ensure
+fair comparison between PLMs and CBE-PLMs.
 """
+
 import os
 import sys
 import pandas as pd
@@ -19,7 +17,6 @@ if ROOT_DIR not in sys.path:
 from main import (
     get_cbm_standard, # no concept, baseline
     get_cbm_joint,    # with concept, human annotated
-    # get_cbm_LLM_mix_joint, # not needed for PLMs vs CBE-PLMs comparison
 )
 from main.config.defaults import RunConfig
 
@@ -41,15 +38,14 @@ def get_tuple_2f_fmt(tp):
     return f"{f1:.2f}/{f2:.2f}"
 
 
-# Base settings (aligned with run_cebab and main/main.py for fair comparison)
+# Base settings - NO EARLY STOPPING
 BASE_RUN = RunConfig(
-    num_epochs=20,  # Unified with run_cebab and main experiments
+    num_epochs=20,  # Fixed 20 epochs, no early stopping
     max_len=512,
     batch_size=8,
 )
 
 DATASET = "essay"
-# Test all models with optimal learning rates
 MODELS = ["bert-base-uncased", "roberta-base", "gpt2", "lstm"]
 
 # Learning rate configuration
@@ -57,24 +53,13 @@ LR_TYPE = "dataset_optimal"  # Options: "dataset_optimal" or "universal"
 
 # Save results to test_results directory
 TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_essay_early_stopping_{LR_TYPE}.csv")
+OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_essay_no_early_stopping_{LR_TYPE}.csv")
 
 
 def get_learning_rate(model_name: str, lr_type: str = "dataset_optimal"):
-    """Get learning rate for a model with option to switch between different settings.
-    
-    Args:
-        model_name: Name of the model
-        lr_type: Type of learning rate to use
-            - "dataset_optimal": Optimal learning rates found by LR finder for essay dataset
-            - "universal": Universal learning rates consistent with run_cebab/main
-    
-    Returns:
-        Learning rate for the specified model
-    """
+    """Get learning rate for a model with option to switch between different settings."""
     
     if lr_type == "dataset_optimal":
-        # Optimal learning rates found by learning rate finder for essay dataset
         return {
             'lstm': 5e-4,           # Joint optimal: 5e-4 (from LR finder)
             'gpt2': 5e-5,           # Joint optimal: 5e-5 (from LR finder)
@@ -83,7 +68,6 @@ def get_learning_rate(model_name: str, lr_type: str = "dataset_optimal"):
         }.get(model_name, 1e-5)
     
     elif lr_type == "universal":
-        # Universal learning rates consistent with run_cebab and main/test_main.py
         return {
             'lstm': 1e-2,           # Universal: 1e-2 (consistent with run_cebab)
             'gpt2': 1e-4,           # Universal: 1e-4 (consistent with run_cebab)
@@ -97,7 +81,7 @@ def get_learning_rate(model_name: str, lr_type: str = "dataset_optimal"):
 
 def run_experiments_for_function(func_name: str, func):
     rows = []
-    print(f"Running {func_name}...")
+    print(f"Running {func_name} (NO EARLY STOPPING - Fixed 20 epochs)...")
 
     # essay: only use manual variant (D) for both PLMs and CBE-PLMs
     variant_plan = [("manual", "D")]
@@ -153,7 +137,6 @@ def run_all_experiments() -> pd.DataFrame:
     plms_funcs = {
         'PLMs': get_cbm_standard,
         'CBE-PLMs': get_cbm_joint,
-        # 'CBE-PLMs-CM': get_cbm_LLM_mix_joint,  # Not needed for this comparison
     }
     all_rows = []
     for fname, f in plms_funcs.items():
@@ -167,7 +150,7 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
     df['score_fmted'] = df.score_avg.apply(get_tuple_2f_fmt)
 
     func_order = ["PLMs", "CBE-PLMs"]
-    model_order = ["BERT", "RoBERTa", "GPT2", "LSTM"]  # all models
+    model_order = ["BERT", "RoBERTa", "GPT2", "LSTM"]
     mapping = {
         'lstm': 'LSTM',
         'gpt2': 'GPT2',
@@ -213,8 +196,13 @@ def main():
     # Ensure test_results directory exists
     os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
     
+    print("=" * 80)
+    print("ESSAY EXPERIMENTS - NO EARLY STOPPING")
+    print("=" * 80)
     print(f"Using learning rate type: {LR_TYPE}")
+    print(f"Fixed epochs: {BASE_RUN.num_epochs} (NO EARLY STOPPING)")
     print(f"Results will be saved to: {OUTPUT_CSV}")
+    print("=" * 80)
     
     df = run_all_experiments()
     df, dfp = build_pivot_table(df)
