@@ -54,7 +54,14 @@ OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", "result_essay.csv")
 
 
 def get_learning_rate(model_name: str):
-    """Optimal learning rates found by get_learning_rate.py for essay dataset."""
+    """Optimal learning rates found by get_learning_rate.py for essay dataset (7:2:1 split).
+    
+    Results from latest LR finder run:
+    - bert-base-uncased: standard=5e-05, joint=2e-05
+    - roberta-base: standard=1e-05, joint=2e-05  
+    - gpt2: standard=2e-04, joint=5e-05
+    - lstm: standard=1e-04, joint=5e-04
+    """
     return {
         'lstm': 5e-4,  # Joint: 5e-4, Standard: 1e-4
         'gpt2': 5e-5,  # Joint: 5e-5, Standard: 2e-4

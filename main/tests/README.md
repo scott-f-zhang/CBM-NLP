@@ -22,7 +22,10 @@ This directory contains test scripts for the CBM-NLP project.
 
 ### From Project Root
 ```bash
-# Run essay experiments
+# Run complete essay experiments (recommended)
+python main/run_essay.py
+
+# Run essay experiments directly
 python main/tests/test_essay.py
 
 # Test early stopping
