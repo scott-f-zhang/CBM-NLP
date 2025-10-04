@@ -9,8 +9,8 @@ import sys
 import pandas as pd
 
 # Ensure project root on sys.path so we can import the main package
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+MAIN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
@@ -51,7 +51,9 @@ BASE_RUN = RunConfig(
 DATASETS = ["cebab", "imdb"]
 MODELS = ["bert-base-uncased", "roberta-base", "gpt2", "lstm"]
 
-OUTPUT_CSV = os.path.join(MAIN_DIR, "result_test.csv")
+# Output CSV path - save to test_results directory
+TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", "result_test.csv")
 
 
 def get_learning_rate(model_name: str) -> Optional[float]:
@@ -193,6 +195,9 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main():
+    # Ensure test_results directory exists
+    os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
+    
     df = run_all_experiments()
     df, dfp = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)

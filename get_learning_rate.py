@@ -231,8 +231,14 @@ def main():
     # Run learning rate finder
     results = run_lr_finder()
     
-    # Save results
-    df = save_results(results)
+    # Save results to test_results directory
+    import os
+    tests_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "main", "tests")
+    test_results_dir = os.path.join(tests_dir, "test_results")
+    os.makedirs(test_results_dir, exist_ok=True)
+    output_file = os.path.join(test_results_dir, "lr_finder_results.csv")
+    
+    df = save_results(results, output_file)
     
     # Print summary
     print_summary(results)

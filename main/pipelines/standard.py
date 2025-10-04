@@ -82,19 +82,29 @@ def get_cbm_standard(
     criterion = torch.nn.CrossEntropyLoss()
 
     best_acc = 0.0
+    patience = 5  # Early stopping patience
+    patience_counter = 0
+    
     for epoch in range(cfg.num_epochs):
         train_one_epoch(model, head, train_loader, device, criterion, optimizer, cfg.model_name == 'lstm')
         val_acc, val_f1 = evaluate(model, head, val_loader, device, cfg.model_name == 'lstm')
         print(f"Epoch {epoch + 1}: Val Acc = {val_acc*100} Val Macro F1 = {val_f1*100}")
-        # Always save on the first epoch to ensure a checkpoint exists
-        if epoch == 0 and best_acc == 0.0:
-            best_acc = val_acc
-            torch.save(head, f"./{cfg.model_name}_classifier_standard.pth")
-            torch.save(model, f"./{cfg.model_name}_model_standard.pth")
+        
+        # Early stopping logic
         if val_acc > best_acc:
             best_acc = val_acc
+            patience_counter = 0  # Reset patience counter
             torch.save(head, f"./{cfg.model_name}_classifier_standard.pth")
             torch.save(model, f"./{cfg.model_name}_model_standard.pth")
+            print(f"  -> New best validation accuracy: {best_acc*100:.2f}%")
+        else:
+            patience_counter += 1
+            print(f"  -> No improvement for {patience_counter} epochs (patience: {patience})")
+            
+            # Early stopping
+            if patience_counter >= patience:
+                print(f"Early stopping at epoch {epoch + 1} (no improvement for {patience} epochs)")
+                break
 
     # test
     model = torch.load(f"./{cfg.model_name}_model_standard.pth", weights_only=False)

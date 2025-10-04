@@ -88,6 +88,9 @@ def get_cbm_joint(
     criterion = torch.nn.CrossEntropyLoss()
 
     best_acc = 0.0
+    patience = 5  # Early stopping patience
+    patience_counter = 0
+    
     for epoch in range(cfg.num_epochs):
         train_epoch_joint(
             model,
@@ -104,15 +107,22 @@ def get_cbm_joint(
             f"Val concept Macro F1 = {metrics['concept_macro_f1']*100}"
         )
         print(f"Epoch {epoch + 1}: Val Acc = {metrics['val_acc']*100} Val Macro F1 = {metrics['val_macro_f1']*100}")
-        # Always save on the first epoch to ensure a checkpoint exists
-        if epoch == 0 and best_acc == 0.0:
-            best_acc = metrics['val_acc']
-            torch.save(model, f"./{cfg.model_name}_joint.pth")
-            torch.save(head, f"./{cfg.model_name}_ModelXtoCtoY_layer_joint.pth")
+        
+        # Early stopping logic
         if metrics['val_acc'] > best_acc:
             best_acc = metrics['val_acc']
+            patience_counter = 0  # Reset patience counter
             torch.save(model, f"./{cfg.model_name}_joint.pth")
             torch.save(head, f"./{cfg.model_name}_ModelXtoCtoY_layer_joint.pth")
+            print(f"  -> New best validation accuracy: {best_acc*100:.2f}%")
+        else:
+            patience_counter += 1
+            print(f"  -> No improvement for {patience_counter} epochs (patience: {patience})")
+            
+            # Early stopping
+            if patience_counter >= patience:
+                print(f"Early stopping at epoch {epoch + 1} (no improvement for {patience} epochs)")
+                break
 
         # Step LR scheduler for LSTM after each epoch
         if cfg.model_name == 'lstm':

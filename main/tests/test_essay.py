@@ -9,7 +9,7 @@ import sys
 import pandas as pd
 
 # Ensure project root on sys.path
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
@@ -48,7 +48,9 @@ BASE_RUN = RunConfig(
 DATASET = "essay"
 # Test all models with optimal learning rates
 MODELS = ["bert-base-uncased", "roberta-base", "gpt2", "lstm"]
-OUTPUT_CSV = os.path.join(ROOT_DIR, "result_essay.csv")
+# Save results to test_results directory
+TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", "result_essay.csv")
 
 
 def get_learning_rate(model_name: str):
@@ -176,6 +178,9 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main():
+    # Ensure test_results directory exists
+    os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
+    
     df = run_all_experiments()
     df, dfp = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)

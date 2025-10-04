@@ -13,8 +13,8 @@ import traceback
 import torch
 import argparse
 
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+MAIN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
@@ -51,7 +51,9 @@ BASE_RUN = RunConfig(
 
 DATASETS = ["cebab", "imdb"]
 MODELS = ["lstm"]
-OUTPUT_CSV = os.path.join(MAIN_DIR, "result_lstm_test.csv")
+# Output CSV path - save to test_results directory
+TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", "result_lstm_test.csv")
 
 
 def get_learning_rate(model_name: str) -> Optional[float]:
@@ -205,6 +207,8 @@ def main():
 
     df = run_all_experiments(datasets_sel, variants_filter, metrics_filter, fasttext_path)
     df, dfp_cebab, dfp_imdb = build_pivot_table(df)
+    # Ensure test_results directory exists
+    os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
     df.to_csv(OUTPUT_CSV, index=False)
     print("\nCEBaB (LSTM) D vs D^:")
     print(dfp_cebab)
