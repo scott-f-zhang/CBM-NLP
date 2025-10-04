@@ -38,9 +38,9 @@ def get_tuple_2f_fmt(tp):
     return f"{f1:.2f}/{f2:.2f}"
 
 
-# Base settings (can shorten epochs for quick iteration)
+# Base settings (aligned with run_cebab and main/main.py for fair comparison)
 BASE_RUN = RunConfig(
-    num_epochs=15,
+    num_epochs=20,  # Unified with run_cebab and main experiments
     max_len=512,
     batch_size=8,
 )
