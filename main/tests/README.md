@@ -41,6 +41,17 @@ python main/tests/test_gpt2.py
 python main/tests/test_lstm.py
 ```
 
+### From Main Directory
+```bash
+cd main
+
+# Run complete essay experiments (recommended)
+python run_essay.py
+
+# Run essay experiments directly
+python tests/test_essay.py
+```
+
 ### From Tests Directory
 ```bash
 cd main/tests
