@@ -16,7 +16,7 @@ if ROOT_DIR not in sys.path:
 from main import (
     get_cbm_standard, # no concept, baseline
     get_cbm_joint,    # with concept, human annotated
-    # get_cbm_LLM_mix_joint, # with concept, mix of human annotated and LLM generated
+    # get_cbm_LLM_mix_joint, # not needed for PLMs vs CBE-PLMs comparison
 )
 from main.config.defaults import RunConfig
 
@@ -46,36 +46,33 @@ BASE_RUN = RunConfig(
 )
 
 DATASET = "essay"
-# Keep models minimal for runtime; extend if needed
-MODELS = ["bert-base-uncased"]
+# Test all models with optimal learning rates
+MODELS = ["bert-base-uncased", "roberta-base", "gpt2", "lstm"]
 OUTPUT_CSV = os.path.join(ROOT_DIR, "result_essay.csv")
 
 
 def get_learning_rate(model_name: str):
+    """Optimal learning rates found by get_learning_rate.py for essay dataset."""
     return {
-        'lstm': 1e-2,
-        'gpt2': 1e-4,
-        'roberta-base': 1e-5,
-        'bert-base-uncased': 1e-5,
-    }.get(model_name)
+        'lstm': 5e-4,  # Joint: 5e-4, Standard: 1e-4
+        'gpt2': 5e-5,  # Joint: 5e-5, Standard: 2e-4
+        'roberta-base': 2e-5,  # Joint: 2e-5, Standard: 1e-5
+        'bert-base-uncased': 2e-5,  # Joint: 2e-5, Standard: 5e-5
+    }.get(model_name, 1e-5)
 
 
 def run_experiments_for_function(func_name: str, func):
     rows = []
     print(f"Running {func_name}...")
 
-    # essay: map manual->D and generated->D^
-    variant_plan = [("manual", "D"), ("generated", "D^")]
+    # essay: only use manual variant (D) for both PLMs and CBE-PLMs
+    variant_plan = [("manual", "D")]
 
     for model_name in MODELS:
         lr = get_learning_rate(model_name)
         print(f"\tRunning {model_name}... with learning rate: {lr}")
 
         for variant, data_type in variant_plan:
-            # CM skips D (manual)
-            if func_name == 'CBE-PLMs-CM' and variant == 'manual':
-                print("\t\tSkipping D for CBE-PLMs-CM per paper")
-                continue
             try:
                 kwargs = dict(
                     model_name=model_name,
@@ -122,7 +119,7 @@ def run_all_experiments() -> pd.DataFrame:
     plms_funcs = {
         'PLMs': get_cbm_standard,
         'CBE-PLMs': get_cbm_joint,
-        'CBE-PLMs-CM': get_cbm_LLM_mix_joint,
+        # 'CBE-PLMs-CM': get_cbm_LLM_mix_joint,  # Not needed for this comparison
     }
     all_rows = []
     for fname, f in plms_funcs.items():
@@ -135,8 +132,8 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
     df['score_avg'] = df.score.apply(get_average_scores)
     df['score_fmted'] = df.score_avg.apply(get_tuple_2f_fmt)
 
-    func_order = ["PLMs", "CBE-PLMs", "CBE-PLMs-CM"]
-    model_order = ["BERT"]  # since we only run bert-base-uncased by default
+    func_order = ["PLMs", "CBE-PLMs"]
+    model_order = ["BERT", "RoBERTa", "GPT2", "LSTM"]  # all models
     mapping = {
         'lstm': 'LSTM',
         'gpt2': 'GPT2',
@@ -166,9 +163,9 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
                               values='fmt', aggfunc='first')
     wide = wide.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function","model"]))
 
-    # Ensure full set of columns for essay
+    # Ensure full set of columns for essay (only D variant needed)
     desired_cols = []
-    for dt in ['D','D^']:
+    for dt in ['D']:  # Only D variant needed
         for m in ['task','concept']:
             desired_cols.append((DATASET, dt, m))
     for col in desired_cols:

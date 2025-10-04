@@ -1,683 +1,909 @@
 text,label,FC,CC,TU,CP,R,DU,EE,FR
-"Q: What is the role of a prototype program in problem solving?
-A: A prototype program provides a basic groundwork from which to further enhance and improve a solution to a problem.",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,unknown
-"Q: What is a binary tree?
-A: A binary tree is a special type of inverted tree in which each element has only two branches below it.",1,Negative,unknown,Negative,Negative,Positive,Negative,Negative,unknown
-"Q: What are the two different ways of specifying the length of an array?
-A: one way of specifying of array is A[10] ; other way of specifying array is a[arraysize] = [1,2,3,4,5,6,7,8,9,10}",1,Negative,Negative,Negative,Negative,Positive,Negative,unknown,Positive
-"Q: What is the main advantage of a doubly-linked list over a basic linked list?
-A: You can point both forwards and backwards",1,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: How are infix expressions evaluated by computers?
-A: infix expressions are pointers evaluated by reference to the memory location",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What is a binary search tree?
-A: A binary search tree is a special binary tree arranged such that every left child node contains a value less than its parent, and every right child node contains a value greater its parent.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How are infix expressions evaluated by computers?
-A: They are converted to post fix expressions.  It still follow the order of precedence for the operators.",1,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
-"Q: What is the main advantage associated with function arguments that are passed by reference?
-A: Less overhead than passed by value, especially when using large numbers.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: What are the two main functions defined by a queue?
-A: enqueue and dequeue",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
-A: using an Iterative calls",1,Negative,unknown,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: What does the address (&) operator return?
-A: This operator returns the memory address of its operand.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: Where do C++ programs begin to execute?
-A: They begin to execute at the funcion main().",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
 "Q: How many constructors can be created for a class?
-A: It depends what type of class is being defined.  Typically you would have a constructor call for each object.",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,unknown
-"Q: How can an array be addressed in pointer/offset notation?
-A: *(arrayName + index)",1,Positive,Negative,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: What is the main difference between a while and a do...while statement?
-A: A while statement will test the condition of the while loop FIRST - there is a chance the loop will never run. A do...while loop will ALWAYS run once, and then the while test will determine if it will run again.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: How can you implement a stack with a list?
-A: using pointer",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: Briefly, how does selection sort work?
-A: selection sort is when you pick a data member and put it in a new array, then you pick another data member and put it in order with the new array, then pick another and insert it in the correct place in the new array, etc etc",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
-"Q: Where do C++ programs begin to execute?
-A: Within the main function",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How are objects initialized when they are created?
-A: They are initialized with a constructor.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the main difference between a while and a do...while statement?
-A: While tests for true first before running, do...while runs once first before checking.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the advantage of linked lists over arrays?
-A: linked lists do not have to have a specified size, they are easier to add to and remove from",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a pointer?
-A: pointer is a programming data type whose value points to another value stored in computer memory by its address.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What is the main advantage of linked lists over arrays?
-A: Array size is fixed,but Linked is not fixed.",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
-"Q: What is a pointer?
-A: A pointer is a variable that holds the address of a given variable (and of a given data type)",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: In one sentence, what is the main idea implemented by insertion sort?
-A: Insertion sort is an algorithm where the first element of the array is in the sorted list, all the other pick one by one and taken from the unsorted array, to the sorted array.",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,unknown
+A: as many as you want",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
 "Q: In one sentence, what is the main idea implemented by selection sort?
 A: Find the lowest value and place it in the front of the list and swap it with that value. Continue moving right.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: What is a tree?
-A: an infinite set of nodes that have a root and descendants, and each addition is a leaf.",1,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: What is the main advantage of linked lists over arrays?
-A: more memory can be allocated on the fly for more items",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the scope of global variables?
-A: The entire program",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: What is the main difference between a while and a do...while statement?
-A: A do...while loop will always execute atleast once, a while loop may never   execute depending on teh conditions.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What is the difference between a circular linked list and a basic linked list?
-A: in a circular linked list the the last item points to the first item.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
-"Q: What does the star (*) operator return?
-A: The * returns the value",1,unknown,Negative,Negative,unknown,Positive,Negative,Negative,Positive
-"Q: What is a linked list?
-A: A sequence of nodes, each containing data fields (specified by programmer) and pointer(s) which can point to the next or previous nodes.",1,Positive,unknown,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What is a leaf?
-A: a leaf is a node that has no children nodes",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
-"Q: How can you implement a stack with an array?
-A: create an array and implement pointers that point to the next list item down and stack them up.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: What is a recursive function?
-A: function that calls it self till the base case is met",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a leaf?
-A: A leaf is a node with no children.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the difference between a function prototype and a function definition?
-A: A function definition does not require any additional information that needs to be passed inside its parenthesis  to execute. While a definition prototype requires more than one parameters to be passed in order to complete its  task.",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: In one sentence, what is the main idea implemented by selection sort?
-A: Selection sort searches the whole array for the largest item and puts it at the end of the array, then searches for the second largest item and puts it at the second to last spot and so on.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the role of a header-file?
-A: A header file declares a class, its data, and functions available through that class.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
-A: n operations  The best case scenario is when all the numbers are in increasing order.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How can an array be addressed in pointer/offset notation?
-A: you get the memory location of the first element and the you add an offset to it to get other elements.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: What is the experimental approach for measuring the running time of an algorithm?
-A: running an algorithm on a specific set of data",1,unknown,Negative,unknown,Negative,unknown,Negative,Negative,Positive
-"Q: What is a recursive function?
-A: a function that solves a problem by dividing the problem into smaller problems, by calling its self again and again, until a base case is reached.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,unknown
-"Q: What are the main advantages associated with object-oriented programming?
-A: Variables can remain private. The code is easily modified and reusable, as well as easily implemented. Not to mention easier to read and follow along as an observer.",1,Positive,unknown,unknown,Positive,Positive,Positive,Negative,Positive
-"Q: What is a linked list?
-A: An array based list that uses an implicit ordering scheme, often using pointers.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: How does the compiler handle inline functions?
-A: Ignores the inline qualifier and typically does so for all but the smallest functions.",0,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: How many steps does it take to search a node in a binary search tree?
-A: The number of levels and the height of the tree",1,unknown,Positive,unknown,unknown,Positive,unknown,Negative,unknown
-"Q: When defining a recursive function, what are possible causes for infinite recursion?
-A: No easily reached base case and no base case at all",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How many dimensions need to be specified when passing a multi-dimensional array as an argument to a function?
-A: one less than the number of dimensions the array contains",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What are the different ways to pass a pointer to a function?
-A: Nonconstant pointer to nonconstant data, constant pointer to nonconstant data, nonconstant pointer to constant data, constant pointer to constant data.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What are the two main functions defined by a queue?
-A: enqueue and dequeue",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a pointer?
+A: a form of storing data that keeps the location in memory of an data type or object.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,unknown
 "Q: What is the alternative way to solve a problem that could be solved through recursive functions?
-A: iteration",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
-A: Best case-1 Worst Case-N",0,Negative,Negative,unknown,Negative,unknown,Negative,Negative,unknown
-"Q: What is the difference between a circular linked list and a basic linked list?
-A: No node in a circular linked list contains NULL.",1,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What is a binary tree?
-A: Starting at the root node, it branches off into one or two subsets that are binary subtrees of the root.  Each node has at most two children, the left child and the right child.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,unknown
-"Q: What are the elements typically included in a class definition?
-A: A class definition includes the definitions of the class' constructor(s) and any public or private functions. Of course, it also #includes the class header and any necessary C libraries",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Negative
-"Q: What is the role of a header-file?
-A: class definitions are placed here",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
-"Q: What is a queue?
-A: A queue is a first in first out data structure.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What does the star (*) operator return?
-A: * returns the synonym for the object its operand points to.",1,Positive,unknown,unknown,Positive,Positive,unknown,Negative,Positive
-"Q: When defining a recursive function, what are possible causes for infinite recursion?
-A: Infinite recursion may occur if no base case is defined or if the call is not varied.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the main advantage of linked lists over arrays?
-A: Linked lists are able to grow and shrink in size as needed",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
-A: theta(n) the best case senario is that everything is already sorted",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
-"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
-A: itteration, like a for loop, a while loop, or a do while loop",1,Positive,Positive,unknown,Positive,Positive,Positive,Positive,Positive
-"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
-A: The programmer must provide the null terminating character in a string of characters using type char[] and must also ensure that the array is large enough to contain the input string of characters and the null terminating character.",1,Negative,unknown,Positive,Positive,Positive,Negative,unknown,Positive
-"Q: What is the base case for a recursive implementation of merge sort?
-A: the size of the list being sent is &lt;= 1",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the difference between a circular linked list and a basic linked list?
-A: Basic linked list points to a NULL at the end and circular points to the head at the end.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How do you delete a node from a binary search tree?
-A: to delete the node, you would have to link the children nodes that are connected to the node to be deleted to the remaining nodes of the tree in such a way that nodes on the right of the parent node are larger than the parent and nodes on the left of the parent node are smaller",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,unknown
-"Q: When does C++ create a default constructor?
-A: When no constructor was specified in the constructor's class, but the class is instantiated in a program.",1,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
-"Q: What is the difference between an array that is declared as static and one that is not?
-A: static has a predetermined size that cannot be passed while vis versa.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
-"Q: What is the advantage of linked lists over arrays?
-A: You do not have to predetermine your list size as you do with arrays. Linked list have the ability to be as large as you want them adding memory as needed.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What are the main operations associated with a stack?
-A: Push and pop",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: How are linked lists passed as arguments to a function?
-A: By the head of the list. It takes the head address and traverses from there on in.",1,Negative,Negative,unknown,Negative,Positive,Negative,Negative,unknown
-"Q: What does the sizeof operator return?
-A: total number of bytes in the array",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: Where do C++ programs begin to execute?
-A: at the main function  int main() {}",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: What is the difference between a function prototype and a function definition?
-A: A function prototype describes the class's public interface without providing how the function works. A function definition contains the inner workings of the function.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: What is the difference between a constructor and a function?
-A: constructor is a special block of statements called when an object is created, either when it is declared statically or constructed on the stack. However a function is a portion of code within a larger program, which performs a specific task and independent to the rest of the code.",1,unknown,Negative,Positive,unknown,unknown,Negative,unknown,unknown
-"Q: What are the main advantages associated with object-oriented programming?
-A: Well for one encapsulation the values of the variables inside an object are private, unless methods are written to pass info outside of the object. As well as Inheritance where each subclass inherits all variables and methods of its super class.  Example in the book included obj clock and how obj alarm would still use clock from the first class.",1,unknown,Negative,Positive,Positive,unknown,unknown,unknown,unknown
-"Q: When defining a recursive function, what are possible causes for infinite recursion?
-A: If the recursion function never reaches or successfully defines the base case it will recurse forever.  This happens many ways, such as the function doesn't progress towards the base case, or the function is coded poorly and doesn't even contain a base case.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,unknown
-"Q: What is a stack?
-A: a finite ordered list with zero or more elements",0,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
-"Q: What is the main advantage associated with function arguments that are passed by reference?
-A: Pass by reference is good for performance reasons, because it can eliminate the pass by value overhead of copying large amounts of data.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the difference between a circular linked list and a basic linked list?
-A: Circular linked lists are most useful for describing naturally circular structures, and have the advantage of regular structure and being able to traverse the list starting at any point.",0,Negative,Negative,Positive,unknown,Negative,Negative,unknown,Positive
-"Q: What is the role of a prototype program in problem solving?
-A: A prototype program is used in problem solving to collect data for the problem.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: Where are variables declared in a C++ program?
-A: After declaration of the variable's data type.",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Positive
-"Q: What does the star (*) operator return?
-A: a synonym for the object to which its pointer operand points",1,Positive,unknown,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: What are the access-specifiers that can be used in a C++ class definition?
-A: local, global, local-variable, function specific",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What is a queue?
-A: A queue is like a stack except it follows FIFO (First in first out) .",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What is the main advantage of arrays over linked lists?
-A: you can go forwards and backwards and point to any piece of data at any given time where linked lists have to point to the next piece of data.",0,Positive,Positive,Negative,unknown,Positive,unknown,Negative,unknown
-"Q: Briefly describe the divide-and-conquer paradigm.
-A: Dividing a larger problem into the smallest incident of the problem and solving the smallest incident.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: What is the main advantage associated with function arguments that are passed by reference?
-A: Gives called function the ability to access and modify the caller’s argument data.",1,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: How are arrays passed to functions?
-A: by reference",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What does the address (&) operator return?
-A: The address operator returns the memory address of its operand.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How are infix expressions evaluated by computers?
-A: Infix expressions are interpreted as postfix expressions by implementing stacks.",1,unknown,Negative,unknown,Negative,Positive,Negative,Negative,Positive
-"Q: What are the different ways to pass a pointer to a function?
-A: by address &bPtr or directly bPtr.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What is a function pointer?
-A: Contains the address of the function in memory.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: How can you implement a queue with an array?
-A: Using an array for a queue, the size of the array allocated limits the size of the queue. An array based queue class must keep track of both the front and back of the queue, which may need to wrap around the array.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,unknown
-"Q: What is a tree?
-A: A tree is a finite set of one or more nodes such that: there is a specially designated node called the root.",1,unknown,Negative,Positive,Positive,Positive,Negative,Negative,Positive
-"Q: What are the main advantages associated with object-oriented programming?
-A: Object oriented programming allows programmers to use an object with classes that can be changed and manipulated while not affecting the entire object at once. The classes all hold attrubutes that affect the object.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
-"Q: Briefly describe in one sentence how does merge sort work?
-A: Continually split array in half, sort each side of the halves, then put them back together once organized.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: How many dimensions need to be specified when passing a multi-dimensional array as an argument to a function?
-A: both",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: What is the main advantage of arrays over linked lists?
-A: direct access to elements, and speed, linked lists have increased search times to access elements even if the list is sorted. ( like getting the last element without a pointer directly to the end of the list. )",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: What is the main advantage of linked lists over arrays?
-A: Linked lists have an indefinite size. They can be added to and taken away from very easily with little difficulty in the shifting of data.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What are the two different ways of specifying the length of an array?
-A: Supply an integer inside the brackets or the compiler counts the number of elements in the initializer list. int n[5]; int n[] = { 1,2,3,4,5 }",1,Positive,Positive,unknown,Positive,Positive,Positive,Positive,Positive
-"Q: When does C++ create a default constructor?
-A: When you do not provide your own constructor.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: How many constructors can be created for a class?
-A: by default just one, but they may be overloaded to create as many constructors as necessary",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: Where are variables declared in a C++ program?
-A: Variables are declared in the main function, before any operation is   attempted with the variables.",0,Negative,Negative,unknown,unknown,unknown,Negative,Negative,Positive
-"Q: What stages in the software life cycle are influenced by the testing stage?
-A: Directly: Refining, coding.  Because Refining is right before the Testing Phase and Coding is right after the Testing Phase.  Indirectly: Production, Maintenance.  Because Refining occurs before these last two stages in the Software Life Cycle.",1,Negative,unknown,Positive,Negative,unknown,Negative,Negative,unknown
-"Q: What is the difference between an array declared as static, and one that is not?
-A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
-"Q: What does the address (&) operator return?
-A: Returns the address location in memory of the item.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,unknown
-"Q: How can you implement a stack with a list?
-A: You implement a list in which the head pointer points to the element most recently pushed onto the list and the pop function changes the head pointer to point to the next to last element in the list and removes the element head pointer previously pointed to.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,unknown
-"Q: What does the star (*) operator return?
-A: It is unary operator that returns the value of the variable located at the address",1,Positive,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: What is a function signature?
-A: It is what uniquely separates overloaded functions. It includes the return type, and the parameter list of the function.",1,Negative,Negative,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: How are overloaded functions differentiated by the compiler?
-A: By the number, types, and order of their arguments",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How many constructors can be created for a class?
-A: as many as wanted/needed",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: What is the advantage of linked lists over arrays?
-A: linked lists have an indefinite size, whereas arrays are a specific size.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a queue?
-A: a data structure that performs operations in the order of first in first out FIFO",1,Positive,unknown,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: How can you implement a queue with a list?
-A: Have a pointer to the last element in the list and then use enqueue to insert items there. Link the first and last elements together to dequeue the list.",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,unknown
-"Q: What is a tree?
-A: A nonlinear, two-dimensional data structure.",0,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
-"Q: What is the difference between a constructor and a function?
-A: A constructor is a function used to initialize an object's data when it is created.",1,unknown,Negative,Positive,Positive,unknown,Negative,Negative,Positive
-"Q: What is the main difference between strings declared using the type string versus strings declared using an array of characters?
-A: array  it is the collection of similar data types ex:int a[10]  ten indicates the size of array. [ ] is index of array, we can give only integer values to array of a.  where as string mean collection of group of characters.  string declarations have a datatype usually causes storage to be allocated in memory that is capable of holding some predetermined number of symbols.    However  Arrays can be declared to contain values of any non reference data type. Multiple arrarys of the same type",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Negative
-"Q: Where are variables declared in a C++ program?
-A: inside the function scope and outside of the function scope in case of global variables",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What does the sizeof operator return?
-A: The byte size of the date stored ina variable.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,unknown
-"Q: What is the difference between an array declared as static, and one that is not?
-A: if they are declared fixed or static that means they can't change size once their storage has been allocated, however one that is not or dynamic arrarys can be resized.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: When defining a recursive function, what are possible causes for infinite recursion?
-A: If at each recursive call the problem does not diminish or if it does not diminish to a base case, can cause infinite recursion.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the main advantage associated with function arguments that are passed by reference?
-A: Functions can directly modify arguments that are passed by reference.",1,Positive,Negative,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: How can an array be addressed in pointer/offset notation?
-A: The array itself can be signed to a pointer or each element of the array can be assigned to a pointer.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: When defining a recursive function, what are possible causes for infinite recursion?
-A: Either omitting the base case, or writing the recursion step incorerectly",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What are the two different ways of specifying the length of an array?
-A: Implicit, namely when you give it values, like {1,2,3,4,5,6,7,8,9}, at which the compiler will automatically give this a size. Static, during the declaration.",1,Positive,Positive,unknown,Positive,Positive,Positive,Positive,Positive
-"Q: What are the main advantages associated with object-oriented programming?
-A: Modularability, the ability to reuse parts of the program later in another program sometimes with completely different goals for the program. Also it makes it easier to debug code by dividing up the code into classes that each do a specific job and when the program fails at one job you only have one class to debug. Good for security purposes because it allows you to let someone use a program which sorts lists without having to give them access to the source code. ALso allows you to use inheritance and polymorphism.",1,unknown,unknown,unknown,unknown,Positive,unknown,Positive,Negative
-"Q: What is a leaf?
-A: a leaf is a node with no children",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a function signature?
-A: its the scope, type, and parameters of that function that give it it's properties and defines it against other functions.",1,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
-"Q: Briefly describe the divide-and-conquer paradigm.
-A: dividing and conquering means breaking a problem into two smaller problems, solving both of those, and putting the two solutions together.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: What are the two main functions defined by a stack?
-A: pop and push",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How are objects initialized when they are created?
-A: initialized using the same name as the class",0,unknown,Negative,Negative,unknown,Positive,Negative,Negative,Positive
-"Q: What are the two main functions defined by a stack?
-A: push (insert an item) pop (remove an item)",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What are the two main functions defined by a queue?
-A: The two functions are, Enqueue and Dequeue",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
-"Q: What is the inorder traversal of a binary tree?
-A: The inorder traversal of a binary tree visits the node of a binary tree in order according to their data values.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: Where are variables declared in a C++ program?
-A: Globally for an entire program, and locally for individual functions (including FOR statements)",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: What is a recursive function?
-A: A recursive function solves a problem by repeatedly calling itself. the initial problem is broken into successively smaller parts until a much simpler base case is reached. the solutions to each piece of the problem are then returned a step at a time.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: How do you delete a node from a binary search tree?
-A: It all depends on where the node is located. If its a child it can just be deleted but for a node inside the tree it must be replaced with another node that works in its place.",0,Negative,Negative,Negative,Negative,Positive,Negative,Negative,unknown
-"Q: How are linked lists passed as arguments to a function?
-A: passes a pointer to a linked list object",0,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How does the compiler handle inline functions?
-A: It expands the function's definition in that place.  Once the functions is called you can use it as many times as you need.  The compiler just expands on the function.",1,Positive,unknown,unknown,unknown,unknown,Positive,Negative,Negative
-"Q: What is a variable?
-A: A variable is the memory address for a specific type of stored data, or from a mathematical perspective, a symbol representing a fixed definition with changing values.",1,Negative,unknown,Negative,Negative,unknown,Negative,Negative,unknown
-"Q: What are the main operations associated with a stack?
-A: Push  and pop.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: How can an array be addressed in pointer/offset notation?
-A: With int x[10]; int *xPtr; xPtr = x; Address &x[1] is the same as xPtr + 1.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: What is a function signature?
-A: A function signature, used in a function's prototype, is the set of object types it take in as parameters, with or without names given for the objects.",1,Negative,Negative,unknown,unknown,Positive,Negative,Negative,Positive
-"Q: What are the access-specifiers that can be used in a C++ class definition?
-A: Private, Public, Protected, or Friend.",1,unknown,Positive,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: What is the inorder traversal of a binary tree?
-A: it means that you traverse one subtree of a node, then look at the node itself before traversing the other subtree of the node",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: What is the base case for a recursive implementation of merge sort?
-A: O(n log n)",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What are the similarities between iteration and recursion?
-A: based on a control statement, involve repetition, involve a termination test.",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: What is a linked list?
-A: Consists of sequence of nodes, each containing a number of data fields and one or two links called pointers that point to the next or previous nodes.",1,Positive,unknown,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What is a stack?
-A: A data structure that stores data using LIFO.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What is the scope of global variables?
-A: globally, anywhere in the program.",1,unknown,Negative,Negative,unknown,Positive,Negative,Negative,Positive
+A: iterative",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
 "Q: Where do C++ programs begin to execute?
 A: In the main() function.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What are the two main functions defined by a queue?
-A: enqueue and dequeue.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: What are the two main functions defined by a stack?
-A: Pop and push",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: How many steps does it take to search a node in a binary search tree?
-A: three steps visit the root node, then go to right subtree, after visiting right subtree visit left subtree",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
-"Q: What is the main advantage of a doubly-linked list over a basic linked list?
-A: You can traverse the list in reverse.",1,unknown,Negative,Positive,Positive,Positive,Negative,Negative,Positive
-"Q: What are the access-specifiers that can be used in a C++ class definition?
-A: public or private",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the advantage of linked lists over arrays?
-A: Linkded list does not have a fixed size. Arrays have a fixed size.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What is the stack operation corresponding to the enqueue operation in queues?
-A: The stack operation is almost the opposite of the enqueue operation.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: What is the main advantage associated with function arguments that are passed by reference?
-A: gives function ability to access and modify the caller's argument data directly",1,unknown,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What is the main advantage of linked lists over arrays?
-A: You can insert into and delete items from a pointer-based linked list without shifting data.",1,Positive,Negative,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What is the difference between an array declared as static, and one that is not?
-A: a static array is allocated when the program starts and is freed when the program exits but has limited scope, while an array that is not declared static is allocated and freed when it comes into and out of scope.",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a tree?
-A: a set of data arranged with pointers. each element can have many pointers, but no two pointers point to the same element",0,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
-"Q: How do you delete a node from a binary search tree?
-A: You remove the element from the tree and move the next highest element from the left into its place.",1,unknown,Negative,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: What is the main advantage of a doubly-linked list over a basic linked list?
-A: ability to backtrack through a list.",0,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What is the role of a prototype program in problem solving?
-A: To find problem and errors in a program before it is finalized",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
-"Q: What does the sizeof operator return?
-A: sizeof returns the size of the operand in bytes.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a variable?
-A: A variable is a location in memory where a value can be stored.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What stages in the software life cycle are influenced by the testing stage?
-A: In RUP the stages in the software life cycle are influenced by the testing stage is:  Elaboration phase- refined progject vision, iterative devilopment of core system, development of system requirements, more accurate time and cost estimates.  Construction phase- iterative development of remaining system.  Transition phase-testing and deployment of the system.",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Negative
-"Q: What is a queue?
-A: A first in, first out Abstract Data type that can be used to store values.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the scope of global variables?
-A: Global variables have file-scope.  The variable is know to all functions throught the file",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: What are the two main functions defined by a stack?
-A: Push (insert) and pop (retrieve).",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What is a queue?
-A: A queue is a data structure where the first node in is the first node out.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What is the role of a header-file?
-A: To promote function reusuablitly",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What is the experimental approach for measuring the running time of an algorithm?
-A: Oposite of a theoretical assessment of the algorithm to determine runtime, but to run the code first to determine the the runtime.  This is not recommended because it is a limited test.  It does not include all possibilities of the data, nor the hardware used to process the data.",1,Positive,Positive,Positive,unknown,Positive,Positive,Positive,unknown
-"Q: What is the difference between an array that is declared as static and one that is not?
-A: The static array will be available to the whole of the program, whereas an array that is not static is only available within the scope in which it is declared.   //pass-by-reference???",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
-"Q: What are the two different ways of specifying the length of an array?
-A: with a number and with a variable",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: What is a linked list?
-A: A linked list is a collection of Objects each containing at least one data member, and a pointer to the next object in the list (and the previous object in the case of a doubly linked list)",1,Positive,unknown,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: How many steps does it take to search a node in a binary search tree?
-A: 2^n where n is the # of levels the binary tree has",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Positive
-"Q: What is a pointer?
-A: A data type that stores the memory address of another variable.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a linked list?
-A: Information in memory linked to the next piece of information and can only be linked forwards and not backwards.",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: What is the height of a tree?
-A: The number of nodes on the longest path from the root to the leaf.",1,Negative,Negative,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: What is the advantage of linked lists over arrays?
-A: A link list can grow to a infinite size as a array has a fixes size.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: How can you implement a stack with an array?
-A: You predetermine the size of the stack as you would an array.  This type can not grow.",0,unknown,Negative,Positive,unknown,unknown,Negative,Negative,Positive
-"Q: What is a binary tree?
-A: a tree that has a maximum of 2 children per node",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a variable?
-A: A pointer to a location in memory.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: What is the role of a prototype program in problem solving?
-A: Program that simulates the behavior of portions of the desired software product",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How are linked lists passed as arguments to a function?
-A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
-"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
-A: when the characters are put in a char array, there is also a null terminating character added to the end, '\0'",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a queue?
-A: Stores a set of elements in a particular order with a First In, First Out principle",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a stack?
-A: Stacks are a type of container adaptors, specifically designed to operate in a LIFO context (last-in first-out), where elements are inserted and extracted only from the end of the container.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the main advantage of arrays over linked lists?
-A: Array size is fixed. But Linked is not fixed, data is also accessed quicker in array list, also memory requirement is less and no pointers required. Arrays have random access and less overheads compared to Linked list have sequential access only with too much overheads and no cache memory support. On the other hand, arrays allow random access, while linked lists allow only sequential access to elements. Singly-linked lists, in fact, can only be traversed in one direction.",1,unknown,Positive,Positive,unknown,unknown,Positive,Positive,Negative
-"Q: What is the stack operation corresponding to the enqueue operation in queues?
-A: push",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
-A: a string of characters will have a null character or value at the end of the string",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
-"Q: How are infix expressions evaluated by computers?
-A: In postfix notation.",1,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
-"Q: What is the Euler tour traversal of a tree?
-A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What is a stack?
-A: a data type that stores a set of elements in a certain order, last in, first out.",1,unknown,Positive,unknown,Positive,Positive,Positive,Negative,Positive
-"Q: What is the base case for a recursive implementation of merge sort?
-A: T(n) = 0, if n&lt;2.",1,Negative,unknown,Negative,Negative,unknown,unknown,Negative,Positive
-"Q: Briefly describe the divide-and-conquer paradigm.
-A: Take a problem and divide it into a smaller problem and solve that smaller problem, or divide it into a smaller problem and solve it, thus solving the whole problem in the process.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,unknown
-"Q: When does C++ create a default constructor?
-A: The compiler creates a default constructor when we do not define one in our class file",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What stages in the software life cycle are influenced by the testing stage?
-A: coding and refining",1,Positive,Positive,unknown,Positive,Positive,Negative,Negative,Positive
-"Q: How can you implement a queue with a list?
-A: a queue can be implemented in a list by keeping track of two pointers, a head and a tail",1,unknown,Negative,Positive,unknown,Positive,Negative,Negative,Positive
-"Q: What is a binary tree?
-A: a binary tree is a special search tree where each node has either 2, 1, or 0 children",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
-"Q: What is a queue?
-A: a data structure that inserts elements at the end of it and removes elements from the front.",1,Positive,unknown,unknown,Positive,Positive,unknown,Negative,Positive
-"Q: What is the experimental approach for measuring the running time of an algorithm?
-A: the experimental approach measures actual running time in t.  t= seconds.",1,Positive,unknown,unknown,unknown,Positive,Negative,Negative,Positive
-"Q: How are infix expressions evaluated by computers?
-A: They are first converted to postfix expressions and then evaluated.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a function signature?
-A: The function's name, as well as what it returns and what it accepts.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: What is a variable?
-A: #NAME?",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: When defining a recursive function, what are possible causes for infinite recursion?
+A: If at each recursive call the problem does not diminish or if it does not diminish to a base case, can cause infinite recursion.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
 "Q: What is the base case for a recursive implementation of merge sort?
 A: The base case for a recursive implementation of merge sort is one.",1,Positive,unknown,Positive,unknown,Positive,Negative,Negative,Positive
-"Q: What is a leaf?
-A: A node with no children.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a binary search tree?
-A: it is similar to a binary tree.  The keys in a nonempty left subtree (right subtree) are smaller (larger) than the key in the root of subtree.  the values in all nodes in the left subtree of a node are less than             the node value  the values in all nodes in the right subtree of a node are greater    than the node values",1,Positive,Positive,Positive,unknown,Positive,Positive,unknown,Negative
-"Q: What are the access-specifiers that can be used in a C++ class definition?
-A: static, long, unsigned",0,Negative,Negative,Negative,Positive,Negative,Negative,Negative,Positive
-"Q: When defining a recursive function, what are possible causes for infinite recursion?
-A: improper handling of cases such that not all possible values are able to be handled.",1,unknown,Negative,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: What is the difference between a data member and a local variable inside a member function?
-A: Variable declared in a function defination's body cannot be used outside of that function.  Data members accessible only to member function of that class.",1,unknown,Positive,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: What is a binary search tree?
-A: A binary search tree is a binary tree where the value in any node 'n' is greater than the value in every node in n's left subtree but less than every node in n's right subtree.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between an array declared as static, and one that is not?
+A: static cannot be changed",0,Negative,Negative,Negative,unknown,Negative,Negative,Negative,Positive
+"Q: How can you implement a queue with a list?
+A: Check if list is empty and add elements to the list.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: What does the star (*) operator return?
+A: It is unary operator that returns the value of the variable located at the address",1,Positive,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What are the two main functions defined by a stack?
+A: Push and Pop are the two main functions of a stack",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How are infix expressions evaluated by computers?
+A: Infix expressions are interpreted as postfix expressions by implementing stacks.",1,unknown,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: What is the role of a header-file?
+A: #include ""hat.h""  allows the use of the hat container, so called from the act of pulling names from a hat.  The header file for hat includes functions for storage and retrieval of it's contents, mainly put(), peek(), and pull().",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
+"Q: When does C++ create a default constructor?
+A: When you do not provide your own constructor.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is the difference between a constructor and a function?
+A: constructor creates the class object into memory where functions perform actions against that object",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
 "Q: What are the similarities between iteration and recursion?
-A: Iteration and recursion both use repetition and perform several simple operations and algorithms successively until they reach a certain limit.  So both involve a termination test to find that limit and both slowly approach that termination limit.  Both are based on a control statement as well.    If coded poorly, both can continue on for forever until the compiler or the computer either locks up, shuts down or halts the operation.",1,Positive,Positive,Positive,unknown,Positive,Positive,unknown,unknown
-"Q: What is the difference between an array that is declared as static and one that is not?
-A: A static array retains any modified values after a function call. Automatic arrays reset to their initial values when the function ends.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What are the access-specifiers that can be used in a C++ class definition?
-A: Public Private",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: How do you delete a node from a binary search tree?
-A: pointer to the child and delete it has 2 children set the node to the child and delete it. the node to th middle will then take its place",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Negative
-"Q: What is a pointer?
-A: a pointer is a memory address that points to a data member",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is typically included in a class definition?
-A: class variables, function definitions for the class",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
-"Q: How are objects initialized when they are created?
-A: They are initialized with a "" . "" (dot) between the constructor and the object being created.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: What are the elements typically included in a class definition?
-A: Member functions and data members.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+A: Both iteration and recursion are based on control statements and involve repetition. They can both also occur indefinitely.",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: How can you implement a queue with a list?
+A: a queue can be implemented in a list by keeping track of two pointers, a head and a tail",1,unknown,Negative,Positive,unknown,Positive,Negative,Negative,Positive
+"Q: What is the main advantage associated with function arguments that are passed by reference?
+A: Functions can directly modify arguments that are passed by reference.",1,Positive,Negative,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: In one sentence, what is the main idea implemented by insertion sort?
+A: Looking at the 2nd element move forward and place the element in the correct spot.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: What is a recursive function?
+A: a function that calls itself untill it reaches a base case.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
 "Q: When defining a recursive function, what are possible causes for infinite recursion?
 A: Either omitting the base case, or writing the recursion step incorrectly so the it does not reach the base case can cause infinite recursion.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the advantage of linked lists over arrays?
-A: Linked lists are not confined to a specific size, and can have elements added and removed far easier. They are also easier to traverse.",1,Negative,unknown,Positive,unknown,Positive,unknown,unknown,Positive
-"Q: Where do C++ programs begin to execute?
-A: After loading the required include statements and libraries, the main method begins the execution.",1,Positive,Positive,unknown,unknown,unknown,unknown,unknown,unknown
-"Q: What is the role of a prototype program in problem solving?
-A: #NAME?",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
-"Q: What is the base case for a recursive implementation of merge sort?
-A: when each half or the original array has nothing else to sort, and puts the halfs back together",0,unknown,Negative,Negative,Negative,unknown,Negative,Negative,unknown
-"Q: What is a variable?
-A: location in memory where a value can be stored",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
+A: Using an iterative solution.  For, while, or do while loop.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What are the access-specifiers that can be used in a C++ class definition?
+A: Private, Public, Protected, or Friend.",1,unknown,Positive,unknown,unknown,Positive,unknown,Negative,Positive
 "Q: What is the difference between a circular linked list and a basic linked list?
-A: A circular linked list does not have a last element. Instead, it's last item points to the head of the list.",1,unknown,Positive,Positive,unknown,Positive,Positive,Negative,unknown
-"Q: What does the star (*) operator return?
-A: returns synonym for the object its operand points to",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What is the main difference between strings declared using the type string versus strings declared using an array of characters?
-A: array of characters can only hold as many characters as the array size and strings are not that limited.",1,unknown,Negative,Positive,Positive,unknown,unknown,Negative,Positive
+A: in a circular linked list, the last node contains a pointer that goes back to the first node; in a basic linked list, the last node contains a null pointer",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What does the address (&) operator return?
+A: The & operator returns the memory address of the variable it precedes.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
 "Q: What are the two main functions defined by a stack?
-A: Adding a new item and removing the item",1,unknown,Positive,Negative,unknown,Positive,unknown,Negative,Positive
-"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
-A: a string char[] adds a null value to the end of the string.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: How can you implement a stack with an array?
-A: with the element added to the array, so that the last element added is at the end, and when the element is popped it takes the last element off the array",1,Positive,Positive,unknown,unknown,Positive,unknown,Negative,unknown
-"Q: What is a queue?
-A: A queue is a collection of elements with the characteristics of first in first out (FIFO).  The first item in is the first item out.  All additional items are added to the end of the list.",1,Positive,unknown,unknown,Positive,Positive,unknown,unknown,unknown
-"Q: What is a tree?
-A: A Tree is a data structure with one or more data nodes, each of which contains some data. Each node itself can have a number of attached child nodes, creating the branched structure Trees are named for.",1,unknown,Negative,Positive,unknown,Positive,Negative,Negative,Positive
-"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
-A: In arrays strings are stored as a characters (char[]), each character of string will be stored in each memory location of the array, while string of characters is only one memory location.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
-"Q: What is the main advantage of linked lists over arrays?
-A: Linked lists do not have a set size and can grow or shrink as needed.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the stack operation corresponding to the enqueue operation in queues?
-A: push",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How are objects initialized when they are created?
-A: When the object is initialized, its constructor is called (whether one is provided or c++ assigns a default constructor).",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What are the main operations associated with a stack?
-A: push and pop.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What are the main advantages associated with object-oriented programming?
-A: One of the main advantages is you can hide inner details a technique known by encapsulation. Objects combine the data and operations but you cannot see how it works.   Another advantage is you can reuse classes that have been defined earlier in the program, a method known as inheritance.   Finally another advantage is objects can determine appropriate operations at execution time a technique known as polymorphism.",1,unknown,unknown,Positive,Positive,Positive,Positive,Negative,unknown
-"Q: What are the main advantages associated with object-oriented programming?
-A: #NAME?",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
-"Q: What is the main advantage of arrays over linked lists?
-A: Arrays require less memory than linked lists and allow direct access to a specified item. Also, insertion and deletion in arrays does not require a list traversal.",1,Negative,unknown,Positive,Negative,unknown,Negative,Negative,unknown
-"Q: What operations would you need to perform to find a given element on a stack?
-A: you would pop each element and compare it to what you are looking for and then push it back on the stack so that it is not lost",1,Negative,Negative,Positive,Negative,Positive,Negative,Negative,Positive
-"Q: What is a function signature?
-A: the declaration of the function.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: When defining a recursive function, what are possible causes for infinite recursion?
-A: badly designed algorithyms. using recursion for a non recursive problem.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
+A: pop and push",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
 "Q: What is the difference between a function prototype and a function definition?
 A: Function prototypes tell the compiler the function names, its return type, and the types of its parameters where as, function definitions actually implement the member functions.",1,Positive,Positive,Positive,unknown,Positive,Positive,Negative,Positive
 "Q: What is the stack operation corresponding to the enqueue operation in queues?
-A: the Push method in the stack operations.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
-"Q: Briefly describe in one sentence how does merge sort work?
-A: It divides the array into two halves, sorts each half, then merges the two halves together.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+A: The stack operation is almost the opposite of the enqueue operation.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: When does C++ create a default constructor?
+A: The compiler creates a default constructor when we do not define one in our class file",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is the inorder traversal of a binary tree?
+A: it means that you traverse one subtree of a node, then look at the node itself before traversing the other subtree of the node",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: when the characters are put in a char array, there is also a null terminating character added to the end, '\0'",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
 "Q: What is the advantage of linked lists over arrays?
 A: link lists dont have a fixed size",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
-"Q: What does the star (*) operator return?
-A: Returns synonym for the object its operand points to",1,Positive,Negative,unknown,unknown,Positive,Negative,Negative,Positive
-"Q: In one sentence, what is the main idea implemented by selection sort?
-A: selects the minimum from the remaining elements of the array, and palces the miminum in the current position and moves to the next position",1,Positive,unknown,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: How are linked lists passed as arguments to a function?
-A: linked lists are passed by reference, specificly the Head pointer",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What is the difference between a function prototype and a function definition?
-A: Function definitions are just that, the definition. The prototype is what the compiler uses to check that calls to function are correct.",0,unknown,Negative,unknown,Negative,Positive,Negative,Negative,Positive
-"Q: What is the difference between a function prototype and a function definition?
-A: in a function prototype you include the return type, the name of the function, and its parameters if any are needed.  in a function definition you write the code of what the function will do.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
-A: Using an iterative function, which repeats a specified operation or set of operations until a terminating point or base case is reached.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What is a pointer?
-A: variable that contains the memory address of a data object.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the main advantage of linked lists over arrays?
-A: A linked list is not fixed in size, and does not require the shifting of items during insertions and deletions.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How many comparisons does it take to find an element in a binary search tree?
-A: log(n)",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What is a pointer?
-A: a form of storing data that keeps the location in memory of an data type or object.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,unknown
-"Q: What is the base case for a recursive implementation of merge sort?
-A: If the array being sorted has 0 or 1 elements",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
-A: 1 operation. the best case scenario s where it is already sorted and does one comparision.",0,Negative,unknown,Positive,unknown,Positive,Negative,Negative,Positive
-"Q: How can you implement a queue with a list?
-A: remove the first element and reference the second element as the new head of the list.",1,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
-"Q: What is the scope of global variables?
-A: The entire program.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: Where are variables declared in a C++ program?
-A: Variables are declared where ever it is defined either inside a block locally or outside a block globally.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: What is the difference between a circular linked list and a basic linked list?
-A: in a circular linked lists, the last element points to the first",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a binary search tree?
-A: it is a binary tree where each node has a unique key, the left child of a node has only values less than that node, and the right child of each node has higher values than that node.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How can you implement a stack with a list?
-A: You dynamicly create space as the stack grows.  The stack can be as long as you need.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What is the role of a prototype program in problem solving?
-A: To simulate problem solving for parts of the problem",1,unknown,Negative,unknown,Negative,Positive,Negative,Negative,Positive
-"Q: What are the two main functions defined by a stack?
-A: Push and Pop are the two main functions of a stack",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What are the different ways to pass a pointer to a function?
-A: you can pass a pointer to a pointer or pass a reference to pointer.",0,Negative,Negative,unknown,unknown,Negative,Negative,Negative,Positive
-"Q: What is the main advantage associated with function arguments that are passed by reference?
-A: if you pass by reference, you can modify the value as opposed to passing by value where you cannot change the value",1,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: How can you implement a stack with an array?
-A: Allocate an array of some pre-defined size. Bottom stack element stored at element 0. The last index in the array is the top. Increment top when one element is pushed.",1,Positive,unknown,Positive,unknown,Positive,Positive,unknown,Positive
-"Q: What are the two main functions defined by a stack?
-A: push and pop",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: How are objects initialized when they are created?
-A: obj. are initialized by the variables that call them, when they are created within a class.   e.i. classname objectname etc.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
-"Q: What is the experimental approach for measuring the running time of an algorithm?
-A: In experimental terms, the running time of an algorithm is measured by the number of operations required to complete the function. This number can usually be expressed in big-O notation.",0,Negative,Negative,unknown,unknown,Negative,Negative,Negative,Positive
-"Q: What is the scope of global variables?
-A: If a variable is declared global, any function or class can use that variable.",1,unknown,Negative,Negative,unknown,Positive,Negative,Negative,Positive
-"Q: What operations would you need to perform to find a given element on a stack?
-A: if top item != given element pop the stack. Repeat until item is found or stack is empty",1,unknown,Negative,Positive,unknown,Positive,Negative,Negative,Positive
-"Q: What are the main advantages associated with object-oriented programming?
-A: This type of programming is more flexible, making it easier to add and modify the program.  It is also a type of a fail safe program, you check each individual module.  This eliminates redundant code and makes the program easier to read for other programmers.  When debugging the program it is easier to track down the source of a problem within a module rather than a 2 million line program.",1,unknown,Negative,Negative,unknown,Positive,unknown,unknown,unknown
-"Q: What is a variable?
-A: Is a method or identifier I would say,  we use to bind a data object to memory location; which is then stored in a location that can be accessed when and manipulated later when the variable name is called.",1,unknown,Positive,Negative,Negative,Positive,unknown,unknown,Negative
-"Q: What operations would you need to perform to find a given element on a stack?
-A: Depends on the type of stack, on a true stack you will haft to pop all of the elements of the stack until you find the element you want, and then after that you will need to push all the elements that where removed back in to the stack in the order that they where removed.  With a Java style stack, where there is a peek function, it will return the element you wanted instead of requiring you to perform all the excessive actions that are required from a true stack.",1,unknown,unknown,Positive,unknown,unknown,unknown,unknown,unknown
-"Q: What is the base case for a recursive implementation of merge sort?
-A: The base case is when the length of the current array is 1.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What are the elements typically included in a class definition?
-A: Parameters and their type, Class name, and return type, and the code to be executed in the class.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
-"Q: What is the role of a prototype program in problem solving?
-A: Prototype programming is an approach to programming that enables one to take an organized approach to developing an effective program with minimal errors and a strategic pattern when solving a problem. i.e. book gave an example of a costumer withdrawing money from a bank, the approach that was taking on a pseudo code level during the OOA/Design lvl before proceeding into creating a solution.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Negative
-"Q: What is the difference between an array that is declared as static and one that is not?
-A: Standard arrays terminate when the functions that call them finish. A static array is not removed from memory when it's parent function terminates, leaving it available for other functions (or new instances of the original function).",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What are the two main functions defined by a stack?
-A: Push which inserts an element on the top of the stack and pop which removes the last inserted element from the stack.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: When defining a recursive function, what are possible causes for infinite recursion?
-A: Not having the proper case to leave the recursion",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: Where are variables declared in a C++ program?
-A: variables can be declared in classes and methods.",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
-"Q: What is the scope of global variables?
-A: File scope.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How many dimensions need to be specified when passing a multi-dimensional array as an argument to a function?
-A: Every dimension after the first.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is the inorder traversal of a binary tree?
-A: the root is in the middle.  The left subtree is traversed first, then the root, and finally the right subtree.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a function pointer?
-A: Function Pointers are pointers, i.e. variables, which point to the address of a function.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a pointer?
-A: A pointer is a variable that contains a memory address as its value.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: What are the two different ways of specifying the length of an array?
-A: within the brackets or by using an initializer list.",1,unknown,Positive,unknown,unknown,Positive,Positive,Negative,Positive
-"Q: How many constructors can be created for a class?
-A: one",0,Negative,Negative,Negative,unknown,Positive,Negative,Negative,Positive
-"Q: What are the two different ways of specifying the length of an array?
-A: You can use an initializer list, or simply tell the compiler how many elements you want in the array.  For an Initializer list:  int a[] = {10, 2, 3, -4, 5};  For an elemental declaration: int b[5];  Both arrays have 5 elements in them, but array a is already initialized.",1,Positive,Positive,unknown,Positive,Positive,Positive,Positive,Positive
-"Q: What is a binary search tree?
-A: a tree where each node has at most two nodes and the node on the left is less than the root and the node on the right is greater than the root.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: What is the scope of global variables?
-A: The scope of global variables is at the file level.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a linked list?
-A: its a list of pointers that are linked 2 each other. every pointer points to the next pointer which has the next element",1,unknown,Negative,Negative,Negative,Positive,Negative,Negative,unknown
-"Q: In one sentence, what is the main idea implemented by insertion sort?
-A: Starting at the beginning of an array, take each element in order and place it in it's correct position relative to all previously sorted elements.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: Briefly describe in one sentence how does merge sort work?
-A: divides the line in half coninuously until you get to only a single value then recombine the values to form a sorted line.",1,Positive,Positive,Negative,unknown,Positive,Positive,Negative,Positive
-"Q: What is the main difference between strings declared using the type string versus strings declared using an array of characters?
-A: Char array - Individual letters can be accessed directly with array subscript notation.  String array - array subscript will return the entire string.",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,unknown
-"Q: What is the difference between a data member and a local variable inside a member function?
-A: local variables can only be used within the function, where as data members can be set to public access and can be used throughout",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
 "Q: What is a function pointer?
 A: It contains the address of the function in memory.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
-"Q: How many comparisons does it take to find an element in a binary search tree?
-A: n-1",0,Negative,Negative,Negative,Positive,Positive,Negative,Negative,Positive
-"Q: When does C++ create a default constructor?
-A: when no user-defined constructor exists",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What is a queue?
-A: A data structure in C++ where the the first element in the queue is the first element taken out of the queue.",1,Positive,unknown,unknown,unknown,unknown,unknown,Negative,unknown
-"Q: How many steps does it take to search a node in a binary search tree?
-A: log(n)    where n equals the total number of nodes in the tree.",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: What is the main advantage of a doubly-linked list over a basic linked list?
-A: a doubly linked list allows you to back up from a node rather than having to go through the entire list again",1,unknown,Negative,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: What is the main disadvantage of a doubly-linked list over a basic linked list?
-A: The main disadvanate is that if hard to remove all items in the list.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What are the two different ways of specifying the length of an array?
-A: explicitly, by declaring it in brackets (i.e. int array[50];) and implicitly, by initializing several values (i.e. int array[] = {1, 2, 3};)",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
-A: iterative",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: What are the elements typically included in a class definition?
-A: The elements typically included in a class definition are the function prototypes, usually declared public, and the data members used in the class, which are usually declared private.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: What is the difference between a function prototype and a function definition?
-A: A prototype shows only return types and necessary parameters. The definition includes names for those parameters and defines what the object is actually capable of doing.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
-"Q: What does the address (&) operator return?
-A: returns the address number of the specified variable",1,Positive,Positive,unknown,unknown,Positive,Negative,Negative,Positive
-"Q: How can you implement a queue with an array?
-A: add in data from the first element to the last, take out data from the first element to the last.",0,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
-"Q: How are overloaded functions differentiated by the compiler?
-A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What is a tree?
-A: one or more nodes in a hierarchy starting with the root and branching off like a tree to subtrees",1,Positive,unknown,Positive,unknown,Positive,unknown,Negative,Positive
 "Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
-A: n-1 The best case is when the array is already sorted.",1,unknown,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How can you implement a queue with a list?
-A: Implement the operation dequeue() as the list operation remove(1) and the operation getFront(queueFront) as the list operation retrieve(1, queueFront)",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
-"Q: What are the two main functions defined by a stack?
-A: pop and push",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
-"Q: What is a tree?
-A: A finite number of nodes such that there is one root node, each node has a certain number of children nodes, and each child is also a tree",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
-"Q: How can you implement a queue with an array?
-A: you can take the array and put it in a queue stack or you can just traverse the list and keep track of top and bottom",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
-"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
-A: an array of characters has one more element, its last element,the terminating element, or null, which doesnt exist in a variable of type string",1,Positive,Positive,Positive,unknown,Positive,Positive,Negative,unknown
-"Q: How are arrays passed to functions?
-A: the same way but with [] at the declaration and the actual function.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
-"Q: How are arrays passed to functions?
-A: by reference",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
-"Q: How many comparisons does it take to find an element in a binary search tree?
-A: It takes at most 3 comparisons to find and element in a binary search tree",0,Negative,Negative,Positive,Positive,Positive,Negative,Negative,Positive
-"Q: How can you implement a stack with an array?
-A: By allocating an array of predetermined size, and an integer to track the top element of the stack. The bottom member of the stack will go in element 0 of the array, and for each element pushed the ""top"" tracking integer is incremented.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
-"Q: What does the address (&) operator return?
-A: returns the address of what it is put in front of",1,Positive,unknown,Negative,unknown,Positive,unknown,Negative,Positive
-"Q: How many constructors can be created for a class?
-A: as many as you want",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
-"Q: What does the address (&) operator return?
-A: the address of the variable in memory",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+A: theta(n) the best case senario is that everything is already sorted",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: What is the Euler tour traversal of a tree?
+A: To start from the root , traveling left and visiting ever child along the way till you return to the root from the right.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: In one sentence, what is the main idea implemented by insertion sort?
+A: Starting at the beginning of an array, take each element in order and place it in it's correct position relative to all previously sorted elements.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: Where are variables declared in a C++ program?
+A: They can be declared globally just before the main method (but also outside of it)... or variables can be subject to only the method they're scoped within, but would still be declared at the beginning of that method (but inside of it).",1,Negative,unknown,unknown,Negative,Positive,Negative,Negative,Negative
 "Q: What is the experimental approach for measuring the running time of an algorithm?
 A: run the code for n-times and get average values, drop the constant and lowest number. for example if             f(x) = 3n +1 the running time will bef  f(x) = O(n)",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
+"Q: How can you implement a queue with a list?
+A: A list can have unlimited elements in it.  You can push a node onto the end of the list and pop the one in the front.",1,unknown,Negative,Negative,Negative,unknown,Negative,Negative,unknown
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: a string variable can change in size and is passed to functions by value, whereas a type char[] cannot change in size and is passed to functions by reference only",0,unknown,Negative,Positive,Positive,unknown,unknown,Negative,Positive
+"Q: What is the base case for a recursive implementation of merge sort?
+A: O(n log n)",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is a variable?
+A: Is a method or identifier I would say,  we use to bind a data object to memory location; which is then stored in a location that can be accessed when and manipulated later when the variable name is called.",1,unknown,Positive,Negative,Negative,Positive,unknown,unknown,Negative
+"Q: What is the main difference between strings declared using the type string versus strings declared using an array of characters?
+A: array  it is the collection of similar data types ex:int a[10]  ten indicates the size of array. [ ] is index of array, we can give only integer values to array of a.  where as string mean collection of group of characters.  string declarations have a datatype usually causes storage to be allocated in memory that is capable of holding some predetermined number of symbols.    However  Arrays can be declared to contain values of any non reference data type. Multiple arrarys of the same type",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Negative
+"Q: What is the main advantage of arrays over linked lists?
+A: Arrays require less memory than linked lists and allow direct access to a specified item. Also, insertion and deletion in arrays does not require a list traversal.",1,Negative,unknown,Positive,Negative,unknown,Negative,Negative,unknown
+"Q: What are the access-specifiers that can be used in a C++ class definition?
+A: public or private",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between a function prototype and a function definition?
+A: in a function prototype you include the return type, the name of the function, and its parameters if any are needed.  in a function definition you write the code of what the function will do.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What are the access-specifiers that can be used in a C++ class definition?
+A: Public Private",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What is the difference between a function prototype and a function definition?
+A: A function definition does not require any additional information that needs to be passed inside its parenthesis  to execute. While a definition prototype requires more than one parameters to be passed in order to complete its  task.",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is the main difference between strings declared using the type string versus strings declared using an array of characters?
+A: Char array - Individual letters can be accessed directly with array subscript notation.  String array - array subscript will return the entire string.",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,unknown
+"Q: Where are variables declared in a C++ program?
+A: inside the function scope and outside of the function scope in case of global variables",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How are linked lists passed as arguments to a function?
+A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
+"Q: What is a leaf?
+A: the last child on any branch",1,unknown,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: Where are variables declared in a C++ program?
+A: Variables are declared in the main function, before any operation is   attempted with the variables.",0,Negative,Negative,unknown,unknown,unknown,Negative,Negative,Positive
+"Q: What are the two main functions defined by a stack?
+A: Push which inserts an element on the top of the stack and pop which removes the last inserted element from the stack.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
 "Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
 A: insertion sort will make zero operations (and length - 1 comparisons) in the best case scenario, that is, when the array its given is already in order.",1,Negative,Positive,Positive,unknown,Positive,unknown,unknown,Positive
+"Q: Briefly describe the divide-and-conquer paradigm.
+A: The idea is to split the problem into half and solve for the smaller split-problems.",1,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: How can you implement a stack with a list?
+A: You implement a list in which the head pointer points to the element most recently pushed onto the list and the pop function changes the head pointer to point to the next to last element in the list and removes the element head pointer previously pointed to.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,unknown
+"Q: What is the difference between an array declared as static, and one that is not?
+A: if they are declared fixed or static that means they can't change size once their storage has been allocated, however one that is not or dynamic arrarys can be resized.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What are the two main functions defined by a queue?
+A: enqueue and dequeue",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How are objects initialized when they are created?
+A: by giving them a value",0,Negative,Negative,Negative,unknown,Positive,Negative,Negative,Positive
+"Q: How does the compiler handle inline functions?
+A: Ignores the inline qualifier and typically does so for all but the smallest functions.",0,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is a recursive function?
+A: A recursive function solves a problem by repeatedly calling itself. the initial problem is broken into successively smaller parts until a much simpler base case is reached. the solutions to each piece of the problem are then returned a step at a time.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What are the main advantages associated with object-oriented programming?
+A: Variables can remain private. The code is easily modified and reusable, as well as easily implemented. Not to mention easier to read and follow along as an observer.",1,Positive,unknown,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: What is the role of a prototype program in problem solving?
+A: #NAME?",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
+"Q: What does the address (&) operator return?
+A: returns the address of what it is put in front of",1,Positive,unknown,Negative,unknown,Positive,unknown,Negative,Positive
+"Q: What is a function pointer?
+A: Contains the address of the function in memory.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is the role of a prototype program in problem solving?
+A: High risk problems are address in the prototype program to make sure that the program is feasible.  A prototype may also be used to show a company that the software can be possibly programmed.",1,unknown,Negative,Positive,Positive,Positive,unknown,unknown,Positive
+"Q: What are the two different ways of specifying the length of an array?
+A: explicitly, by declaring it in brackets (i.e. int array[50];) and implicitly, by initializing several values (i.e. int array[] = {1, 2, 3};)",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What stages in the software life cycle are influenced by the testing stage?
+A: The testing stage has a direct influence on the final version of a program, being as it is the debugging and finalization of a software revision.",0,unknown,Negative,Negative,Negative,Positive,Negative,Negative,unknown
+"Q: What is the scope of global variables?
+A: File scope.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the two main functions defined by a stack?
+A: pop and push",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: How many dimensions need to be specified when passing a multi-dimensional array as an argument to a function?
+A: Every dimension after the first.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
+A: O(n)",1,unknown,Negative,unknown,Negative,Positive,unknown,Negative,Positive
+"Q: What is a tree?
+A: A finite number of nodes such that there is one root node, each node has a certain number of children nodes, and each child is also a tree",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: What are the two main functions defined by a queue?
+A: enqueue and dequeue.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What is the base case for a recursive implementation of merge sort?
+A: The sequence of numbers has zero or one elements.",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: How are overloaded functions differentiated by the compiler?
+A: By the number, types, and order of their arguments",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
 "Q: How can you implement a queue with a list?
-A: Utilizing a front pointer and a back pointer.  The front poiner and back pointer points to the first item into the queue.  As you add items, the front remains the same but the back poiner 'next' points to the new item and the new item is assigned to become the 'new' back pointer.",1,unknown,unknown,unknown,unknown,Positive,unknown,unknown,Positive
+A: Have a pointer to the last element in the list and then use enqueue to insert items there. Link the first and last elements together to dequeue the list.",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,unknown
+"Q: What is the main disadvantage of a doubly-linked list over a basic linked list?
+A: The main disadvanate is that if hard to remove all items in the list.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: How are overloaded functions differentiated by the compiler?
+A: their function signature.",1,Positive,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: When defining a recursive function, what are possible causes for infinite recursion?
+A: Infinite recursion may occur if no base case is defined or if the call is not varied.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: In one sentence, what is the main idea implemented by selection sort?
+A: Finds the minimum value and swap it with the value in the first position.",1,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: What are the two main functions defined by a stack?
+A: push (insert an item) pop (remove an item)",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is a function signature?
+A: A function signature, used in a function's prototype, is the set of object types it take in as parameters, with or without names given for the objects.",1,Negative,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What is a queue?
+A: a data structure that performs operations in the order of first in first out FIFO",1,Positive,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: How can you implement a queue with a list?
+A: Implement the operation dequeue() as the list operation remove(1) and the operation getFront(queueFront) as the list operation retrieve(1, queueFront)",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
+"Q: What is a pointer?
+A: A pointer is a variable that contains a memory address as its value.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: How many constructors can be created for a class?
+A: as many as wanted/needed",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What is the difference between an array that is declared as static and one that is not?
+A: Standard arrays terminate when the functions that call them finish. A static array is not removed from memory when it's parent function terminates, leaving it available for other functions (or new instances of the original function).",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: Briefly describe in one sentence how does merge sort work?
+A: merge sort splits an array of elements into smaller and smaller array's till the value of 1 is reached.",1,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What is a variable?
+A: a stored value used by the program",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: What is a binary search tree?
+A: it is a binary tree where each node has a unique key, the left child of a node has only values less than that node, and the right child of each node has higher values than that node.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What does the sizeof operator return?
+A: returns the size in bytes of the specified data",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What is a function signature?
+A: its the scope, type, and parameters of that function that give it it's properties and defines it against other functions.",1,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: The variable of type string has a terminating character \0 at the end of it.",1,Negative,Negative,Positive,unknown,Positive,Negative,Negative,Positive
+"Q: What is the scope of global variables?
+A: If a variable is declared global, any function or class can use that variable.",1,unknown,Negative,Negative,unknown,Positive,Negative,Negative,Positive
+"Q: What is the experimental approach for measuring the running time of an algorithm?
+A: running an algorithm on a specific set of data",1,unknown,Negative,unknown,Negative,unknown,Negative,Negative,Positive
+"Q: How are objects initialized when they are created?
+A: They are initialized with a "" . "" (dot) between the constructor and the object being created.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: What is a function signature?
+A: a function signature is the elements that make it unique such as the variables it calls for and also I suppose this includes the program it is in.",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
+"Q: How can you implement a queue with a list?
+A: by making the head of the list the beginning of the queue and the last listed item the insertion point of the queue",1,Positive,Positive,unknown,Positive,Positive,unknown,Negative,Positive
+"Q: What is the scope of global variables?
+A: Global variables have file-scope.  The variable is know to all functions throught the file",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What is the height of a tree?
+A: The number of nodes on the longest path from the root to the leaf.",1,Negative,Negative,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: a string char[] adds a null value to the end of the string.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What are the two main functions defined by a stack?
+A: Pop and push",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: How are infix expressions evaluated by computers?
+A: in postfix format",1,Negative,Negative,Positive,Negative,Positive,Negative,Negative,Positive
+"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
+A: iteration",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the base case for a recursive implementation of merge sort?
+A: the size of the list being sent is &lt;= 1",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a variable?
+A: A named object that can hold a numerical or letter value",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: How do you delete a node from a binary search tree?
+A: The way you delete a node from a binary search tree is first you have take the root and then see the nodes that are coming from the root. And delete the nodes and set the root to NULL.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
+"Q: What is a binary tree?
+A: a binary tree is a special search tree where each node has either 2, 1, or 0 children",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
+"Q: How can you implement a queue with a list?
+A: you use the first element in the list as the remove point for the queue and insert items at the end of the list.",1,Positive,unknown,Negative,unknown,Positive,unknown,Negative,Positive
+"Q: What is a tree?
+A: one or more nodes in a hierarchy starting with the root and branching off like a tree to subtrees",1,Positive,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: How are arrays passed to functions?
+A: by reference",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the elements typically included in a class definition?
+A: Parameters and their type, Class name, and return type, and the code to be executed in the class.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: What is typically included in a class definition?
+A: class variables, function definitions for the class",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: a variable char is basically any non command key on the keyboard that you can press. A string is a collection of letters or numbers that is stored together to be used later. Comonly strings are used for words. Chars can be used for less but can have opperations performed on them in a useful way.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
+"Q: What are the two main functions defined by a stack?
+A: pop and push",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: In one sentence, what is the main idea implemented by selection sort?
+A: selects the minimum from the remaining elements of the array, and palces the miminum in the current position and moves to the next position",1,Positive,unknown,unknown,unknown,Positive,Positive,Negative,Positive
 "Q: What is the main difference between strings declared using the type string versus strings declared using an array of characters?
 A: the type string uses less storage and you have to change the string all at once. with an array of characters you can make permutations of words using the characters stored in the array, without needing to actually access and change the variables. with an array of characters you can just change how they're accessed.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
 "Q: What are the two different ways of specifying the length of an array?
-A: Array lengths can be explicitly specified by inputing the number of elements between the brackets [ ] during declaration, or implicitly by including an initializer list WITHOUT specifying a number between [ ], the compiler will automatically declare the array with the proper number of elements needed for the list.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,unknown
+A: Implicit, namely when you give it values, like {1,2,3,4,5,6,7,8,9}, at which the compiler will automatically give this a size. Static, during the declaration.",1,Positive,Positive,unknown,Positive,Positive,Positive,Positive,Positive
+"Q: What is a tree?
+A: A tree is a finite set of one or more nodes such that: there is a specially designated node called the root.",1,unknown,Negative,Positive,Positive,Positive,Negative,Negative,Positive
+"Q: What are the main advantages associated with object-oriented programming?
+A: 1- Existing classes can be reused 2- Program maintenance and verification are easier",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is the difference between a circular linked list and a basic linked list?
+A: in a circular linked list the the last item points to the first item.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
+"Q: What operations would you need to perform to find a given element on a stack?
+A: if top item != given element pop the stack. Repeat until item is found or stack is empty",1,unknown,Negative,Positive,unknown,Positive,Negative,Negative,Positive
+"Q: What is the role of a prototype program in problem solving?
+A: Prototype programming is an approach to programming that enables one to take an organized approach to developing an effective program with minimal errors and a strategic pattern when solving a problem. i.e. book gave an example of a costumer withdrawing money from a bank, the approach that was taking on a pseudo code level during the OOA/Design lvl before proceeding into creating a solution.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Negative
+"Q: What does the sizeof operator return?
+A: Return size of operand in bytes",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the main advantage associated with function arguments that are passed by reference?
+A: you do not use unessesary memory space to copy variables between functions",1,Positive,unknown,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: How can you implement a queue with an array?
+A: A pointer based implementation of a queue could use a linear linked list with two external pointers, one to the front and one to the back",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: Where do C++ programs begin to execute?
+A: at the main function  int main() {}",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: a string of characters will have a null character or value at the end of the string",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
+"Q: What is a variable?
+A: #NAME?",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: Where do C++ programs begin to execute?
+A: They begin to execute at the funcion main().",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: What are the main operations associated with a stack?
+A: push and pop",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How can you implement a queue with an array?
+A: It is an array of fixed size. A queue of maximum N elements.",0,unknown,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: What is a linked list?
+A: Information in memory linked to the next piece of information and can only be linked forwards and not backwards.",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: What is a queue?
+A: First in first out.",1,Positive,Negative,Negative,unknown,Positive,Negative,Negative,Positive
+"Q: When defining a recursive function, what are possible causes for infinite recursion?
+A: If the recursion function never reaches or successfully defines the base case it will recurse forever.  This happens many ways, such as the function doesn't progress towards the base case, or the function is coded poorly and doesn't even contain a base case.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,unknown
+"Q: What is the advantage of linked lists over arrays?
+A: linked lists do not have to have a specified size, they are easier to add to and remove from",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What does the address (&) operator return?
+A: Returns the address location in memory of the item.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,unknown
+"Q: How can an array be addressed in pointer/offset notation?
+A: With int x[10]; int *xPtr; xPtr = x; Address &x[1] is the same as xPtr + 1.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What does the star (*) operator return?
+A: The * returns the value",1,unknown,Negative,Negative,unknown,Positive,Negative,Negative,Positive
+"Q: How are linked lists passed as arguments to a function?
+A: passes a pointer to a linked list object",0,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a leaf?
+A: a node with no children.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: How can you implement a queue with an array?
+A: you can take the array and put it in a queue stack or you can just traverse the list and keep track of top and bottom",1,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: How are infix expressions evaluated by computers?
+A: When an operand is entered, the computer Pushes it onto a stack When an operator is entered, the computer Applies it to the top two operands of the stack Pops the operands from the stack Pushes the result of the operation onto the stack",1,Negative,Negative,unknown,unknown,unknown,Negative,unknown,Positive
+"Q: Where are variables declared in a C++ program?
+A: After declaration of the variable's data type.",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Positive
+"Q: What is the main advantage associated with function arguments that are passed by reference?
+A: if you pass by reference, you can modify the value as opposed to passing by value where you cannot change the value",1,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What are the access-specifiers that can be used in a C++ class definition?
+A: public private protected",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the two different ways of specifying the length of an array?
+A: You can use an initializer list, or simply tell the compiler how many elements you want in the array.  For an Initializer list:  int a[] = {10, 2, 3, -4, 5};  For an elemental declaration: int b[5];  Both arrays have 5 elements in them, but array a is already initialized.",1,Positive,Positive,unknown,Positive,Positive,Positive,Positive,Positive
+"Q: What is the base case for a recursive implementation of merge sort?
+A: When there is only one element in the array, or when the starting element in the array is the same as the ending element.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: How can you implement a stack with an array?
+A: Use an index value called top to keep track of the last element in the array.",1,unknown,Negative,Positive,unknown,Positive,Negative,Negative,Positive
+"Q: What are the elements typically included in a class definition?
+A: The elements typically included in a class definition are the function prototypes, usually declared public, and the data members used in the class, which are usually declared private.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: How do you delete a node from a binary search tree?
+A: to delete the node, you would have to link the children nodes that are connected to the node to be deleted to the remaining nodes of the tree in such a way that nodes on the right of the parent node are larger than the parent and nodes on the left of the parent node are smaller",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,unknown
+"Q: What is the advantage of linked lists over arrays?
+A: linked lists have an indefinite size, whereas arrays are a specific size.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How many comparisons does it take to find an element in a binary search tree?
+A: O(nlog(n))",0,Negative,Negative,Negative,unknown,Positive,Negative,Negative,Positive
+"Q: How can you implement a stack with an array?
+A: You predetermine the size of the stack as you would an array.  This type can not grow.",0,unknown,Negative,Positive,unknown,unknown,Negative,Negative,Positive
+"Q: What is a tree?
+A: A data structure that contains a root, internal nodes and external nodes. Each node references another node by means of pointers (pass-by-reference). The root is the ""base"" of the tree, it has no parents. A ""leaf"" is a node at the end of the tree which points to NULL.",1,unknown,Negative,unknown,unknown,Positive,Negative,unknown,Positive
+"Q: When defining a recursive function, what are possible causes for infinite recursion?
+A: improper handling of cases such that not all possible values are able to be handled.",1,unknown,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: What is the main advantage of arrays over linked lists?
+A: direct access to elements, and speed, linked lists have increased search times to access elements even if the list is sorted. ( like getting the last element without a pointer directly to the end of the list. )",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What is a stack?
+A: A data structure that stores data using LIFO.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: Briefly describe the divide-and-conquer paradigm.
+A: The divide and conquer paradigm, splits a large problem into simpler problems, at which point it solves the simpler problems and merges the simple solutions together to answer the large problem.",1,Positive,unknown,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: What is a function pointer?
+A: A function pointer contains the memory address of a function. Using a function pointer, a function can be passed to or returned by another function. Function pointers can also be stored in arrays.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is a pointer?
+A: A data type that stores the memory address of another variable.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the main difference between strings declared using the type string versus strings declared using an array of characters?
+A: the array of characters has a set length, while the type string has virtually unlimited length.",1,unknown,Negative,Positive,Positive,Positive,Negative,Negative,Positive
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: The programmer must provide the null terminating character in a string of characters using type char[] and must also ensure that the array is large enough to contain the input string of characters and the null terminating character.",1,Negative,unknown,Positive,Positive,Positive,Negative,unknown,Positive
+"Q: What is the advantage of linked lists over arrays?
+A: linked list many be dynamically grown. It has not limit",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What are the two main functions defined by a queue?
+A: enqueue and dequeue",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a tree?
+A: an infinite set of nodes that have a root and descendants, and each addition is a leaf.",1,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: What is typically included in a class definition?
+A: member functions",1,unknown,Negative,Positive,Positive,Positive,Negative,Negative,Positive
+"Q: What is a binary tree?
+A: A binary tree is a special type of inverted tree in which each element has only two branches below it.",1,Negative,unknown,Negative,Negative,Positive,Negative,Negative,unknown
+"Q: Where are variables declared in a C++ program?
+A: in the very beginning of the program. Before the main() starts.",0,Negative,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What is a leaf?
+A: A node with no children.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: In one sentence, what is the main idea implemented by selection sort?
+A: Selection sort searches the whole array for the largest item and puts it at the end of the array, then searches for the second largest item and puts it at the second to last spot and so on.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the main advantage associated with function arguments that are passed by reference?
+A: The function can change the data stored in a variable passed by reference directly.",1,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What are the main operations associated with a stack?
+A: Push  and pop.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What stages in the software life cycle are influenced by the testing stage?
+A: Directly: Refining, coding.  Because Refining is right before the Testing Phase and Coding is right after the Testing Phase.  Indirectly: Production, Maintenance.  Because Refining occurs before these last two stages in the Software Life Cycle.",1,Negative,unknown,Positive,Negative,unknown,Negative,Negative,unknown
+"Q: How are infix expressions evaluated by computers?
+A: infix expressions are pointers evaluated by reference to the memory location",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What are the elements typically included in a class definition?
+A: A class definition includes the definitions of the class' constructor(s) and any public or private functions. Of course, it also #includes the class header and any necessary C libraries",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Negative
+"Q: What are the different ways to pass a pointer to a function?
+A: you can pass a pointer to a pointer or pass a reference to pointer.",0,Negative,Negative,unknown,unknown,Negative,Negative,Negative,Positive
+"Q: What is the main advantage of linked lists over arrays?
+A: You can insert into and delete items from a pointer-based linked list without shifting data.",1,Positive,Negative,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the advantage of linked lists over arrays?
+A: Linkded list does not have a fixed size. Arrays have a fixed size.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is a tree?
+A: A nonlinear, two-dimensional data structure.",0,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: What is a pointer?
+A: A variable that stores the address of another variable",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the stack operation corresponding to the enqueue operation in queues?
+A: the Push method in the stack operations.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
+"Q: Where do C++ programs begin to execute?
+A: The main method.",1,Negative,unknown,Negative,unknown,Positive,Negative,Negative,Positive
+"Q: How can you implement a stack with a list?
+A: using pointer",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What are the two main functions defined by a stack?
+A: Push (insert) and pop (retrieve).",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: How many constructors can be created for a class?
+A: one",0,Negative,Negative,Negative,unknown,Positive,Negative,Negative,Positive
+"Q: What is a linked list?
+A: An array based list that uses an implicit ordering scheme, often using pointers.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is the main advantage associated with function arguments that are passed by reference?
+A: Less overhead than passed by value, especially when using large numbers.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: How are overloaded functions differentiated by the compiler?
+A: they have to have same return type, but different input parameters",0,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: In arrays strings are stored as a characters (char[]), each character of string will be stored in each memory location of the array, while string of characters is only one memory location.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
+"Q: What is a binary search tree?
+A: A binary search tree is a special binary tree arranged such that every left child node contains a value less than its parent, and every right child node contains a value greater its parent.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the main advantages associated with object-oriented programming?
+A: Well for one encapsulation the values of the variables inside an object are private, unless methods are written to pass info outside of the object. As well as Inheritance where each subclass inherits all variables and methods of its super class.  Example in the book included obj clock and how obj alarm would still use clock from the first class.",1,unknown,Negative,Positive,Positive,unknown,unknown,unknown,unknown
+"Q: How can you implement a queue with an array?
+A: add in data from the first element to the last, take out data from the first element to the last.",0,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: What is a pointer?
+A: variable that contains the memory address of a data object.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
+A: itteration, like a for loop, a while loop, or a do while loop",1,Positive,Positive,unknown,Positive,Positive,Positive,Positive,Positive
+"Q: What are the access-specifiers that can be used in a C++ class definition?
+A: local, global, local-variable, function specific",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is a queue?
+A: A first in, first out Abstract Data type that can be used to store values.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between a circular linked list and a basic linked list?
+A: Basic linked list points to a NULL at the end and circular points to the head at the end.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between a function prototype and a function definition?
+A: Function definitions are just that, the definition. The prototype is what the compiler uses to check that calls to function are correct.",0,unknown,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: Where do C++ programs begin to execute?
+A: Within the main function",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How can you implement a stack with an array?
+A: Allocate an array of some pre-defined size. Bottom stack element stored at element 0. The last index in the array is the top. Increment top when one element is pushed.",1,Positive,unknown,Positive,unknown,Positive,Positive,unknown,Positive
+"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
+A: you can also solve the problem iteratively",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: Briefly describe the divide-and-conquer paradigm.
+A: dividing and conquering means breaking a problem into two smaller problems, solving both of those, and putting the two solutions together.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What is the difference between a data member and a local variable inside a member function?
+A: Variable declared in a function defination's body cannot be used outside of that function.  Data members accessible only to member function of that class.",1,unknown,Positive,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: How many comparisons does it take to find an element in a binary search tree?
+A: n-1",0,Negative,Negative,Negative,Positive,Positive,Negative,Negative,Positive
 "Q: How can you implement a queue with a list?
-A: create a node with the input data, continue to add to the list.  when dequeueing - get the first elements data and set the next element in the list as the new first element",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+A: remove the first element and reference the second element as the new head of the list.",1,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What is the inorder traversal of a binary tree?
+A: the root is in the middle.  The left subtree is traversed first, then the root, and finally the right subtree.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the experimental approach for measuring the running time of an algorithm?
+A: the experimental approach measures actual running time in t.  t= seconds.",1,Positive,unknown,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What is the scope of global variables?
+A: The scope of global variables is at the file level.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a queue?
+A: a data structure that inserts elements at the end of it and removes elements from the front.",1,Positive,unknown,unknown,Positive,Positive,unknown,Negative,Positive
+"Q: What are the elements typically included in a class definition?
+A: Member functions and data members.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a pointer?
+A: Its a location in memory that contains the memory address of another location in memory that contains information.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,unknown
+"Q: What is a binary tree?
+A: a tree that has a maximum of 2 children per node",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a binary tree?
+A: Starting at the root node, it branches off into one or two subsets that are binary subtrees of the root.  Each node has at most two children, the left child and the right child.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,unknown
+"Q: How can you implement a queue with an array?
+A: Declare two variables, “front” and “rear”, to be used to denote which elements in the array can be accessed. Increment “rear” whenever data is enqueued to the end and increment “front” whenever data is dequeued.",1,unknown,Negative,Positive,unknown,Positive,Negative,Negative,Positive
+"Q: What is the difference between a function prototype and a function definition?
+A: A prototype shows only return types and necessary parameters. The definition includes names for those parameters and defines what the object is actually capable of doing.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: How do you delete a node from a binary search tree?
+A: pointer to the child and delete it has 2 children set the node to the child and delete it. the node to th middle will then take its place",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Negative
+"Q: What is the main advantage associated with function arguments that are passed by reference?
+A: gives function ability to access and modify the caller's argument data directly",1,unknown,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is the inorder traversal of a binary tree?
+A: The inorder traversal of a binary tree visits the node of a binary tree in order according to their data values.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is a leaf?
+A: a leaf is a node that has no children nodes",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
+"Q: When does C++ create a default constructor?
+A: C++ will create a default constructor when no other constructor is present.",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How can you implement a stack with an array?
+A: create an array and implement pointers that point to the next list item down and stack them up.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: When defining a recursive function, what are possible causes for infinite recursion?
+A: Infinite recursion can occur when the base case is omitted or the recursion step is written incorrectly so that it never converges on the base case.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between a circular linked list and a basic linked list?
+A: Circular linked lists are most useful for describing naturally circular structures, and have the advantage of regular structure and being able to traverse the list starting at any point.",0,Negative,Negative,Positive,unknown,Negative,Negative,unknown,Positive
+"Q: How are overloaded functions differentiated by the compiler?
+A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is the stack operation corresponding to the enqueue operation in queues?
+A: push",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: Briefly describe the divide-and-conquer paradigm.
+A: Divide-and-conquer refers to abstraction, the act of separating large, complex problems into smaller, easier problems that can be solved by a relatively simple algorithm.",1,unknown,Negative,Negative,unknown,unknown,Negative,Negative,unknown
+"Q: What does the sizeof operator return?
+A: the size of the list object.",0,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: What is the base case for a recursive implementation of merge sort?
+A: when each half or the original array has nothing else to sort, and puts the halfs back together",0,unknown,Negative,Negative,Negative,unknown,Negative,Negative,unknown
+"Q: What is the main difference between a while and a do...while statement?
+A: A do...while loop will always execute atleast once, a while loop may never   execute depending on teh conditions.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What stages in the software life cycle are influenced by the testing stage?
+A: coding and refining",1,Positive,Positive,unknown,Positive,Positive,Negative,Negative,Positive
+"Q: What does the star (*) operator return?
+A: a synonym for the object to which its pointer operand points",1,Positive,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: Briefly describe in one sentence how does merge sort work?
+A: merge sort breaks the array down in halves until it is comparing two values, sorts those two values, then merges that back with the other broken down parts that it sorted, each level merging more sets together till you return back to your whole array in order.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,unknown
+"Q: What is the main advantage of linked lists over arrays?
+A: Linked lists have an indefinite size. They can be added to and taken away from very easily with little difficulty in the shifting of data.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the main difference between a while and a do...while statement?
+A: Do ...while runs the embedded code at least once, the do command does not necessarily",1,unknown,Positive,Negative,Negative,Positive,unknown,Negative,unknown
+"Q: How can you implement a stack with a list?
+A: A singly-linked list is already a lot like a stack, it just depends on the way you address moving the head.",1,unknown,Negative,Positive,Negative,unknown,Negative,Negative,Positive
+"Q: How are objects initialized when they are created?
+A: When the object is initialized, its constructor is called (whether one is provided or c++ assigns a default constructor).",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the main disadvantage of a doubly-linked list over a basic linked list?
+A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is a variable?
+A: a symbol that stands in for a value that may or may not change depending on the program.",1,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What are the main operations associated with a stack?
+A: push and pop.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the role of a header-file?
+A: to declare the functions being used in the classes",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What is a stack?
+A: Stores a set of element in a particular order",0,unknown,Negative,unknown,Negative,unknown,Negative,Negative,Positive
+"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
+A: n-1 The best case is when the array is already sorted.",1,unknown,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between an array that is declared as static and one that is not?
+A: The static array will be available to the whole of the program, whereas an array that is not static is only available within the scope in which it is declared.   //pass-by-reference???",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
+"Q: When does C++ create a default constructor?
+A: when no user-defined constructor exists",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the two different ways of specifying the length of an array?
+A: Array lengths can be explicitly specified by inputing the number of elements between the brackets [ ] during declaration, or implicitly by including an initializer list WITHOUT specifying a number between [ ], the compiler will automatically declare the array with the proper number of elements needed for the list.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,unknown
+"Q: How many comparisons does it take to find an element in a binary search tree?
+A: log(n)",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What does the star (*) operator return?
+A: it returns the information in the address the pointer points to.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What is a stack?
+A: a finite ordered list with zero or more elements",0,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
+"Q: How can an array be addressed in pointer/offset notation?
+A: The array itself can be signed to a pointer or each element of the array can be assigned to a pointer.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What does the address (&) operator return?
+A: the address of the variable in memory",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What is a linked list?
+A: its a list of pointers that are linked 2 each other. every pointer points to the next pointer which has the next element",1,unknown,Negative,Negative,Negative,Positive,Negative,Negative,unknown
+"Q: Where are variables declared in a C++ program?
+A: Globally for an entire program, and locally for individual functions (including FOR statements)",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What is a pointer?
+A: a pointer is a memory address that points to a data member",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How many dimensions need to be specified when passing a multi-dimensional array as an argument to a function?
+A: All subsequent dimensions after the first one.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How many constructors can be created for a class?
+A: by default just one, but they may be overloaded to create as many constructors as necessary",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
+A: It will do (n) operations where (n) is the number of elements in the array. Best case is when all the elements are already sorted.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is typically included in a class definition?
+A: A constructor, functions, and variables that are accessible to by that class, and possibly other classes depending on how they are done.",1,Positive,Positive,unknown,unknown,Positive,Positive,unknown,unknown
+"Q: Briefly, how does selection sort work?
+A: selection sort is when you pick a data member and put it in a new array, then you pick another data member and put it in order with the new array, then pick another and insert it in the correct place in the new array, etc etc",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
+"Q: What is a recursive function?
+A: a function that solves a problem by dividing the problem into smaller problems, by calling its self again and again, until a base case is reached.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,unknown
+"Q: What does the sizeof operator return?
+A: The sizeof operator returns the total number of bytes of its operand.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What does the star (*) operator return?
+A: Returns synonym for the object its operand points to",1,Positive,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What is the difference between a circular linked list and a basic linked list?
+A: A circular linked list does not have a last element. Instead, it's last item points to the head of the list.",1,unknown,Positive,Positive,unknown,Positive,Positive,Negative,unknown
+"Q: What are the different ways to pass a pointer to a function?
+A: Nonconstant pointer to nonconstant data, constant pointer to nonconstant data, nonconstant pointer to constant data, constant pointer to constant data.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the elements typically included in a class definition?
+A: The variables and function prototypes.",1,Positive,Positive,unknown,unknown,Positive,Positive,Positive,Positive
+"Q: What is the difference between a circular linked list and a basic linked list?
+A: No node in a circular linked list contains NULL.",1,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: When defining a recursive function, what are possible causes for infinite recursion?
+A: Not having the proper case to leave the recursion",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What is a variable?
+A: A pointer to a location in memory.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: How many comparisons does it take to find an element in a binary search tree?
+A: It takes at most 3 comparisons to find and element in a binary search tree",0,Negative,Negative,Positive,Positive,Positive,Negative,Negative,Positive
+"Q: What does the address (&) operator return?
+A: This operator returns the memory address of its operand.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How many dimensions need to be specified when passing a multi-dimensional array as an argument to a function?
+A: both",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: What is a queue?
+A: A queue is like a stack except it follows FIFO (First in first out) .",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is the role of a header-file?
+A: To promote function reusuablitly",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: When does C++ create a default constructor?
+A: The compiler will provide one when class does not explictly include a consructor.",1,Positive,unknown,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: Briefly describe the divide-and-conquer paradigm.
+A: Take a problem and divide it into a smaller problem and solve that smaller problem, or divide it into a smaller problem and solve it, thus solving the whole problem in the process.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,unknown
+"Q: Briefly describe in one sentence how does merge sort work?
+A: Continually split array in half, sort each side of the halves, then put them back together once organized.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: Where are variables declared in a C++ program?
+A: They can be declared right before they are used, but it is a good practice to declare them at the beginning of the program and label what they are food.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
+"Q: How many steps does it take to search a node in a binary search tree?
+A: log(n)    where n equals the total number of nodes in the tree.",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: What is the difference between an array declared as static, and one that is not?
+A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Negative
+"Q: What is a binary search tree?
+A: A binary search tree is a binary tree where the value in any node 'n' is greater than the value in every node in n's left subtree but less than every node in n's right subtree.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
+A: n-1",1,Negative,Negative,Positive,unknown,Positive,Negative,Negative,Positive
+"Q: What operations would you need to perform to find a given element on a stack?
+A: you would pop each element and compare it to what you are looking for and then push it back on the stack so that it is not lost",1,Negative,Negative,Positive,Negative,Positive,Negative,Negative,Positive
+"Q: What are the main advantages associated with object-oriented programming?
+A: Modularability, the ability to reuse parts of the program later in another program sometimes with completely different goals for the program. Also it makes it easier to debug code by dividing up the code into classes that each do a specific job and when the program fails at one job you only have one class to debug. Good for security purposes because it allows you to let someone use a program which sorts lists without having to give them access to the source code. ALso allows you to use inheritance and polymorphism.",1,unknown,unknown,unknown,unknown,Positive,unknown,Positive,Negative
+"Q: What is the role of a prototype program in problem solving?
+A: To find problem and errors in a program before it is finalized",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What is the main advantage of linked lists over arrays?
+A: Linked lists do not have a set size and can grow or shrink as needed.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between a data member and a local variable inside a member function?
+A: local variables can only be used within the function, where as data members can be set to public access and can be used throughout",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What is the advantage of linked lists over arrays?
+A: Linked lists are not confined to a specific size, and can have elements added and removed far easier. They are also easier to traverse.",1,Negative,unknown,Positive,unknown,Positive,unknown,unknown,Positive
+"Q: What is the role of a prototype program in problem solving?
+A: A prototype program is used in problem solving to collect data for the problem.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: Briefly describe in one sentence how does merge sort work?
+A: divides the line in half coninuously until you get to only a single value then recombine the values to form a sorted line.",1,Positive,Positive,Negative,unknown,Positive,Positive,Negative,Positive
+"Q: What are the two main functions defined by a queue?
+A: rear and front",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: What is a queue?
+A: a queue is a storage container that holds its objects in a first in, first out priority",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between a constructor and a function?
+A: A constructor cannot return values, not even void, but function get a return value.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is a leaf?
+A: a leaf is a node with no children",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How are overloaded functions differentiated by the compiler?
+A: unique function signatures",1,Positive,unknown,Positive,unknown,Positive,Negative,Negative,Positive
+"Q: How are objects initialized when they are created?
+A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is a binary search tree?
+A: a tree where each node has at most two nodes and the node on the left is less than the root and the node on the right is greater than the root.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What is the main advantage of arrays over linked lists?
+A: you can go forwards and backwards and point to any piece of data at any given time where linked lists have to point to the next piece of data.",0,Positive,Positive,Negative,unknown,Positive,unknown,Negative,unknown
+"Q: What is a recursive function?
+A: function that calls it self till the base case is met",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What does the star (*) operator return?
+A: returns synonym for the object its operand points to",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What are the elements typically included in a class definition?
+A: a constructor, private and public variables, and function prototypes",1,Positive,Positive,unknown,Positive,Positive,unknown,Negative,Positive
+"Q: What is a queue?
+A: A queue is a first in first out data structure.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is a variable?
+A: A variable is a location in memory where a value can be stored.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the main advantage of arrays over linked lists?
+A: Array can retrieve memory from any place in the list while in a link list you have to traverse through each individual node.",1,Positive,Positive,unknown,unknown,Positive,Positive,unknown,Positive
+"Q: How many dimensions need to be specified when passing a multi-dimensional array as an argument to a function?
+A: one less than the number of dimensions the array contains",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the role of a prototype program in problem solving?
+A: To simulate problem solving for parts of the problem",1,unknown,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: What is a linked list?
+A: Consists of sequence of nodes, each containing a number of data fields and one or two links called pointers that point to the next or previous nodes.",1,Positive,unknown,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the advantage of linked lists over arrays?
+A: A link list can grow to a infinite size as a array has a fixes size.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What is a function signature?
+A: the signature of a function includes the name of the function, the number and types of parameters, and the return type",1,unknown,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is the advantage of linked lists over arrays?
+A: The advantage of linked lists is that they are not limited in size like arrays.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What stages in the software life cycle are influenced by the testing stage?
+A: In RUP the stages in the software life cycle are influenced by the testing stage is:  Elaboration phase- refined progject vision, iterative devilopment of core system, development of system requirements, more accurate time and cost estimates.  Construction phase- iterative development of remaining system.  Transition phase-testing and deployment of the system.",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Negative
+"Q: What is the main advantage of linked lists over arrays?
+A: A linked list is not fixed in size, and does not require the shifting of items during insertions and deletions.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How are infix expressions evaluated by computers?
+A: They are converted to post fix expressions.  It still follow the order of precedence for the operators.",1,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: Briefly describe in one sentence how does merge sort work?
+A: It divides the array into two halves, sorts each half, then merges the two halves together.",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: How many steps does it take to search a node in a binary search tree?
+A: log(n)",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What is the main difference between a while and a do...while statement?
+A: A while statement tests the condition before it can start. A do...while statement loops through once before the condition is tested.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: When defining a recursive function, what are possible causes for infinite recursion?
+A: No easily reached base case and no base case at all",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: Briefly, how does selection sort work?
+A: select an element compare it with 2nd element if it is greater, swap it",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What are the main operations associated with a stack?
+A: The main operations in a stack are push and pop. Push adds an item to the top of the stack, pop removes the top item from the stack.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is a queue?
+A: Stores a set of elements in a particular order with a First In, First Out principle",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a function signature?
+A: It is what uniquely separates overloaded functions. It includes the return type, and the parameter list of the function.",1,Negative,Negative,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: When does C++ create a default constructor?
+A: when a constructor is not provided by the programmer of the class",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What are the two main functions defined by a queue?
+A: Enqueue and Dequeue",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What is the main advantage of a doubly-linked list over a basic linked list?
+A: ability to backtrack through a list.",0,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: How are infix expressions evaluated by computers?
+A: They are first converted to postfix expressions and then evaluated.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the main advantages associated with object-oriented programming?
+A: This type of programming is more flexible, making it easier to add and modify the program.  It is also a type of a fail safe program, you check each individual module.  This eliminates redundant code and makes the program easier to read for other programmers.  When debugging the program it is easier to track down the source of a problem within a module rather than a 2 million line program.",1,unknown,Negative,Negative,unknown,Positive,unknown,unknown,unknown
+"Q: What does the sizeof operator return?
+A: The byte size of the date stored ina variable.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,unknown
+"Q: What is typically included in a class definition?
+A: It's specific class name, includes only information defined by that class... implementation details... etc.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Negative
+"Q: What is the main advantage of linked lists over arrays?
+A: Array size is fixed,but Linked is not fixed.",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: What is a queue?
+A: A queue is a collection of elements with the characteristics of first in first out (FIFO).  The first item in is the first item out.  All additional items are added to the end of the list.",1,Positive,unknown,unknown,Positive,Positive,unknown,unknown,unknown
+"Q: What is the base case for a recursive implementation of merge sort?
+A: T(n) = 0, if n&lt;2.",1,Negative,unknown,Negative,Negative,unknown,unknown,Negative,Positive
+"Q: What is a function signature?
+A: its return type and its input parameters",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
+"Q: What does the star (*) operator return?
+A: * returns the synonym for the object its operand points to.",1,Positive,unknown,unknown,Positive,Positive,unknown,Negative,Positive
+"Q: How are arrays passed to functions?
+A: Arrays are passed by reference.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the main advantage associated with function arguments that are passed by reference?
+A: Gives called function the ability to access and modify the caller’s argument data.",1,unknown,Negative,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What operations would you need to perform to find a given element on a stack?
+A: Depends on the type of stack, on a true stack you will haft to pop all of the elements of the stack until you find the element you want, and then after that you will need to push all the elements that where removed back in to the stack in the order that they where removed.  With a Java style stack, where there is a peek function, it will return the element you wanted instead of requiring you to perform all the excessive actions that are required from a true stack.",1,unknown,unknown,Positive,unknown,unknown,unknown,unknown,unknown
+"Q: What is the stack operation corresponding to the enqueue operation in queues?
+A: push",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the advantage of linked lists over arrays?
+A: Linked lists may be dynamically grown.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a function pointer?
+A: Function Pointers are pointers, i.e. variables, which point to the address of a function.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How can you implement a stack with a list?
+A: You can add an element to the end of the linked list and update a pointer called top each time you modify the list.",0,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: What is the role of a header-file?
+A: create a comon area to contain reusable functions.",0,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: What are the similarities between iteration and recursion?
+A: both based on a control statement, both involve repitition, both involve a termination test, both gradually approach termination, both can potentially occur infinetly.",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: What is the role of a prototype program in problem solving?
+A: Defined in the Specification phase a prototype stimulates the behavior of portions of the desired software product.  Meaning, the role of a prototype is a temporary solution until the program itself is refined to be used extensively in problem solving.",1,Positive,Positive,Positive,unknown,Positive,Positive,unknown,unknown
+"Q: What is a function signature?
+A: The function's name, as well as what it returns and what it accepts.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: When does C++ create a default constructor?
+A: When a class does not explicitly include a constructor.",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: Briefly describe the divide-and-conquer paradigm.
+A: Dividing a larger problem into the smallest incident of the problem and solving the smallest incident.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: What does the sizeof operator return?
+A: total number of bytes in the array",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What is a variable?
+A: location in memory where a value can be stored",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between an array that is declared as static and one that is not?
+A: A static array retains any modified values after a function call. Automatic arrays reset to their initial values when the function ends.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the scope of global variables?
+A: The entire program",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: What is the main advantage of linked lists over arrays?
+A: more memory can be allocated on the fly for more items",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between an array that is declared as static and one that is not?
+A: static has a predetermined size that cannot be passed while vis versa.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
+"Q: What does the address (&) operator return?
+A: returns the address number of the specified variable",1,Positive,Positive,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: What is a binary tree?
+A: a tree where every parent has only two children",1,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: What are the access-specifiers that can be used in a C++ class definition?
+A: Private, public, protected",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between an array declared as static, and one that is not?
+A: a static array is allocated when the program starts and is freed when the program exits but has limited scope, while an array that is not declared static is allocated and freed when it comes into and out of scope.",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: Where do C++ programs begin to execute?
+A: After loading the required include statements and libraries, the main method begins the execution.",1,Positive,Positive,unknown,unknown,unknown,unknown,unknown,unknown
+"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
+A: n operations  The best case scenario is when all the numbers are in increasing order.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the two main functions defined by a stack?
+A: Adding a new item and removing the item",1,unknown,Positive,Negative,unknown,Positive,unknown,Negative,Positive
+"Q: How can you implement a stack with a list?
+A: using linked list, you are pushing the node that contains each int to the stack until you get to the end of your linked list",0,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: How do you delete a node from a binary search tree?
+A: It all depends on where the node is located. If its a child it can just be deleted but for a node inside the tree it must be replaced with another node that works in its place.",0,Negative,Negative,Negative,Negative,Positive,Negative,Negative,unknown
+"Q: What is the role of a header-file?
+A: A header file declares a class, its data, and functions available through that class.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What is the height of a tree?
+A: is the depth of its furthest leaf",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the different ways to pass a pointer to a function?
+A: by address &bPtr or directly bPtr.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is the main advantage of linked lists over arrays?
+A: Linked lists are able to grow and shrink in size as needed",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the base case for a recursive implementation of merge sort?
+A: If the array being sorted has 0 or 1 elements",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: What does the address (&) operator return?
+A: The address operator returns the memory address of its operand.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a linked list?
+A: A linked list is a collection of Objects each containing at least one data member, and a pointer to the next object in the list (and the previous object in the case of a doubly linked list)",1,Positive,unknown,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
+A: 1 operation. the best case scenario s where it is already sorted and does one comparision.",0,Negative,unknown,Positive,unknown,Positive,Negative,Negative,Positive
+"Q: What is the role of a prototype program in problem solving?
+A: A prototype program provides a basic groundwork from which to further enhance and improve a solution to a problem.",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,unknown
+"Q: How can an array be addressed in pointer/offset notation?
+A: Element b[ n ] can be accessed by  *( bPtr + n ).",1,Positive,Negative,Positive,unknown,Positive,Negative,unknown,Positive
+"Q: What is the difference between an array that is declared as static and one that is not?
+A: A static array cannot be changed. A regular array can be changed when it is passed to a function or manually.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: Briefly describe the divide-and-conquer paradigm.
+A: divide the array in half, sort each half, then sort them back in one array",0,unknown,unknown,unknown,unknown,unknown,unknown,Negative,Positive
+"Q: What are the access-specifiers that can be used in a C++ class definition?
+A: public and private",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the role of a header-file?
+A: class definitions are placed here",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: How can you implement a stack with an array?
+A: By allocating an array of predetermined size, and an integer to track the top element of the stack. The bottom member of the stack will go in element 0 of the array, and for each element pushed the ""top"" tracking integer is incremented.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the main advantage of a doubly-linked list over a basic linked list?
+A: You can point both forwards and backwards",1,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: What is a tree?
+A: a set of data arranged with pointers. each element can have many pointers, but no two pointers point to the same element",0,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: What is the difference between an array that is declared as static and one that is not?
+A: the data of a static array cannot be changed",0,Negative,Negative,unknown,unknown,unknown,Negative,Negative,Positive
+"Q: What is the main difference between a while and a do...while statement?
+A: While tests for true first before running, do...while runs once first before checking.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the difference between a data member and a local variable inside a member function?
+A: Local variables cannot be used outside of that function body. When a function terminates the values of its local variables are lost. Where as data members are variables in a class definition, and they exist throughout the life of the object.",1,Positive,unknown,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the main difference between strings declared using the type string versus strings declared using an array of characters?
+A: array of characters can only hold as many characters as the array size and strings are not that limited.",1,unknown,Negative,Positive,Positive,unknown,unknown,Negative,Positive
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: an array of characters has one more element, its last element,the terminating element, or null, which doesnt exist in a variable of type string",1,Positive,Positive,Positive,unknown,Positive,Positive,Negative,unknown
+"Q: How can you implement a stack with an array?
+A: Allocate an array of some size, bottom stack element stored at element 0",1,unknown,Negative,unknown,unknown,unknown,Negative,Negative,Positive
+"Q: What are the two different ways of specifying the length of an array?
+A: with a number and with a variable",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: What is a leaf?
+A: A leaf is a node with no children.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the main advantages associated with object-oriented programming?
+A: Modular, reusable code, allowing faster deployment of solutions, and a more general view of a solution.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,unknown
+"Q: How are linked lists passed as arguments to a function?
+A: linked lists are passed by reference, specificly the Head pointer",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the scope of global variables?
+A: The entire program.",1,Negative,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: How many comparisons does it take to find an element in a binary search tree?
+A: it takes as many comparisons as the number of levels of the binary search tree. it only compares one number at each level",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: How can an array be addressed in pointer/offset notation?
+A: you get the memory location of the first element and the you add an offset to it to get other elements.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What is the difference between a function prototype and a function definition?
+A: A function prototype describes the class's public interface without providing how the function works. A function definition contains the inner workings of the function.",1,unknown,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
+A: using an iterative solution instead",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is a linked list?
+A: A sequence of nodes, each containing data fields (specified by programmer) and pointer(s) which can point to the next or previous nodes.",1,Positive,unknown,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: How are objects initialized when they are created?
+A: They are initialized with a constructor.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How many constructors can be created for a class?
+A: It depends what type of class is being defined.  Typically you would have a constructor call for each object.",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,unknown
+"Q: What is the stack operation corresponding to the enqueue operation in queues?
+A: Enqueue is the queue equivalent of push, and dequeue is the queue equivalent to pop.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is the difference between a constructor and a function?
+A: A constructor is a function used to initialize an object's data when it is created.",1,unknown,Negative,Positive,Positive,unknown,Negative,Negative,Positive
+"Q: What are the similarities between iteration and recursion?
+A: Iteration and recursion both use repetition and perform several simple operations and algorithms successively until they reach a certain limit.  So both involve a termination test to find that limit and both slowly approach that termination limit.  Both are based on a control statement as well.    If coded poorly, both can continue on for forever until the compiler or the computer either locks up, shuts down or halts the operation.",1,Positive,Positive,Positive,unknown,Positive,Positive,unknown,unknown
+"Q: What is the main difference between a while and a do...while statement?
+A: A while statement will test the condition of the while loop FIRST - there is a chance the loop will never run. A do...while loop will ALWAYS run once, and then the while test will determine if it will run again.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: When defining a recursive function, what are possible causes for infinite recursion?
+A: Either omitting the base case, or writing the recursion step incorerectly",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the advantage of linked lists over arrays?
+A: You do not have to predetermine your list size as you do with arrays. Linked list have the ability to be as large as you want them adding memory as needed.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: How can you implement a queue with a list?
+A: Utilizing a front pointer and a back pointer.  The front poiner and back pointer points to the first item into the queue.  As you add items, the front remains the same but the back poiner 'next' points to the new item and the new item is assigned to become the 'new' back pointer.",1,unknown,unknown,unknown,unknown,Positive,unknown,unknown,Positive
+"Q: How are objects initialized when they are created?
+A: obj. are initialized by the variables that call them, when they are created within a class.   e.i. classname objectname etc.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
+"Q: What is the main advantage of a doubly-linked list over a basic linked list?
+A: Double-linked lists require more space per node, and their elementary operations are more expensive; but they are often easier to manipulate because they allow sequential access to the list in both directions.",1,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Negative
+"Q: What is the main advantage associated with function arguments that are passed by reference?
+A: Pass by reference is good for performance reasons, because it can eliminate the pass by value overhead of copying large amounts of data.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the two different ways of specifying the length of an array?
+A: Supply an integer inside the brackets or the compiler counts the number of elements in the initializer list. int n[5]; int n[] = { 1,2,3,4,5 }",1,Positive,Positive,unknown,Positive,Positive,Positive,Positive,Positive
+"Q: How are arrays passed to functions?
+A: the same way but with [] at the declaration and the actual function.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
+"Q: How are arrays passed to functions?
+A: you pass a pointer to the first item and also pass the size.",1,unknown,Negative,Negative,Positive,Positive,Positive,unknown,unknown
+"Q: What is a function pointer?
+A: A pointer that points to the memory address of the beginning part of a functions.  pretty much the pointer points to the function so it can be called to execute.",1,Positive,Positive,unknown,Positive,Positive,Positive,unknown,unknown
+"Q: What is a binary search tree?
+A: it is similar to a binary tree.  The keys in a nonempty left subtree (right subtree) are smaller (larger) than the key in the root of subtree.  the values in all nodes in the left subtree of a node are less than             the node value  the values in all nodes in the right subtree of a node are greater    than the node values",1,Positive,Positive,Positive,unknown,Positive,Positive,unknown,Negative
+"Q: How can you implement a stack with an array?
+A: with the element added to the array, so that the last element added is at the end, and when the element is popped it takes the last element off the array",1,Positive,Positive,unknown,unknown,Positive,unknown,Negative,unknown
+"Q: What does the sizeof operator return?
+A: sizeof returns the size of the operand in bytes.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: Where are variables declared in a C++ program?
+A: variables can be declared in classes and methods.",0,unknown,Negative,unknown,unknown,Positive,Negative,Negative,Positive
+"Q: How can you implement a queue with a list?
+A: linked list checking for front and rear.  Keep enqueueing elements until front equal to rear -1.",1,Negative,Negative,unknown,Negative,unknown,Negative,Negative,Positive
+"Q: What is the main advantage of a doubly-linked list over a basic linked list?
+A: You can traverse the list in reverse.",1,unknown,Negative,Positive,Positive,Positive,Negative,Negative,Positive
+"Q: What are the two main functions defined by a stack?
+A: push and pop",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]?
+A: char array needs an end character signature and is made up of characters each separate from each other, a string is an object in itself, with a value that the user enters.",1,unknown,unknown,unknown,unknown,unknown,unknown,Negative,unknown
+"Q: What is the advantage of linked lists over arrays?
+A: Linked lists are able to grow in size. So elements can be added to the list.",1,Positive,Positive,unknown,Positive,Positive,Positive,Negative,Positive
+"Q: How many steps does it take to search a node in a binary search tree?
+A: 2^n where n is the # of levels the binary tree has",0,Negative,Negative,unknown,Negative,Negative,Negative,Negative,Positive
+"Q: What is the experimental approach for measuring the running time of an algorithm?
+A: Oposite of a theoretical assessment of the algorithm to determine runtime, but to run the code first to determine the the runtime.  This is not recommended because it is a limited test.  It does not include all possibilities of the data, nor the hardware used to process the data.",1,Positive,Positive,Positive,unknown,Positive,Positive,Positive,unknown
+"Q: What is a function pointer?
+A: A function pointer is a pointer that contains the address of the  function in memory.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is the Euler tour traversal of a tree?
+A: not answered",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,Positive
+"Q: What is the number of operations for insertion sort under a best-case scenario, and what is the best-case scenario?
+A: Best case-1 Worst Case-N",0,Negative,Negative,unknown,Negative,unknown,Negative,Negative,unknown
+"Q: What is the height of a tree?
+A: The height of a tree is the number of levels between the root and the leaf farthest away from it.",1,Positive,Positive,Positive,unknown,Positive,Positive,Negative,Positive
+"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
+A: Using an iterative function, which repeats a specified operation or set of operations until a terminating point or base case is reached.",1,Positive,Positive,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is a function pointer?
+A: When dereferenced, a function pointer invokes a function, passing it zero or more arguments just like a normal function. In programming languages like C, function pointers can be used to simplify code, such as replacing large switch statements.",1,Negative,Negative,Positive,unknown,unknown,unknown,Positive,Positive
+"Q: How are arrays passed to functions?
+A: by reference",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What are the main operations associated with a stack?
+A: Push and pop",1,Positive,Positive,Positive,Positive,Positive,Positive,Positive,Positive
+"Q: How are linked lists passed as arguments to a function?
+A: They are passed by reference because you want the function to change the pointer",1,Positive,Positive,Positive,unknown,Positive,Positive,unknown,Positive
+"Q: When does C++ create a default constructor?
+A: When no constructor was specified in the constructor's class, but the class is instantiated in a program.",1,Negative,Negative,unknown,Negative,Positive,Negative,Negative,Positive
+"Q: How do you delete a node from a binary search tree?
+A: You remove the element from the tree and move the next highest element from the left into its place.",1,unknown,Negative,Negative,Negative,Positive,Negative,Negative,Positive
+"Q: When does C++ create a default constructor?
+A: When you dont specify any constructors.",1,unknown,Negative,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: What is a stack?
+A: Stacks are a type of container adaptors, specifically designed to operate in a LIFO context (last-in first-out), where elements are inserted and extracted only from the end of the container.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: How does the compiler handle inline functions?
+A: It expands the function's definition in that place.  Once the functions is called you can use it as many times as you need.  The compiler just expands on the function.",1,Positive,unknown,unknown,unknown,unknown,Positive,Negative,Negative
+"Q: What are the access-specifiers that can be used in a C++ class definition?
+A: static, long, unsigned",0,Negative,Negative,Negative,Positive,Negative,Negative,Negative,Positive
+"Q: How many steps does it take to search a node in a binary search tree?
+A: The number of levels and the height of the tree",1,unknown,Positive,unknown,unknown,Positive,unknown,Negative,unknown
+"Q: What does the address (&) operator return?
+A: the address of the variable it is attached to",1,Positive,unknown,unknown,unknown,Positive,unknown,Negative,Positive
+"Q: When defining a recursive function, what are possible causes for infinite recursion?
+A: badly designed algorithyms. using recursion for a non recursive problem.",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
+"Q: How are infix expressions evaluated by computers?
+A: In postfix notation.",1,Negative,Negative,Negative,Negative,unknown,Negative,Negative,unknown
+"Q: What is the scope of global variables?
+A: globally, anywhere in the program.",1,unknown,Negative,Negative,unknown,Positive,Negative,Negative,Positive
+"Q: Where are variables declared in a C++ program?
+A: Variables are declared where ever it is defined either inside a block locally or outside a block globally.",1,Positive,Positive,unknown,unknown,Positive,Positive,Negative,Positive
+"Q: What is a linked list?
+A: A list of elements, or nodes, that are linked to one another such that each element points to the next element.",1,Positive,unknown,Positive,Positive,Positive,Positive,Negative,Positive
+"Q: What is typically included in a class definition?
+A: class name, two curly prenthesis, public and private",0,Negative,Negative,Negative,Negative,unknown,Negative,Negative,Positive
+"Q: In one sentence, what is the main idea implemented by insertion sort?
+A: it takes the second element and swaps it with the 1st if it is less and keeps it there if its larger, then it goes to the third element and inserts it in the right places with respect to the first 2 elements and so on...",1,unknown,unknown,Positive,unknown,Positive,unknown,unknown,Negative
+"Q: Briefly describe in one sentence how does merge sort work?
+A: Merge sort takes an array and splits it in half and sends each half back to itself recursively and merges and sorts the two halves when it starts going back up.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
+"Q: What are the two main functions defined by a queue?
+A: The two functions are, Enqueue and Dequeue",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
+"Q: What is the difference between an array that is declared as static and one that is not?
+A: An array they is declared as static can be accessed outside of the method it was declared without passing it as an argument to other functions in the same class.",0,Negative,Negative,Negative,Negative,Negative,Negative,Negative,unknown
+"Q: In one sentence, what is the main idea implemented by selection sort?
+A: It finds the minimum element in the array and swaps it with the first element then repeats this step swapping the minimum element with nth positions in the array.",1,unknown,unknown,Positive,unknown,Positive,unknown,Negative,Positive
+"Q: Where are variables declared in a C++ program?
+A: anywhere, but where you declare them depends on where you want them to be accessible (their scope)",1,Positive,unknown,Positive,Positive,Positive,Positive,unknown,Positive
+"Q: What is a binary search tree?
+A: a binary tree with a special organization of data. where the left child of the element is less than it, and the right child is larger than it.",1,Positive,Positive,Positive,Positive,Positive,Positive,Negative,unknown
+"Q: What is a queue?
+A: A queue is a data structure where the first node in is the first node out.",1,Positive,unknown,Positive,Positive,Positive,unknown,Negative,Positive
+"Q: What is the alternative way to solve a problem that could be solved through recursive functions?
+A: using an Iterative calls",1,Negative,unknown,Negative,Negative,Positive,Negative,Negative,Positive
