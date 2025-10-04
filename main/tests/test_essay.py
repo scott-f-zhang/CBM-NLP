@@ -54,19 +54,16 @@ OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", "result_essay.csv")
 
 
 def get_learning_rate(model_name: str):
-    """Optimal learning rates found by get_learning_rate.py for essay dataset (7:2:1 split).
+    """Unified learning rates for fair comparison with run_cebab and main/test_main.py.
     
-    Results from latest LR finder run:
-    - bert-base-uncased: standard=5e-05, joint=2e-05
-    - roberta-base: standard=1e-05, joint=2e-05  
-    - gpt2: standard=2e-04, joint=5e-05
-    - lstm: standard=1e-04, joint=5e-04
+    These learning rates are consistent across all experiments to ensure fair comparison
+    between PLMs and CBE-PLMs. Based on run_cebab/main/test_main.py settings.
     """
     return {
-        'lstm': 5e-4,  # Joint: 5e-4, Standard: 1e-4
-        'gpt2': 5e-5,  # Joint: 5e-5, Standard: 2e-4
-        'roberta-base': 2e-5,  # Joint: 2e-5, Standard: 1e-5
-        'bert-base-uncased': 2e-5,  # Joint: 2e-5, Standard: 5e-5
+        'lstm': 1e-2,           # 0.01 - Official recommendation for LSTM
+        'gpt2': 1e-4,           # 0.0001 - Consistent with run_cebab
+        'roberta-base': 1e-5,   # 0.00001 - Consistent with run_cebab  
+        'bert-base-uncased': 1e-5,  # 0.00001 - Consistent with run_cebab
     }.get(model_name, 1e-5)
 
 
