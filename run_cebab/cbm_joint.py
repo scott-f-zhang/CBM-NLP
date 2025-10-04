@@ -1,6 +1,7 @@
 import torch
 import transformers
 from gensim.models import FastText
+from main.config.defaults import resolve_fasttext_path
 from torch.optim.lr_scheduler import StepLR
 from transformers import RobertaTokenizer, RobertaModel,BertModel, BertTokenizer,GPT2Model, GPT2Tokenizer
 from torch.utils.data import DataLoader, Dataset
@@ -79,7 +80,7 @@ def get_cbm_joint(mode=None, max_len=None, batch_size=None, model_name=None, num
         # Initialize the classification model
         # model = GPT2Classifier(model)
     elif model_name == 'lstm':
-        fasttext_model = FastText.load_fasttext_format('/scratch/fzhan113/fasttext/cc.en.300.bin')
+        fasttext_model = FastText.load_fasttext_format(resolve_fasttext_path(None))
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
         model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128, fasttext_model)
 

@@ -10,3 +10,5 @@ run_cebab/fasttext/*
 .ipynb_checkpoints/*
 **/.ipynb_checkpoints
 **/.ipynb_checkpoints/*
+ori
+ori/*
