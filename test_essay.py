@@ -14,9 +14,9 @@ if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
 from main import (
-    get_cbm_standard,
-    get_cbm_joint,
-    get_cbm_LLM_mix_joint,
+    get_cbm_standard, # no concept, baseline
+    get_cbm_joint,    # with concept, human annotated
+    # get_cbm_LLM_mix_joint, # with concept, mix of human annotated and LLM generated
 )
 from main.config.defaults import RunConfig
 
