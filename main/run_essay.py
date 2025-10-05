@@ -16,15 +16,15 @@ import argparse
 import pandas as pd
 from datetime import datetime
 
-# Ensure project root on sys.path
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-if ROOT_DIR not in sys.path:
-    sys.path.insert(0, ROOT_DIR)
+# Ensure project root on sys.path (parent of the 'main' package directory)
+MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(MAIN_DIR)
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
-from main import (
-    get_cbm_standard, # no concept, baseline
-    get_cbm_joint,    # with concept, human annotated
-)
+# Import pipelines directly to avoid circular imports with main/main.py
+from main.pipelines.standard import get_cbm_standard  # no concept, baseline
+from main.pipelines.joint import get_cbm_joint        # with concept, human annotated
 from main.config.defaults import RunConfig
 
 
@@ -219,7 +219,7 @@ def run_experiments(use_early_stopping=False):
         df, dfp = build_pivot_table(df)
         
         # Save results
-        TESTS_DIR = os.path.join(ROOT_DIR, "tests")
+        TESTS_DIR = os.path.join(MAIN_DIR, "tests")
         early_stopping_suffix = "no_early_stopping" if not use_early_stopping else "early_stopping"
         OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_essay_{early_stopping_suffix}_{LR_TYPE}.csv")
         
