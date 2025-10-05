@@ -4,8 +4,6 @@
 This script provides a user-friendly interface to run essay dataset experiments
 using the optimal learning rates found by the learning rate finder on the 7:2:1 data split.
 
-It directly imports and runs the test_essay module for better performance and error handling.
-
 Usage:
     python run_essay.py                    # Default: no early stopping
     python run_essay.py --early-stopping   # Enable early stopping
@@ -15,12 +13,182 @@ Usage:
 import os
 import sys
 import argparse
+import pandas as pd
 from datetime import datetime
 
 # Ensure project root on sys.path
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
+
+from main import (
+    get_cbm_standard, # no concept, baseline
+    get_cbm_joint,    # with concept, human annotated
+)
+from main.config.defaults import RunConfig
+
+
+def get_average_scores(score_list):
+    if not score_list:
+        return (0.0, 0.0)
+    s1 = s2 = 0.0
+    n = 0
+    for a, b in score_list:
+        s1 += a
+        s2 += b
+        n += 1
+    return ((s1 / n * 100), (s2 / n * 100))
+
+
+def get_tuple_2f_fmt(tp):
+    f1, f2 = tp
+    return f"{f1:.2f}/{f2:.2f}"
+
+
+# Learning rate configuration
+LR_TYPE = "dataset_optimal"  # Options: "dataset_optimal" or "universal"
+
+DATASET = "essay"
+MODELS = ["bert-base-uncased", "roberta-base", "gpt2", "lstm"]
+
+
+def get_learning_rate(model_name: str, lr_type: str = "dataset_optimal"):
+    """Get learning rate for a model with option to switch between different settings."""
+    
+    if lr_type == "dataset_optimal":
+        return {
+            'lstm': 5e-4,           # Joint optimal: 5e-4 (from LR finder)
+            'gpt2': 5e-5,           # Joint optimal: 5e-5 (from LR finder)
+            'roberta-base': 2e-5,   # Joint optimal: 2e-5 (from LR finder)
+            'bert-base-uncased': 2e-5,  # Joint optimal: 2e-5 (from LR finder)
+        }.get(model_name, 1e-5)
+    
+    elif lr_type == "universal":
+        return {
+            'lstm': 1e-2,           # Universal: 1e-2 (consistent with run_cebab)
+            'gpt2': 1e-4,           # Universal: 1e-4 (consistent with run_cebab)
+            'roberta-base': 1e-5,   # Universal: 1e-5 (consistent with run_cebab)
+            'bert-base-uncased': 1e-5,  # Universal: 1e-5 (consistent with run_cebab)
+        }.get(model_name, 1e-5)
+    
+    else:
+        raise ValueError(f"Unknown lr_type: {lr_type}. Use 'dataset_optimal' or 'universal'")
+
+
+def run_experiments_for_function(func_name: str, func, early_stopping: bool, num_epochs: int):
+    rows = []
+    early_stopping_str = "WITH" if early_stopping else "WITHOUT"
+    print(f"Running {func_name} ({early_stopping_str} EARLY STOPPING)...")
+
+    # essay: only use manual variant (D) for both PLMs and CBE-PLMs
+    variant_plan = [("manual", "D")]
+
+    for model_name in MODELS:
+        lr = get_learning_rate(model_name, LR_TYPE)
+        print(f"\tRunning {model_name}... with learning rate: {lr} ({LR_TYPE})")
+
+        for variant, data_type in variant_plan:
+            try:
+                kwargs = dict(
+                    model_name=model_name,
+                    num_epochs=num_epochs,
+                    dataset=DATASET,
+                    max_len=512,
+                    batch_size=8,
+                    optimizer_lr=lr,
+                    early_stopping=early_stopping,
+                )
+                if variant is not None:
+                    kwargs['variant'] = variant
+                result = func(**kwargs)
+            except Exception as e:
+                print(f"\t\tWarning: {func_name}/{DATASET}/{model_name}/variant={variant} failed: {e}")
+                result = []
+
+            if func_name == 'PLMs':
+                task_scores = result if isinstance(result, list) else []
+                concept_scores = []
+            elif func_name == 'CBE-PLMs':
+                task_scores = result.get('task', []) if isinstance(result, dict) else []
+                concept_scores = result.get('concept', []) if isinstance(result, dict) else []
+            else:  # CBE-PLMs-CM
+                if isinstance(result, dict):
+                    task_scores = result.get('task', [])
+                    concept_scores = result.get('concept', [])
+                else:
+                    task_scores = []
+                    concept_scores = []
+
+            rows.append({
+                'dataset': DATASET,
+                'data_type': data_type,
+                'function': func_name,
+                'model': model_name,
+                'score': task_scores,
+                'concept_score': concept_scores,
+            })
+
+    return rows
+
+
+def run_all_experiments(early_stopping: bool, num_epochs: int) -> pd.DataFrame:
+    plms_funcs = {
+        'PLMs': get_cbm_standard,
+        'CBE-PLMs': get_cbm_joint,
+    }
+    all_rows = []
+    for fname, f in plms_funcs.items():
+        all_rows.extend(run_experiments_for_function(fname, f, early_stopping, num_epochs))
+    return pd.DataFrame(all_rows)
+
+
+def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+    df['score_avg'] = df.score.apply(get_average_scores)
+    df['score_fmted'] = df.score_avg.apply(get_tuple_2f_fmt)
+
+    func_order = ["PLMs", "CBE-PLMs"]
+    model_order = ["BERT", "RoBERTa", "GPT2", "LSTM"]
+    mapping = {
+        'lstm': 'LSTM',
+        'gpt2': 'GPT2',
+        'bert-base-uncased': 'BERT',
+        'roberta-base': 'RoBERTa',
+    }
+
+    # Prepare task long
+    task_df = df.copy()
+    task_df['score_avg'] = task_df['score'].apply(get_average_scores)
+    task_df['fmt'] = task_df['score_avg'].apply(get_tuple_2f_fmt)
+    task_df['metric'] = 'task'
+    # Prepare concept long
+    concept_df = df.copy()
+    concept_df['score_avg'] = concept_df['concept_score'].apply(get_average_scores)
+    concept_df['fmt'] = concept_df['score_avg'].apply(get_tuple_2f_fmt)
+    concept_df['metric'] = 'concept'
+
+    merged = pd.concat([task_df[['function','model','dataset','data_type','metric','fmt']],
+                        concept_df[['function','model','dataset','data_type','metric','fmt']]], ignore_index=True)
+
+    merged = merged.reset_index(drop=True)
+    merged['model'] = merged['model'].map(mapping)
+
+    wide = merged.pivot_table(index=['function','model'],
+                              columns=['dataset','data_type','metric'],
+                              values='fmt', aggfunc='first')
+    wide = wide.reindex(pd.MultiIndex.from_product([func_order, model_order], names=["function","model"]))
+
+    # Ensure full set of columns for essay (only D variant needed)
+    desired_cols = []
+    for dt in ['D']:  # Only D variant needed
+        for m in ['task','concept']:
+            desired_cols.append((DATASET, dt, m))
+    for col in desired_cols:
+        if col not in wide.columns:
+            wide[col] = pd.NA
+    wide = wide[desired_cols]
+    return df, wide
+
 
 def run_experiments(use_early_stopping=False):
     """Run essay dataset experiments with optimal learning rates.
@@ -37,19 +205,31 @@ def run_experiments(use_early_stopping=False):
     print(f"Models: BERT, RoBERTa, GPT2, LSTM")
     print(f"Pipelines: PLMs (Standard), CBE-PLMs (Joint)")
     print(f"Early stopping: {'Enabled' if use_early_stopping else 'Disabled (Default)'}")
+    print(f"Using learning rate type: {LR_TYPE}")
     print("=" * 80)
     
     try:
         print("\n🚀 Starting essay experiments...")
         
-        if use_early_stopping:
-            # Import and run the test_essay module (with early stopping)
-            from tests.test_essay import main as test_essay_main
-            test_essay_main()
-        else:
-            # Import and run the test_essay_no_early_stopping module
-            from tests.test_essay_no_early_stopping import main as test_essay_main
-            test_essay_main()
+        # Determine number of epochs
+        num_epochs = 20  # Default max epochs
+        
+        # Run experiments
+        df = run_all_experiments(use_early_stopping, num_epochs)
+        df, dfp = build_pivot_table(df)
+        
+        # Save results
+        TESTS_DIR = os.path.join(ROOT_DIR, "tests")
+        early_stopping_suffix = "no_early_stopping" if not use_early_stopping else "early_stopping"
+        OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_essay_{early_stopping_suffix}_{LR_TYPE}.csv")
+        
+        # Ensure test_results directory exists
+        os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
+        df.to_csv(OUTPUT_CSV, index=False)
+        
+        print("\nUnified Pivot (dataset, D/D^, task/concept):")
+        print(dfp)
+        print(f"\nSaved results to: {OUTPUT_CSV}")
         
         print("✅ Experiments completed successfully!")
         
@@ -99,10 +279,8 @@ Examples:
     
     if success:
         print("\n🎉 All experiments completed successfully!")
-        if use_early_stopping:
-            print("📁 Results saved to: tests/test_results/result_essay_early_stopping_dataset_optimal.csv")
-        else:
-            print("📁 Results saved to: tests/test_results/result_essay_no_early_stopping_dataset_optimal.csv")
+        early_stopping_suffix = "no_early_stopping" if not use_early_stopping else "early_stopping"
+        print(f"📁 Results saved to: tests/test_results/result_essay_{early_stopping_suffix}_{LR_TYPE}.csv")
         print("📊 Analysis summary: tests/test_results/lr_analysis_summary.md")
         print("📊 Early stopping analysis: tests/test_results/early_stopping_analysis.md")
     else:

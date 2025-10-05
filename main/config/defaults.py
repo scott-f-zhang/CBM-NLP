@@ -13,6 +13,8 @@ class RunConfig:
     optimizer_lr: float = 1e-5
     # 'cebab' | 'imdb'
     dataset: str = "cebab"
+    # Enable early stopping during training
+    early_stopping: bool = True
 
     # unified variant:
     # cebab: 'pure'|'aug'|'aug_yelp'|'aug_both'
@@ -29,6 +31,7 @@ def make_run_config(
     optimizer_lr: Optional[float] = None,
     dataset: Optional[str] = None,
     variant: Optional[str] = None,
+    early_stopping: Optional[bool] = None,
     default_dataset: Optional[str] = None,
     default_variant: Optional[str] = None,
 ) -> RunConfig:
@@ -53,6 +56,8 @@ def make_run_config(
         cfg.num_epochs = num_epochs
     if optimizer_lr is not None:
         cfg.optimizer_lr = optimizer_lr
+    if early_stopping is not None:
+        cfg.early_stopping = early_stopping
     return cfg
 
 

@@ -22,12 +22,13 @@ def get_cbm_joint(
     optimizer_lr=None,
     dataset: Optional[str] = None,
     variant: Optional[str] = None,
+    early_stopping: Optional[bool] = None,
     fasttext_path: Optional[str] = None,
 ):
     cfg = make_run_config(
         mode=mode, max_len=max_len, batch_size=batch_size, model_name=model_name,
         num_epochs=num_epochs, optimizer_lr=optimizer_lr,
-        dataset=dataset, variant=variant,
+        dataset=dataset, variant=variant, early_stopping=early_stopping,
         default_dataset='cebab', default_variant='aug',
     )
     cfg.mode = 'joint' if cfg.mode is None else cfg.mode
@@ -88,7 +89,7 @@ def get_cbm_joint(
     criterion = torch.nn.CrossEntropyLoss()
 
     best_acc = 0.0
-    patience = 5  # Early stopping patience
+    patience = 5 if cfg.early_stopping else float('inf')  # Early stopping patience
     patience_counter = 0
     
     for epoch in range(cfg.num_epochs):

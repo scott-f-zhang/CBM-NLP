@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Run essay dataset experiments WITH early stopping and print a pivot identical to main.py style.
+"""Unified Essay experiments with configurable early stopping.
 
-This script mirrors main/main.py but targets only the essay dataset and prints a
-unified pivot with (dataset='essay', D/D^, task/concept) columns.
+This script runs experiments on the essay dataset with the option to enable/disable
+early stopping for fair comparison between PLMs and CBE-PLMs.
 
-NOTE: This script uses early stopping (patience=5 epochs). For fair comparison
-without early stopping, use test_essay_no_early_stopping.py instead.
+Usage:
+    python test_essay_unified.py --early_stopping  # Enable early stopping (default)
+    python test_essay_unified.py --no_early_stopping  # Disable early stopping
 """
+
 import os
 import sys
+import argparse
 import pandas as pd
 
 # Ensure project root on sys.path
@@ -19,7 +22,6 @@ if ROOT_DIR not in sys.path:
 from main import (
     get_cbm_standard, # no concept, baseline
     get_cbm_joint,    # with concept, human annotated
-    # get_cbm_LLM_mix_joint, # not needed for PLMs vs CBE-PLMs comparison
 )
 from main.config.defaults import RunConfig
 
@@ -41,40 +43,17 @@ def get_tuple_2f_fmt(tp):
     return f"{f1:.2f}/{f2:.2f}"
 
 
-# Base settings (aligned with run_cebab and main/main.py for fair comparison)
-BASE_RUN = RunConfig(
-    num_epochs=20,  # Unified with run_cebab and main experiments
-    max_len=512,
-    batch_size=8,
-)
-
-DATASET = "essay"
-# Test all models with optimal learning rates
-MODELS = ["bert-base-uncased", "roberta-base", "gpt2", "lstm"]
-
 # Learning rate configuration
 LR_TYPE = "dataset_optimal"  # Options: "dataset_optimal" or "universal"
 
-# Save results to test_results directory
-TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_essay_early_stopping_{LR_TYPE}.csv")
+DATASET = "essay"
+MODELS = ["bert-base-uncased", "roberta-base", "gpt2", "lstm"]
 
 
 def get_learning_rate(model_name: str, lr_type: str = "dataset_optimal"):
-    """Get learning rate for a model with option to switch between different settings.
-    
-    Args:
-        model_name: Name of the model
-        lr_type: Type of learning rate to use
-            - "dataset_optimal": Optimal learning rates found by LR finder for essay dataset
-            - "universal": Universal learning rates consistent with run_cebab/main
-    
-    Returns:
-        Learning rate for the specified model
-    """
+    """Get learning rate for a model with option to switch between different settings."""
     
     if lr_type == "dataset_optimal":
-        # Optimal learning rates found by learning rate finder for essay dataset
         return {
             'lstm': 5e-4,           # Joint optimal: 5e-4 (from LR finder)
             'gpt2': 5e-5,           # Joint optimal: 5e-5 (from LR finder)
@@ -83,7 +62,6 @@ def get_learning_rate(model_name: str, lr_type: str = "dataset_optimal"):
         }.get(model_name, 1e-5)
     
     elif lr_type == "universal":
-        # Universal learning rates consistent with run_cebab and main/test_main.py
         return {
             'lstm': 1e-2,           # Universal: 1e-2 (consistent with run_cebab)
             'gpt2': 1e-4,           # Universal: 1e-4 (consistent with run_cebab)
@@ -95,9 +73,10 @@ def get_learning_rate(model_name: str, lr_type: str = "dataset_optimal"):
         raise ValueError(f"Unknown lr_type: {lr_type}. Use 'dataset_optimal' or 'universal'")
 
 
-def run_experiments_for_function(func_name: str, func):
+def run_experiments_for_function(func_name: str, func, early_stopping: bool, num_epochs: int):
     rows = []
-    print(f"Running {func_name}...")
+    early_stopping_str = "WITH" if early_stopping else "WITHOUT"
+    print(f"Running {func_name} ({early_stopping_str} EARLY STOPPING)...")
 
     # essay: only use manual variant (D) for both PLMs and CBE-PLMs
     variant_plan = [("manual", "D")]
@@ -110,11 +89,12 @@ def run_experiments_for_function(func_name: str, func):
             try:
                 kwargs = dict(
                     model_name=model_name,
-                    num_epochs=BASE_RUN.num_epochs,
+                    num_epochs=num_epochs,
                     dataset=DATASET,
-                    max_len=BASE_RUN.max_len,
-                    batch_size=BASE_RUN.batch_size,
+                    max_len=512,
+                    batch_size=8,
                     optimizer_lr=lr,
+                    early_stopping=early_stopping,
                 )
                 if variant is not None:
                     kwargs['variant'] = variant
@@ -149,15 +129,14 @@ def run_experiments_for_function(func_name: str, func):
     return rows
 
 
-def run_all_experiments() -> pd.DataFrame:
+def run_all_experiments(early_stopping: bool, num_epochs: int) -> pd.DataFrame:
     plms_funcs = {
         'PLMs': get_cbm_standard,
         'CBE-PLMs': get_cbm_joint,
-        # 'CBE-PLMs-CM': get_cbm_LLM_mix_joint,  # Not needed for this comparison
     }
     all_rows = []
     for fname, f in plms_funcs.items():
-        all_rows.extend(run_experiments_for_function(fname, f))
+        all_rows.extend(run_experiments_for_function(fname, f, early_stopping, num_epochs))
     return pd.DataFrame(all_rows)
 
 
@@ -167,7 +146,7 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
     df['score_fmted'] = df.score_avg.apply(get_tuple_2f_fmt)
 
     func_order = ["PLMs", "CBE-PLMs"]
-    model_order = ["BERT", "RoBERTa", "GPT2", "LSTM"]  # all models
+    model_order = ["BERT", "RoBERTa", "GPT2", "LSTM"]
     mapping = {
         'lstm': 'LSTM',
         'gpt2': 'GPT2',
@@ -210,13 +189,48 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Unified Essay experiments with configurable early stopping")
+    parser.add_argument("--early_stopping", action="store_true", default=True,
+                        help="Enable early stopping (default)")
+    parser.add_argument("--no_early_stopping", action="store_true", 
+                        help="Disable early stopping (fixed epochs)")
+    parser.add_argument("--num_epochs", type=int, default=20,
+                        help="Number of epochs (used when early stopping is disabled)")
+    parser.add_argument("--lr_type", default="dataset_optimal", 
+                        choices=["dataset_optimal", "universal"],
+                        help="Learning rate configuration type")
+    args = parser.parse_args()
+
+    # Determine early stopping setting
+    if args.no_early_stopping:
+        early_stopping = False
+        num_epochs = args.num_epochs
+    else:
+        early_stopping = args.early_stopping
+        num_epochs = 20  # Default max epochs when early stopping is enabled
+
+    # Update global LR_TYPE
+    global LR_TYPE
+    LR_TYPE = args.lr_type
+
+    # Save results to test_results directory
+    TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
+    early_stopping_suffix = "no_early_stopping" if not early_stopping else "early_stopping"
+    OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_essay_{early_stopping_suffix}_{LR_TYPE}.csv")
+    
     # Ensure test_results directory exists
     os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
     
+    print("=" * 80)
+    print("ESSAY EXPERIMENTS - UNIFIED")
+    print("=" * 80)
+    print(f"Early stopping: {'ENABLED' if early_stopping else 'DISABLED'}")
+    print(f"Number of epochs: {num_epochs}")
     print(f"Using learning rate type: {LR_TYPE}")
     print(f"Results will be saved to: {OUTPUT_CSV}")
+    print("=" * 80)
     
-    df = run_all_experiments()
+    df = run_all_experiments(early_stopping, num_epochs)
     df, dfp = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)
     print("\nUnified Pivot (dataset, D/D^, task/concept):")

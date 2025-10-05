@@ -4,16 +4,10 @@ This directory contains test scripts for the CBM-NLP project.
 
 ## Test Files
 
-### Main Tests
-- **`test_essay.py`**: Run essay dataset experiments (PLMs vs CBE-PLMs)
-- **`test_early_stopping.py`**: Test Early Stopping functionality
-- **`test_main.py`**: Lightweight test runner with reduced epochs
-
-### Model-Specific Tests
-- **`test_bert.py`**: BERT-only experiments
-- **`test_roberta.py`**: RoBERTa-only experiments  
-- **`test_gpt2.py`**: GPT2-only experiments
-- **`test_lstm.py`**: LSTM-only experiments
+### Dataset-Specific Tests (Recommended)
+- **`test_essay.py`**: Essay dataset experiments with configurable early stopping
+- **`test_cebab.py`**: CEBaB dataset test runner with flexible model selection
+- **`test_imdb.py`**: IMDB dataset test runner with flexible model selection
 
 ### Data Tests
 - **`test_dataclass_loading.py`**: Data loading functionality tests
@@ -31,23 +25,24 @@ python main/run_essay.py --early-stopping
 # Run with early stopping explicitly disabled
 python main/run_essay.py --no-early-stopping
 
-# Run essay experiments directly (with early stopping)
+# Run essay experiments (with early stopping by default)
 python main/tests/test_essay.py
 
 # Run essay experiments without early stopping
-python main/tests/test_essay_no_early_stopping.py
+python main/tests/test_essay.py --no_early_stopping
 
-# Test early stopping
-python main/tests/test_early_stopping.py
+# Run CEBaB dataset tests (all models)
+python main/tests/test_cebab.py --model all
 
-# Run lightweight tests
-python main/tests/test_main.py
+# Run specific model tests on CEBaB
+python main/tests/test_cebab.py --model bert
+python main/tests/test_cebab.py --model gpt2 --variants D^
 
-# Run model-specific tests
-python main/tests/test_bert.py
-python main/tests/test_roberta.py
-python main/tests/test_gpt2.py
-python main/tests/test_lstm.py
+# Run IMDB dataset tests (all models)
+python main/tests/test_imdb.py --model all
+
+# Run specific model tests on IMDB
+python main/tests/test_imdb.py --model bert --variants D^
 ```
 
 ### From Main Directory
@@ -60,28 +55,34 @@ python run_essay.py
 # Run with early stopping enabled
 python run_essay.py --early-stopping
 
-# Run essay experiments directly (with early stopping)
+# Run essay experiments (with early stopping by default)
 python tests/test_essay.py
 
 # Run essay experiments without early stopping
-python tests/test_essay_no_early_stopping.py
+python tests/test_essay.py --no_early_stopping
+
+# Run CEBaB dataset tests
+python tests/test_cebab.py --model all
+
+# Run IMDB dataset tests
+python tests/test_imdb.py --model all
 ```
 
 ### From Tests Directory
 ```bash
 cd main/tests
 
-# Run essay experiments (with early stopping)
+# Run essay experiments (with early stopping by default)
 python test_essay.py
 
 # Run essay experiments without early stopping
-python test_essay_no_early_stopping.py
+python test_essay.py --no_early_stopping
 
-# Test early stopping
-python test_early_stopping.py
+# Run CEBaB dataset tests
+python test_cebab.py --model all
 
-# Run lightweight tests
-python test_main.py
+# Run IMDB dataset tests
+python test_imdb.py --model all
 ```
 
 ## Environment Setup
@@ -98,23 +99,25 @@ All test results are automatically saved to the `test_results/` directory:
 ```
 main/tests/test_results/
 ├── result_essay_early_stopping_dataset_optimal.csv      # Essay experiments WITH early stopping
-├── result_essay_no_early_stopping_dataset_optimal.csv   # Essay experiments WITHOUT early stopping (recommended)
-├── result_test.csv            # Lightweight test results
-├── result_bert_test.csv       # BERT-specific test results
-├── result_roberta_test.csv    # RoBERTa-specific test results
-├── result_gpt2_test.csv       # GPT2-specific test results
-├── result_lstm_test.csv       # LSTM-specific test results
-├── lr_finder_results.csv      # Learning rate finder results
-├── early_stopping_analysis.md # Analysis of early stopping impact
-└── lr_analysis_summary.md     # Learning rate analysis summary
+├── result_essay_no_early_stopping_dataset_optimal.csv   # Essay experiments WITHOUT early stopping
+├── result_cebab_all_early_stopping.csv                  # CEBaB all models WITH early stopping
+├── result_cebab_bert_no_early_stopping.csv              # CEBaB BERT WITHOUT early stopping
+├── result_imdb_all_early_stopping.csv                   # IMDB all models WITH early stopping
+├── result_imdb_gpt2_no_early_stopping.csv               # IMDB GPT2 WITHOUT early stopping
+├── lr_finder_results.csv                                # Learning rate finder results
+├── early_stopping_analysis.md                           # Analysis of early stopping impact
+└── lr_analysis_summary.md                               # Learning rate analysis summary
 ```
 
 ## Notes
 
-- All test files have been updated with correct import paths
+- **Dataset-specific test files**: Tests are organized by dataset for better clarity
+- **Model selection**: All dataset tests support `--model` parameter for flexible model selection
+- **Early stopping control**: Available via `--early_stopping`/`--no_early_stopping` flags
+- **Default behavior**: Early stopping ENABLED by default in all tests
+- **Configuration**: Early stopping parameter added to `RunConfig` in `main/config/defaults.py`
+- **Independence**: `run_essay.py` is now independent of test files and contains its own core logic
 - All results are automatically saved to `main/tests/test_results/` directory
-- **Default behavior**: NO early stopping for fair comparison (recommended)
-- **Early stopping option**: Available via `--early-stopping` flag
 - Early Stopping is implemented in both PLMs and CBE-PLMs pipelines
-- Tests use the essay dataset with 7:2:1 train/dev/test split
-- **Recommended**: Use `python main/run_essay.py` (no early stopping) for fair comparison
+- Tests use appropriate train/dev/test splits for each dataset
+- **Recommended**: Use `run_essay.py` for main experiments, test files for specific testing scenarios
