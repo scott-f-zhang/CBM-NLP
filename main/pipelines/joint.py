@@ -1,4 +1,5 @@
 from typing import Optional
+import os
 import torch
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import StepLR
@@ -82,6 +83,13 @@ def get_cbm_joint(
     model.to(device)
     head.to(device)
 
+    # Prepare save directory: <project_root>/saved_models/<model_name>/
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    save_dir = os.path.join(PROJECT_ROOT, "saved_models", cfg.model_name)
+    os.makedirs(save_dir, exist_ok=True)
+    model_path = os.path.join(save_dir, f"{cfg.model_name}_joint.pth")
+    head_path = os.path.join(save_dir, f"{cfg.model_name}_ModelXtoCtoY_layer_joint.pth")
+
     default_lr = 1e-2 if cfg.model_name == 'lstm' else 1e-5
     optimizer = torch.optim.Adam(list(model.parameters()) + list(head.parameters()), lr=(cfg.optimizer_lr if cfg.optimizer_lr is not None else default_lr))
     if cfg.model_name == 'lstm':
@@ -113,8 +121,8 @@ def get_cbm_joint(
         if metrics['val_acc'] > best_acc:
             best_acc = metrics['val_acc']
             patience_counter = 0  # Reset patience counter
-            torch.save(model, f"./{cfg.model_name}_joint.pth")
-            torch.save(head, f"./{cfg.model_name}_ModelXtoCtoY_layer_joint.pth")
+            torch.save(model, model_path)
+            torch.save(head, head_path)
             print(f"  -> New best validation accuracy: {best_acc*100:.2f}%")
         else:
             patience_counter += 1
@@ -129,8 +137,8 @@ def get_cbm_joint(
         if cfg.model_name == 'lstm':
             scheduler.step()
 
-    model = torch.load(f"./{cfg.model_name}_joint.pth", weights_only=False)
-    head = torch.load(f"./{cfg.model_name}_ModelXtoCtoY_layer_joint.pth", weights_only=False)
+    model = torch.load(model_path, weights_only=False)
+    head = torch.load(head_path, weights_only=False)
     model.to(device)
     head.to(device)
 
