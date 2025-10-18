@@ -1,8 +1,12 @@
+"""
+Standalone model loader to avoid circular imports.
+This is a copy of the load_model_and_tokenizer function from cbm.models.loaders
+"""
+
 import os
 import torch
 from transformers import RobertaTokenizer, RobertaModel, BertModel, BertTokenizer, GPT2Model, GPT2Tokenizer
 from typing import Tuple, Optional
-from main.config.defaults import resolve_fasttext_path
 
 try:
     from gensim.models import FastText
@@ -38,26 +42,8 @@ class BiLSTMWithDotAttention(torch.nn.Module):
         return logits
 
 
-def _load_fasttext_embeddings(fasttext_path: Optional[str], tokenizer) -> Optional[torch.Tensor]:
-    fasttext_path = resolve_fasttext_path(fasttext_path)
-    if not fasttext_path:
-        return None
-    if FastText is None:
-        raise RuntimeError("gensim FastText is required but not installed")
-    ft = FastText.load_fasttext_format(fasttext_path)
-    embeddings = ft.wv.vectors
-    # Map tokenizer vocab indices to ft vectors if shapes align
-    # Here we assume vocab_size matches; otherwise we fallback to None
-    if embeddings is not None:
-        try:
-            weight = torch.tensor(embeddings)
-            return weight
-        except Exception:
-            return None
-    return None
-
-
 def load_model_and_tokenizer(model_name: str, fasttext_path: Optional[str] = None) -> Tuple[object, object, Optional[int]]:
+    """Load model and tokenizer for inference."""
     if model_name == 'roberta-base':
         tokenizer = RobertaTokenizer.from_pretrained(model_name)
         model = RobertaModel.from_pretrained(model_name)
@@ -76,8 +62,8 @@ def load_model_and_tokenizer(model_name: str, fasttext_path: Optional[str] = Non
         return model, tokenizer, hidden_size
     if model_name == 'lstm':
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-        embeddings_weight = _load_fasttext_embeddings(fasttext_path, tokenizer)
-        model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128, embeddings_weight)
+        # For LSTM, we don't load FastText embeddings in inference mode
+        model = BiLSTMWithDotAttention(len(tokenizer.vocab), 300, 128, None)
         # Expose hidden size as 128 to match the projected representation
         hidden_size = model.hidden_dim
         return model, tokenizer, hidden_size

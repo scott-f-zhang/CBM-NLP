@@ -48,13 +48,14 @@ def to_text(row):
     return a or q
 
 
-def to_label_binary(v):
-    """Convert score_avg to binary label (threshold: 3.5)."""
+def to_label_multiclass(v):
+    """Convert score_avg (0-5 range) to 6-class label by rounding to nearest integer."""
     try:
         s = float(v)
+        # Round to nearest integer and clip to [0, 5]
+        return int(round(max(0.0, min(5.0, s))))
     except Exception:
-        return 0
-    return 1 if s >= 3.5 else 0
+        return 0  # Default to 0 for invalid scores
 
 
 def load_and_transform():
@@ -64,7 +65,7 @@ def load_and_transform():
     
     out = pd.DataFrame()
     out["text"] = df.apply(to_text, axis=1)
-    out["label"] = df["score_avg"].apply(to_label_binary)
+    out["label"] = df["score_avg"].apply(to_label_multiclass)
     
     # Map concept columns
     for c in CONCEPT_COLS:

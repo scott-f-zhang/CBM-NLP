@@ -17,12 +17,12 @@ MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-from main import (
+from cbm import (
     get_cbm_standard,
     get_cbm_joint,
     get_cbm_LLM_mix_joint,
 )
-from main.config.defaults import RunConfig
+from cbm.config.defaults import RunConfig
 
 
 def get_average_scores(score_list):
@@ -54,23 +54,26 @@ BASE_RUN = RunConfig(
 )
 
 # Which datasets and models to run
-DATASETS = ["cebab", "imdb"]  # choose from: "cebab", "imdb"
+DATASETS = ["essay"]  # choose from: "cebab", "imdb", "essay"
 MODELS = ["bert-base-uncased", "roberta-base", "gpt2", "lstm"]
 
 # Output CSV path
-OUTPUT_CSV = os.path.join(MAIN_DIR, "result.csv")
+OUTPUT_CSV = os.path.join(MAIN_DIR, "result_essay.csv")
 
 
 from typing import Optional
 
 
 def get_learning_rate(model_name: str) -> Optional[float]:
-    """Return a reasonable default learning rate for a given backbone name."""
+    """Return a reasonable default learning rate for a given backbone name.
+    
+    For essay dataset, using optimized learning rates found by learning rate finder.
+    """
     lr_rate_dt = {
-        'lstm': 1e-2,
-        'gpt2': 1e-4,
-        'roberta-base': 1e-5,
-        'bert-base-uncased': 1e-5,
+        'lstm': 5e-4,           # Essay optimized: 5e-4 (from LR finder)
+        'gpt2': 5e-5,           # Essay optimized: 5e-5 (from LR finder)
+        'roberta-base': 2e-5,   # Essay optimized: 2e-5 (from LR finder)
+        'bert-base-uncased': 2e-5,  # Essay optimized: 2e-5 (from LR finder)
     }
     return lr_rate_dt.get(model_name)
 

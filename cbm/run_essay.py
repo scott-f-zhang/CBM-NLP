@@ -1,29 +1,31 @@
 #!/usr/bin/env python3
-"""Unified Essay experiments with configurable early stopping.
+"""Run complete essay dataset experiments with optimal learning rates.
 
-This script runs experiments on the essay dataset with the option to enable/disable
-early stopping for fair comparison between PLMs and CBE-PLMs.
+This script provides a user-friendly interface to run essay dataset experiments
+using the optimal learning rates found by the learning rate finder on the 7:2:1 data split.
 
 Usage:
-    python test_essay_unified.py --early_stopping  # Enable early stopping (default)
-    python test_essay_unified.py --no_early_stopping  # Disable early stopping
+    python run_essay.py                    # Default: no early stopping
+    python run_essay.py --early-stopping   # Enable early stopping
+    python run_essay.py --no-early-stopping # Explicitly disable early stopping
 """
 
 import os
 import sys
 import argparse
 import pandas as pd
+from datetime import datetime
 
-# Ensure project root on sys.path
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-if ROOT_DIR not in sys.path:
-    sys.path.insert(0, ROOT_DIR)
+# Ensure project root on sys.path (parent of the 'main' package directory)
+MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(MAIN_DIR)
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
-from main import (
-    get_cbm_standard, # no concept, baseline
-    get_cbm_joint,    # with concept, human annotated
-)
-from main.config.defaults import RunConfig
+# Import pipelines directly to avoid circular imports with cbm/main.py
+from cbm.pipelines.standard import get_cbm_standard  # no concept, baseline
+from cbm.pipelines.joint import get_cbm_joint        # with concept, human annotated
+from cbm.config.defaults import RunConfig
 
 
 def get_average_scores(score_list):
@@ -188,55 +190,102 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
     return df, wide
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Unified Essay experiments with configurable early stopping")
-    parser.add_argument("--early_stopping", action="store_true", default=True,
-                        help="Enable early stopping (default)")
-    parser.add_argument("--no_early_stopping", action="store_true", 
-                        help="Disable early stopping (fixed epochs)")
-    parser.add_argument("--num_epochs", type=int, default=20,
-                        help="Number of epochs (used when early stopping is disabled)")
-    parser.add_argument("--lr_type", default="dataset_optimal", 
-                        choices=["dataset_optimal", "universal"],
-                        help="Learning rate configuration type")
-    args = parser.parse_args()
-
-    # Determine early stopping setting
-    if args.no_early_stopping:
-        early_stopping = False
-        num_epochs = args.num_epochs
-    else:
-        early_stopping = args.early_stopping
-        num_epochs = 20  # Default max epochs when early stopping is enabled
-
-    # Update global LR_TYPE
-    global LR_TYPE
-    LR_TYPE = args.lr_type
-
-    # Save results to test_results directory
-    TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
-    early_stopping_suffix = "no_early_stopping" if not early_stopping else "early_stopping"
-    OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_essay_{early_stopping_suffix}_{LR_TYPE}.csv")
+def run_experiments(use_early_stopping=False):
+    """Run essay dataset experiments with optimal learning rates.
     
-    # Ensure test_results directory exists
-    os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
+    Args:
+        use_early_stopping (bool): Whether to use early stopping (default: False)
+    """
     
     print("=" * 80)
-    print("ESSAY EXPERIMENTS - UNIFIED")
+    print("ESSAY DATASET EXPERIMENTS")
     print("=" * 80)
-    print(f"Early stopping: {'ENABLED' if early_stopping else 'DISABLED'}")
-    print(f"Number of epochs: {num_epochs}")
+    print(f"Start time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Data split: 7:2:1 (train:dev:test)")
+    print(f"Models: BERT, RoBERTa, GPT2, LSTM")
+    print(f"Pipelines: PLMs (Standard), CBE-PLMs (Joint)")
+    print(f"Early stopping: {'Enabled' if use_early_stopping else 'Disabled (Default)'}")
     print(f"Using learning rate type: {LR_TYPE}")
-    print(f"Results will be saved to: {OUTPUT_CSV}")
     print("=" * 80)
     
-    df = run_all_experiments(early_stopping, num_epochs)
-    df, dfp = build_pivot_table(df)
-    df.to_csv(OUTPUT_CSV, index=False)
-    print("\nUnified Pivot (dataset, D/D^, task/concept):")
-    print(dfp)
-    print(f"\nSaved results to: {OUTPUT_CSV}")
+    try:
+        print("\n🚀 Starting essay experiments...")
+        
+        # Determine number of epochs
+        num_epochs = 20  # Default max epochs
+        
+        # Run experiments
+        df = run_all_experiments(use_early_stopping, num_epochs)
+        df, dfp = build_pivot_table(df)
+        
+        # Save results
+        TESTS_DIR = os.path.join(MAIN_DIR, "tests")
+        early_stopping_suffix = "no_early_stopping" if not use_early_stopping else "early_stopping"
+        OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_essay_{early_stopping_suffix}_{LR_TYPE}.csv")
+        
+        # Ensure test_results directory exists
+        os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
+        df.to_csv(OUTPUT_CSV, index=False)
+        
+        print("\nUnified Pivot (dataset, D/D^, task/concept):")
+        print(dfp)
+        print(f"\nSaved results to: {OUTPUT_CSV}")
+        
+        print("✅ Experiments completed successfully!")
+        
+    except Exception as e:
+        print(f"❌ Error running experiments: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+    
+    print(f"\n⏰ End time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 80)
+    
+    return True
 
+def main():
+    """Main entry point."""
+    parser = argparse.ArgumentParser(
+        description="Run essay dataset experiments with configurable early stopping",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python run_essay.py                    # Default: no early stopping (recommended)
+  python run_essay.py --early-stopping   # Enable early stopping
+  python run_essay.py --no-early-stopping # Explicitly disable early stopping
+        """
+    )
+    
+    # Early stopping options (mutually exclusive)
+    early_stopping_group = parser.add_mutually_exclusive_group()
+    early_stopping_group.add_argument(
+        '--early-stopping', 
+        action='store_true',
+        help='Enable early stopping (patience=5 epochs)'
+    )
+    early_stopping_group.add_argument(
+        '--no-early-stopping', 
+        action='store_true',
+        help='Explicitly disable early stopping (default behavior)'
+    )
+    
+    args = parser.parse_args()
+    
+    # Determine early stopping setting
+    use_early_stopping = args.early_stopping
+    
+    success = run_experiments(use_early_stopping=use_early_stopping)
+    
+    if success:
+        print("\n🎉 All experiments completed successfully!")
+        early_stopping_suffix = "no_early_stopping" if not use_early_stopping else "early_stopping"
+        print(f"📁 Results saved to: tests/test_results/result_essay_{early_stopping_suffix}_{LR_TYPE}.csv")
+        print("📊 Analysis summary: tests/test_results/lr_analysis_summary.md")
+        print("📊 Early stopping analysis: tests/test_results/early_stopping_analysis.md")
+    else:
+        print("\n💥 Experiments failed. Please check the error messages above.")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

@@ -15,7 +15,7 @@ class EssayDataset(Dataset):
 
     Required columns per row:
       - text: string (already combined Q/A text)
-      - label: int (0 or 1)
+      - label: int (0-5, representing rounded score from score_avg)
       - concept columns: FC, CC, TU, CP, R, DU, EE, FR with values in
         {"Positive", "Negative", "unknown"}
 

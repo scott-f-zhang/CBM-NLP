@@ -53,10 +53,10 @@ def get_cbm_LLM_mix_joint(
         num_labels = 2
         num_concept_labels = 8 if getattr(train_ds, "extra", None) is not None else 4
     elif cfg.dataset == 'essay':
-        # EssayDataset prepared with 8 concept columns, binary task
+        # EssayDataset prepared with 8 concept columns, 6-class scoring task (0-5)
         train_ds = EssayDataset("train", tokenizer, cfg.max_len, variant=(cfg.variant if cfg.variant in ("manual","generated") else "generated"))
         test_ds = EssayDataset("test", tokenizer, cfg.max_len, variant=(cfg.variant if cfg.variant in ("manual","generated") else "generated"))
-        num_labels = 2
+        num_labels = 6  # Essay: 0-5 score classification (6 classes)
         num_concept_labels = 8
     else:
         train_ds = CEBaBDataset("train", tokenizer, cfg.max_len, variant=cfg.variant)

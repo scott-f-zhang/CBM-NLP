@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""CEBaB dataset test runner with flexible model selection.
+"""IMDB dataset test runner with flexible model selection.
 
-This script runs experiments on the CEBaB dataset with configurable model selection,
+This script runs experiments on the IMDB dataset with configurable model selection,
 variants, metrics, and early stopping.
 
 Usage examples:
-- python test_cebab.py --model all                    # Test all models
-- python test_cebab.py --model bert --variants D^     # Test BERT on D^ variant only
-- python test_cebab.py --model gpt2 --no_early_stopping  # Test GPT2 without early stopping
-- python test_cebab.py --model lstm --metrics task    # Test LSTM task metrics only
+- python test_imdb.py --model all                    # Test all models
+- python test_imdb.py --model bert --variants D^     # Test BERT on D^ variant only
+- python test_imdb.py --model gpt2 --no_early_stopping  # Test GPT2 without early stopping
+- python test_imdb.py --model lstm --metrics task    # Test LSTM task metrics only
 """
 
 import os
@@ -24,12 +24,12 @@ if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
 from typing import Optional
-from main import (
+from cbm import (
     get_cbm_standard,
     get_cbm_joint,
     get_cbm_LLM_mix_joint,
 )
-from main.config.defaults import RunConfig
+from cbm.config.defaults import RunConfig
 
 
 def get_average_scores(score_list):
@@ -81,7 +81,7 @@ MODEL_CONFIGS = {
     },
 }
 
-DATASET = "cebab"
+DATASET = "imdb"
 TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -90,9 +90,9 @@ def get_learning_rate(model_name: str) -> Optional[float]:
     return MODEL_CONFIGS.get(model_name, {}).get('learning_rate', 1e-5)
 
 
-def _variant_plan_for_cebab(variants_filter: str):
-    """Get variant plan for CEBaB dataset."""
-    mapping = {"D": ("pure", "D"), "D^": ("aug", "D^")}
+def _variant_plan_for_imdb(variants_filter: str):
+    """Get variant plan for IMDB dataset."""
+    mapping = {"D": ("manual", "D"), "D^": ("gen", "D^")}
     plans = []
     if variants_filter in ("all", "D"):
         plans.append(mapping["D"])
@@ -110,9 +110,9 @@ def run_experiments_for_function(func_name: str, func, model_name: str,
     num_epochs = config['num_epochs']
     max_len = config['max_len']
     
-    print(f"Running {func_name} ({display_name}) on CEBaB...")
+    print(f"Running {func_name} ({display_name}) on IMDB...")
     
-    variant_plan = _variant_plan_for_cebab(variants_filter)
+    variant_plan = _variant_plan_for_imdb(variants_filter)
     lr = get_learning_rate(model_name)
     
     for variant, data_type in variant_plan:
@@ -212,7 +212,7 @@ def build_pivot_table(df: pd.DataFrame, models_sel):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="CEBaB dataset test with flexible model selection")
+    parser = argparse.ArgumentParser(description="IMDB dataset test with flexible model selection")
     parser.add_argument("--model", default="all", 
                         choices=["bert-base-uncased", "roberta-base", "gpt2", "lstm", "all"],
                         help="Model to test")
@@ -246,13 +246,13 @@ def main():
     # Generate output filename
     model_suffix = args.model if args.model != "all" else "all"
     early_stopping_suffix = "no_early_stopping" if not early_stopping else "early_stopping"
-    OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_cebab_{model_suffix}_{early_stopping_suffix}.csv")
+    OUTPUT_CSV = os.path.join(TESTS_DIR, "test_results", f"result_imdb_{model_suffix}_{early_stopping_suffix}.csv")
     
     # Ensure test_results directory exists
     os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
     
     print(f"torch.cuda.is_available={torch.cuda.is_available()}")
-    print(f"Dataset: CEBaB")
+    print(f"Dataset: IMDB")
     print(f"Early stopping: {'ENABLED' if early_stopping else 'DISABLED'}")
     print(f"Models: {models_sel}")
     print(f"Variants: {variants_filter}")
@@ -263,7 +263,7 @@ def main():
     df, dfp = build_pivot_table(df, models_sel)
     df.to_csv(OUTPUT_CSV, index=False)
     
-    print("\nCEBaB Results:")
+    print("\nIMDB Results:")
     print(dfp)
     print(f"\nSaved results to: {OUTPUT_CSV}")
 

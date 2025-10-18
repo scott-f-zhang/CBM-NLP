@@ -1,7 +1,7 @@
 import torch
 import transformers
 from gensim.models import FastText
-from main.config.defaults import resolve_fasttext_path
+from cbm.config.defaults import resolve_fasttext_path
 import torch.nn.functional as F
 from torch.optim.lr_scheduler import StepLR
 from transformers import RobertaTokenizer, RobertaModel,BertModel, BertTokenizer,GPT2Model, GPT2Tokenizer
