@@ -68,12 +68,13 @@ def get_learning_rate(model_name: str) -> Optional[float]:
     """Return a reasonable default learning rate for a given backbone name.
     
     For essay dataset, using optimized learning rates found by learning rate finder.
+    Updated based on actual LR finder results with 6-class configuration.
     """
     lr_rate_dt = {
-        'lstm': 5e-4,           # Essay optimized: 5e-4 (from LR finder)
-        'gpt2': 5e-5,           # Essay optimized: 5e-5 (from LR finder)
-        'roberta-base': 2e-5,   # Essay optimized: 2e-5 (from LR finder)
-        'bert-base-uncased': 2e-5,  # Essay optimized: 2e-5 (from LR finder)
+        'lstm': 5e-4,           # Essay optimized: 0.0005 (joint pipeline, combined_score=1.361) - 实际最优值
+        'gpt2': 5e-5,           # Essay optimized: 5e-5 (joint pipeline, combined_score=1.470)
+        'roberta-base': 2e-5,   # Essay optimized: 2e-5 (joint pipeline, combined_score=1.508)
+        'bert-base-uncased': 2e-5,  # Essay optimized: 2e-5 (joint pipeline, combined_score=1.465)
     }
     return lr_rate_dt.get(model_name)
 
