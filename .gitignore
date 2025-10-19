@@ -12,3 +12,5 @@ run_cebab/fasttext/*
 **/.ipynb_checkpoints/*
 ori
 ori/*
+saved_models
+saved_models/*
