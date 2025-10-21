@@ -239,12 +239,12 @@ def build_pivot_table(df: pd.DataFrame) -> pd.DataFrame:
 def main():
     """Entrypoint: run experiments, save CSV, and print CEBaB D/D^ and IMDB pivots."""
     df = run_all_experiments()
-    df, dfp = build_pivot_table(df)
+    # df, dfp = build_pivot_table(df)
     df.to_csv(OUTPUT_CSV, index=False)
-
-    print("\nUnified Pivot (dataset, D/D^, task/concept):")
-    print(dfp)
     print(f"\nSaved results to: {OUTPUT_CSV}")
+
+    # print("\nUnified Pivot (dataset, D/D^, task/concept):")
+    # print(dfp)
 
 
 if __name__ == "__main__":
