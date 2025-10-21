@@ -16,8 +16,8 @@ class EssayDataset(Dataset):
     Required columns per row:
       - text: string (already combined Q/A text)
       - label: int (0-5, representing rounded score from score_avg)
-      - concept columns: FC, CC, TU, CP, R, DU, EE, FR with values in
-        {"Positive", "Negative", "unknown"}
+      - concept columns: FC, CC, TU, CP, R, DU, EE, FR with integer values in {0, 1, 2}
+        where 0=Negative, 1=Positive, 2=Unknown
 
     variant: "manual" | "generated"
       manual -> train_manual.csv / dev_manual.csv / test_manual.csv
@@ -76,14 +76,13 @@ class EssayDataset(Dataset):
         self.text = df["text"].astype(str)
         self.labels = df["label"].astype(int)
 
-        # Map concept string labels to {0,1,2}: Negative->0, Positive->1, unknown->2
-        def concept_to_int(v: str) -> int:
-            s = str(v).strip()
-            if s == "Positive":
-                return 1
-            if s == "Negative":
-                return 0
-            return 2
+        # Direct int conversion with validation (concepts already mapped to 0,1,2)
+        def concept_to_int(v) -> int:
+            try:
+                val = int(v)
+                return val if val in [0, 1, 2] else 2
+            except:
+                return 2
 
         self.concepts = {}
         for c in ESSAY_CONCEPT_COLUMNS:

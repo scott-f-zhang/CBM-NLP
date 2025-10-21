@@ -27,16 +27,14 @@ CONCEPT_COLS = ["FC", "CC", "TU", "CP", "R", "DU", "EE", "FR"]
 
 
 def map_concept(v):
-    """Map numerical concept scores to categorical labels."""
+    """Map numerical concept scores directly to model labels (0,1,2)."""
     try:
         v = int(v)
+        if v == 3: return 1    # High score → Positive
+        if v == 2: return 2    # Medium score → Unknown
+        return 0               # Low score → Negative
     except Exception:
-        return "unknown"
-    if v == 3:
-        return "Positive"
-    if v == 2:
-        return "unknown"
-    return "Negative"
+        return 2               # Invalid → Unknown
 
 
 def to_text(row):
@@ -52,7 +50,7 @@ def to_label_multiclass(v):
     """Convert score_avg (0-5 range) to 6-class label by rounding to nearest integer."""
     try:
         s = float(v)
-        # Round to nearest integer and clip to [0, 5]
+        # Round to nearest integer and clip to [0, 5] for 6-class classification
         return int(round(max(0.0, min(5.0, s))))
     except Exception:
         return 0  # Default to 0 for invalid scores
