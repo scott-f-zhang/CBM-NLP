@@ -48,9 +48,10 @@ def get_tuple_2f_fmt(tp):
 
 # Base run settings aligned with main.config.defaults.RunConfig
 BASE_RUN = RunConfig(
-    num_epochs=1,
+    num_epochs=20,
     max_len=512,
     batch_size=8,
+    early_stopping=True,
 )
 
 # Which datasets and models to run
