@@ -3,29 +3,35 @@ import pandas as pd
 from typing import Dict, Optional
 
 def load_learning_rates(dataset: str) -> Dict[str, float]:
-    """从 CSV 文件加载学习率配置
+    """Load learning rate configuration from CSV file
     
     Args:
-        dataset: 数据集名称 (essay, qa, cebab, imdb)
+        dataset: Dataset name (essay, qa, cebab, imdb)
     
     Returns:
         Dict mapping model_name -> learning_rate
         
     Raises:
-        FileNotFoundError: 如果找不到对应的 CSV 文件
+        FileNotFoundError: If corresponding CSV file is not found
     """
-    # 定位 cbm/lr_rate/<dataset>_lr_rate.csv
+    # Locate cbm/lr_rate/<dataset>_lr_rate.csv
     current_dir = os.path.dirname(os.path.abspath(__file__))
     cbm_dir = os.path.dirname(current_dir)
     csv_path = os.path.join(cbm_dir, "lr_rate", f"{dataset}_lr_rate.csv")
     
+    # Log the file path being loaded from
+    print(f"Loading learning rates from: {csv_path}")
+    
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"Learning rate file not found: {csv_path}")
     
-    # 读取 CSV
+    # Read CSV
     df = pd.read_csv(csv_path)
     
-    # 转换为字典
+    # Convert to dictionary
     lr_dict = dict(zip(df['model'], df['best_lr']))
+    
+    # Log the loaded learning rates
+    print(f"Loaded learning rates: {lr_dict}")
     
     return lr_dict
