@@ -152,6 +152,7 @@ def run_experiments_for_function(func_name: str, func):
                         max_len=BASE_RUN.max_len,
                         batch_size=BASE_RUN.batch_size,
                         optimizer_lr=lr,
+                        early_stopping=False,
                     )
                     if variant is not None:
                         kwargs['variant'] = variant
