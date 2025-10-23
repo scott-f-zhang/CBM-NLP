@@ -54,8 +54,7 @@ BASE_RUN = RunConfig(
 )
 
 # Which datasets and models to run
-DATASETS = ["essay", "qa"]  # choose from: "cebab", "imdb", "essay", "qa"
-MODELS = ["bert-base-uncased", "roberta-base", "gpt2", "lstm"]
+DATASETS = ["essay"]  # choose from: "cebab", "imdb", "essay", "qa"
 MODELS = ["bert-base-uncased", "roberta-base"]
 
 # Output CSV path
