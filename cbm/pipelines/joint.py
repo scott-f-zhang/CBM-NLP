@@ -13,6 +13,7 @@ from ..data.essay import EssayDataset
 from ..training.loops_joint import train_epoch_joint, eval_epoch_joint, test_epoch_joint
 
 from ..models.cbm_models import ModelXtoCtoY_function
+from ..models.ts_wrappers import JointTSWrapper
 
 
 def get_cbm_joint(
@@ -26,11 +27,13 @@ def get_cbm_joint(
     variant: Optional[str] = None,
     early_stopping: Optional[bool] = None,
     fasttext_path: Optional[str] = None,
+    save_format: Optional[str] = None,
 ):
     cfg = make_run_config(
         mode=mode, max_len=max_len, batch_size=batch_size, model_name=model_name,
         num_epochs=num_epochs, optimizer_lr=optimizer_lr,
         dataset=dataset, variant=variant, early_stopping=early_stopping,
+        save_format=save_format,
         default_dataset='cebab', default_variant='aug',
     )
     cfg.mode = 'joint' if cfg.mode is None else cfg.mode
@@ -97,6 +100,7 @@ def get_cbm_joint(
     os.makedirs(save_dir, exist_ok=True)
     model_path = os.path.join(save_dir, f"{cfg.model_name}_joint.pth")
     head_path = os.path.join(save_dir, f"{cfg.model_name}_ModelXtoCtoY_layer_joint.pth")
+    ts_path = os.path.join(save_dir, f"{cfg.model_name}_joint_ts.pt")
 
     default_lr = 1e-2 if cfg.model_name == 'lstm' else 1e-5
     optimizer = torch.optim.Adam(list(model.parameters()) + list(head.parameters()), lr=(cfg.optimizer_lr if cfg.optimizer_lr is not None else default_lr))
@@ -129,9 +133,23 @@ def get_cbm_joint(
         if metrics['val_acc'] > best_acc:
             best_acc = metrics['val_acc']
             patience_counter = 0  # Reset patience counter
-            # Save full pickled objects (.pth)
+            # Always keep original separate saves to preserve evaluation flow
             torch.save(model, model_path)
             torch.save(head, head_path)
+            # Optionally also export TorchScript single-file artifact
+            if getattr(cfg, 'save_format', 'separate') == 'torchscript':
+                wrapper = JointTSWrapper(model, head, cfg.model_name == 'lstm')
+                model.eval(); head.eval()
+                try:
+                    scripted = torch.jit.script(wrapper)
+                except Exception:
+                    # Fallback to trace with a small val batch
+                    batch = next(iter(val_loader))
+                    input_ids = batch["input_ids"].to(device)
+                    attention_mask = batch["attention_mask"].to(device)
+                    with torch.inference_mode():
+                        scripted = torch.jit.trace(wrapper, (input_ids, attention_mask))
+                scripted.save(ts_path)
             print(f"  -> New best validation accuracy: {best_acc*100:.2f}%")
         else:
             patience_counter += 1

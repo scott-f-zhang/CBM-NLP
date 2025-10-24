@@ -15,6 +15,8 @@ class RunConfig:
     dataset: str = "cebab"
     # Enable early stopping during training
     early_stopping: bool = False
+    # How to save models: 'separate' (default two .pth) or 'torchscript'
+    save_format: str = "separate"
 
     # unified variant:
     # cebab: 'pure'|'aug'|'aug_yelp'|'aug_both'
@@ -33,6 +35,7 @@ def make_run_config(
     dataset: Optional[str] = None,
     variant: Optional[str] = None,
     early_stopping: Optional[bool] = None,
+    save_format: Optional[str] = None,
     default_dataset: Optional[str] = None,
     default_variant: Optional[str] = None,
 ) -> RunConfig:
@@ -59,6 +62,8 @@ def make_run_config(
         cfg.optimizer_lr = optimizer_lr
     if early_stopping is not None:
         cfg.early_stopping = early_stopping
+    if save_format is not None:
+        cfg.save_format = save_format
     return cfg
 
 
