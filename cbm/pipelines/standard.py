@@ -10,6 +10,7 @@ from ..data.cebab import CEBaBDataset
 from ..data.imdb import IMDBDataset
 from ..data.qa import QADataset
 from ..data.essay import EssayDataset
+from ..data.mocha import MOCHADataset
 from ..training.loops import train_one_epoch, evaluate, test_loop
 
 
@@ -40,6 +41,12 @@ def get_cbm_standard(
         train_ds = IMDBDataset("train", tokenizer, cfg.max_len, variant=cfg.variant)
         val_ds = IMDBDataset("val", tokenizer, cfg.max_len, variant=cfg.variant)
         test_ds = IMDBDataset("test", tokenizer, cfg.max_len, variant=cfg.variant)
+        num_labels = len(train_ds.final_label_vals)
+        num_concept_labels = len(train_ds.concepts)
+    elif cfg.dataset == 'mocha':
+        train_ds = MOCHADataset("train", tokenizer, cfg.max_len)
+        val_ds = MOCHADataset("val", tokenizer, cfg.max_len)
+        test_ds = MOCHADataset("test", tokenizer, cfg.max_len)
         num_labels = len(train_ds.final_label_vals)
         num_concept_labels = len(train_ds.concepts)
     elif cfg.dataset == 'essay':

@@ -24,7 +24,11 @@ def train_epoch_joint(model, head, data_loader: DataLoader, device, loss_fn, lam
         if is_lstm:
             pooled_output = outputs
         else:
-            pooled_output = outputs.last_hidden_state.mean(1)
+            last_hidden = outputs.last_hidden_state
+            mask = attention_mask.unsqueeze(-1)
+            masked_sum = (last_hidden * mask).sum(dim=1)
+            lengths = mask.sum(dim=1).clamp(min=1)
+            pooled_output = masked_sum / lengths
         outputs2 = head(pooled_output)
         XtoC_output = outputs2[1:]
         XtoY_output = outputs2[0:1]
@@ -61,7 +65,11 @@ def eval_epoch_joint(model, head, data_loader: DataLoader, device, is_lstm: bool
             if is_lstm:
                 pooled_output = outputs
             else:
-                pooled_output = outputs.last_hidden_state.mean(1)
+                last_hidden = outputs.last_hidden_state
+                mask = attention_mask.unsqueeze(-1)
+                masked_sum = (last_hidden * mask).sum(dim=1)
+                lengths = mask.sum(dim=1).clamp(min=1)
+                pooled_output = masked_sum / lengths
             outputs2 = head(pooled_output)
             XtoC_output = outputs2[1:]
             XtoY_output = outputs2[0:1]
@@ -122,7 +130,11 @@ def test_epoch_joint(model, head, data_loader: DataLoader, device, is_lstm: bool
             if is_lstm:
                 pooled_output = outputs
             else:
-                pooled_output = outputs.last_hidden_state.mean(1)
+                last_hidden = outputs.last_hidden_state
+                mask = attention_mask.unsqueeze(-1)
+                masked_sum = (last_hidden * mask).sum(dim=1)
+                lengths = mask.sum(dim=1).clamp(min=1)
+                pooled_output = masked_sum / lengths
             outputs2 = head(pooled_output)
             XtoY_output = outputs2[0:1]
             predictions = torch.argmax(XtoY_output[0], axis=1)

@@ -28,7 +28,12 @@ def train_one_epoch(
             # LSTM encoder already returns a fixed-size representation
             pooled = outputs
         else:
-            pooled = outputs.last_hidden_state.mean(1)
+            # Masked mean pooling over valid tokens only
+            last_hidden = outputs.last_hidden_state  # [B, T, H]
+            mask = attention_mask.unsqueeze(-1)      # [B, T, 1]
+            masked_sum = (last_hidden * mask).sum(dim=1)  # [B, H]
+            lengths = mask.sum(dim=1).clamp(min=1)        # [B, 1]
+            pooled = masked_sum / lengths
         logits = head(pooled)
         loss = criterion(logits, labels)
         loss.backward()
@@ -55,7 +60,11 @@ def evaluate(
             if is_lstm:
                 pooled = outputs
             else:
-                pooled = outputs.last_hidden_state.mean(1)
+                last_hidden = outputs.last_hidden_state
+                mask = attention_mask.unsqueeze(-1)
+                masked_sum = (last_hidden * mask).sum(dim=1)
+                lengths = mask.sum(dim=1).clamp(min=1)
+                pooled = masked_sum / lengths
             logits = head(pooled)
             preds = torch.argmax(logits, dim=1)
             predict_labels = to_numpy_concat(predict_labels, preds.cpu().numpy())
